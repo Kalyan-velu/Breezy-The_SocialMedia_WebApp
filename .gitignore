@@ -2,14 +2,17 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
+/breezy/node_modules
+/backend/config
+
+/breezy/.pnp
+/breezy/.pnp.js
 
 # testing
-/coverage
+/breezy/coverage
 
 # production
-/build
+/breezy/build
 
 # misc
 .DS_Store
