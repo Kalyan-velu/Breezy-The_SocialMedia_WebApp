@@ -25,9 +25,11 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {useDispatch, useSelector} from "react-redux";
 import {likePost} from "../../features/action/postAction";
+import { addCommentOnPost} from "../../features/action/postAction";
 import {Alert} from "@mui/lab";
 import {getFollowingPosts} from "../../features/action/userAction";
 import {pink} from "@mui/material/colors";
+import CommentCard from "../CommentCard/CommentCard";
 
 const ITEM_HEIGHT = 48;
 
@@ -90,6 +92,8 @@ const Post = ({
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
     const [likesUser, setLikesUser] = useState(false);
+    const [commentValue,setCommentValue] = useState("");
+    const [commentToggle,setCommentToggle] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [errorAlert, setErrorAlert] = React.useState('')
     const [messageAlert, setMessageAlert] = React.useState('')
@@ -120,6 +124,16 @@ const Post = ({
             dispatch(getFollowingPosts())
         }
     }
+    const addCommentHandler = async (e) => {
+        e.preventDefault();
+        await dispatch(addCommentOnPost(postId,commentValue));
+
+        if (isAccount) {
+            dispatch(getFollowingPosts(user._id))
+        } else {
+            dispatch(getFollowingPosts())
+        }
+    };
     useEffect(() => {
         likes.forEach(item => {
             if (item._id === user._id) {
@@ -246,7 +260,7 @@ const Post = ({
                 </div>
                 <div>
                     <Tooltip title={"Add Comment"}>
-                        <IconButton>
+                        <IconButton onClick={() => setCommentToggle(!commentToggle)}>
                             <ChatBubbleOutlined/>
                         </IconButton>
                     </Tooltip>
@@ -258,6 +272,7 @@ const Post = ({
                         style={{textTransform: 'none'}}
                         disableRipple={true}
                         disabled={comments.length === 0}
+                        onClick={()=>setCommentToggle(true)}
                     >
                         <Tooltip title={"View Comments"}>
                             <Typography fontWeight={200}>{comments.length} comments</Typography>
@@ -325,6 +340,22 @@ const Post = ({
                 </DialogContent>
             </Dialog>
 
+            <Dialog maxWidth={"md"} open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
+                <DialogTitle>Comments</DialogTitle>
+                <DialogContent>
+
+                    {comments.length> 0? (comments.map((item) =>(
+                            <CommentCard
+                                userId={item.user._id}
+                                name={item.user.name}
+                                avatar={item.user.avatar.url}
+                                comment={item.comment} commentId={item._id} postId={postId} isAccount={isAccount}/>
+                        ))
+                        ) : (
+                            <Typography>No Comments Yet</Typography>
+                        )}
+                </DialogContent>
+            </Dialog>
 
         </Container>
     )
