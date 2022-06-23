@@ -38,6 +38,7 @@ app.use('/api/v1/', userRoutes)
 app.use(`/api/v1/`, followRoutes)
 app.use(`/api/v1/`, postRoutes)
 
+
 //chat routes
 app.use("/api/v1/chat", chatRoutes)
 app.use("/api/v1/message", messageRoutes)

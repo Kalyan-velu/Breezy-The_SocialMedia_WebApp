@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
 import AuthPage from "./components/home/auth/authPage";
+import UserProfile from "./components/profile/UserProfile";
 
 function App() {
     const dispatch = useDispatch();
@@ -21,6 +22,8 @@ function App() {
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
                     <Route path={'/'} exect element={isAuthenticated ? <Home/> : <AuthPage/>}/>
+                    <Route path={'/user/user-profile'} element={isAuthenticated ? <UserProfile/> : <AuthPage/>}/>
+
                 </Routes>
             </div>
         </Router>

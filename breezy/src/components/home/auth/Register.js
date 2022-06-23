@@ -4,7 +4,6 @@ import {ErrorMessage, Field, Form, Formik} from 'formik'
 import * as Yup from 'yup'
 import {registerUser} from "../../../features/action/userAction";
 import {useDispatch} from "react-redux";
-import styled from "styled-components";
 
 
 const Register = () => {
@@ -31,7 +30,7 @@ const Register = () => {
     }
 
 
-    const emailRegularExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegularExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegularExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
     const initialValues = {
@@ -64,12 +63,8 @@ const Register = () => {
 
     return (
         <Grid style={gridStyle}>
-            <ImageContainer>
-                <Logo>
-                    <span>Breezy</span>
-                </Logo>
-            </ImageContainer>
-            <Formik
+
+        <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}>
@@ -153,31 +148,3 @@ const Register = () => {
 }
 
 export default Register;
-
-const LogInComponent = styled.div`
-  height:100vh;
-  background-image: linear-gradient(to right,#fff5bc,#cec1ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2vmax;
-  box-sizing: border-box;
-`
-
-const ImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 1.75rem;
-  img {
-    cursor: pointer;
-    height: 2.25rem;
-  }
-`;
-
-const Logo = styled.div`
-  color: #3e67a5;
-
-  span {
-    font-size: 40px;
-    font-family: 'Mochiy Pop P One', 'sans-serif'
-  }`

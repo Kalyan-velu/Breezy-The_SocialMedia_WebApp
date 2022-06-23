@@ -132,3 +132,8 @@ export const getAllUsers = () => async (dispatch) => {
         })
     }
 }
+export const logOutUser = () => async (dispatch) => {
+    dispatch({
+        type: 'Logout'
+    })
+}

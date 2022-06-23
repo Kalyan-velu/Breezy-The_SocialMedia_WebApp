@@ -4,7 +4,6 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
-import styled from "styled-components";
 import {loginUser} from "../../../features/action/userAction";
 import {useDispatch} from "react-redux";
 
@@ -31,7 +30,7 @@ const Login = () => {
         width: "50%"
     }
 
-    const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
     const initialValues = {
@@ -55,14 +54,10 @@ const Login = () => {
     };
 
     return (
-        <LogInComponent>
+
             <Grid style={gridStyle} id={"suspense"}>
-                <ImageContainer>
-                    <Logo>
-                        <span>Breezy</span>
-                    </Logo>
-                </ImageContainer>
-                <Formik
+
+            <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={onSubmit}>
@@ -118,35 +113,8 @@ const Login = () => {
                         </Form>)}
                 </Formik>
             </Grid>
-        </LogInComponent>
+
     )
 }
 
-export default Login
-const LogInComponent = styled.div`
-  height:100vh;
-  background-image: linear-gradient(to right,#fff5bc,#cec1ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2vmax;
-  box-sizing: border-box;
-`
-
-const ImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 1.75rem;
-  img {
-    cursor: pointer;
-    height: 2.25rem;
-  }
-`;
-
-const Logo = styled.div`
-  color: #3e67a5;
-
-  span {
-    font-size: 40px;
-    font-family: 'Mochiy Pop P One', 'sans-serif'
-  }`
+export default Login;

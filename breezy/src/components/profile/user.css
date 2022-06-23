@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    height: auto;
+    margin: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    margin: inherit;
+}
+
+.list a {
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 10px;
+}
+
+a:link {
+    color: #405195;
+}
+
+a:visited {
+    color: #397084;
+}
+
+a:hover {
+    color: #416cba;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    margin: inherit;
+}
+
+.list .icon {
+    margin-left: 80%;
+}

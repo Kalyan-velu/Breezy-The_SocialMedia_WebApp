@@ -2,13 +2,6 @@ import React, {useRef, useState} from 'react'
 import styled from "styled-components"
 import {IconButton} from "@mui/material";
 import {CameraAlt} from "@mui/icons-material";
-import db, {storage} from "../../config/firebaseConfig";
-
-import {useDispatch, useSelector} from "react-redux";
-import {selectEmail, selectName, selectPhoto} from "../../features/user/userSlice";
-import {addDoc, collection, doc, serverTimestamp, updateDoc} from "@firebase/firestore"
-import {getDownloadURL, ref, uploadString} from "@firebase/storage"
-import {selectStarter, setStarter} from "../../features/user/BooleanSlice";
 
 
 const Modal = () => {
@@ -16,41 +9,11 @@ const Modal = () => {
     const filePicker = useRef(null)
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(false);
-    const name = useSelector(selectName)
-    const photos = useSelector(selectPhoto)
-    const email = useSelector(selectEmail)
-    const starter = useSelector(selectStarter)
-    const dispatch = useDispatch()
 
 
-    console.log(starter)
 
-    async function SubmitModal(e) {
-        e.preventDefault()
-        if (loading) return
-        setLoading(true);
-        const docs = await addDoc(collection(db, 'post'), {
-            caption: input,
-            name: name,
-            email: email,
-            photo: photos,
-            timestamp: serverTimestamp(),
-        });
-        const image = ref(storage, `post/${docs}/image`);
-        await uploadString(image, selected, `data_url`)
-            .then(async (snapshot) => {
-                const downloadUrl = await getDownloadURL(image);
-                await updateDoc(doc(db, "post", docs.id),
-                    {Image: downloadUrl})
-            })
-        setInput("");
-        setSelected(null);
-        setLoading(false)
-        dispatch(setStarter({
-            starter: false
-        }))
 
-    }
+
 
     const selectedPhoto = (e) => {
         const reader = new FileReader();
@@ -64,14 +27,14 @@ const Modal = () => {
     console.log(selected)
 
     return (
-        <Container show={starter}>
+        <Container>
 
             <Wrapper>
                 <Header>
                     {selected ? (
                         <div className={"container"}>
                             <img
-                                src={selected}
+                                src={}
                                 onClick={() => filePicker.current.click()}
                                 alt={"selected"}
                             />
@@ -100,7 +63,6 @@ const Modal = () => {
                     <Button
                         type={"button"}
                         disabled={!selected}
-                        onClick={SubmitModal}
                     >
                         {loading ? "Submitting" : "Submit"}
                         Submit

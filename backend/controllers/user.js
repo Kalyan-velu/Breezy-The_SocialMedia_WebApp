@@ -238,7 +238,7 @@ exports.deleteProfile = async (req, res) => {
 exports.myProfile = async (req, res) => {
     try {
         //get the user from the request
-        const user = await User.findById(req.user._id).populate("posts"); //populate the posts
+        const user = await User.findById(req.user._id).populate("posts following followers"); //populate the posts
         //send the user back to the client
         res.status(200).json({
             success: true,
