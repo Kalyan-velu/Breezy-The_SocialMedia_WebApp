@@ -1,5 +1,5 @@
 const User = require("../models/user.model");
-const Post = require("../models/post.model");
+
 
 
 exports.followUser = async (req, res) => {
@@ -12,6 +12,14 @@ exports.followUser = async (req, res) => {
                 success: false,
             })
         }
+        //if user is following himself
+        if (userToFollow._id.toString() === loggedInUser._id.toString()) {
+            return res.status(400).json({
+                message: 'You cannot follow yourself',
+                success: false,
+            })
+        }
+
         if (loggedInUser.following.includes(userToFollow._id)) {
             const indexFollowing = loggedInUser.following.indexOf(userToFollow._id)
             loggedInUser.following.splice(indexFollowing, 1);
