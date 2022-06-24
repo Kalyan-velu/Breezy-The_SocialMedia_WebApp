@@ -25,13 +25,7 @@ const Header = () => {
                         <span>Breezy</span>
                     </Logo>
                 </ImageContainer>
-                <InputContainer>
-                    <Searchs/>
-                    <input type="text" placeholder="Search Friends"/>
-                </InputContainer>
-                <IconButtons>
-                    <SearchIcons/>
-                </IconButtons>
+               
                 <RightContainer>
                     <NavMenu>
                         <Link to={'/newpost'} onClick={() => setTab('/newpost')}>
