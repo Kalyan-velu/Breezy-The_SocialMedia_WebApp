@@ -48,9 +48,9 @@ const Header = () => {
                             }
 
                         </Link>
-                        <Link to={'/account'} onClick={() => setTab('/account')}>
+                        <Link to={'/user/account'} onClick={() => setTab('/account')}>
                             {
-                                tab === "/account" ? <AccountCircle/> : <AccountCircleOutlined/>
+                                tab === "/user/account" ? <AccountCircle/> : <AccountCircleOutlined/>
                             }
                         </Link>
                     </NavMenu>

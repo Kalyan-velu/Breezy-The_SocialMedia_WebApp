@@ -22,7 +22,7 @@ function App() {
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
                     <Route path={'/'} exect element={isAuthenticated ? <Home/> : <AuthPage/>}/>
-                    <Route path={'/user/user-profile'} element={isAuthenticated ? <UserProfile/> : <AuthPage/>}/>
+                    <Route path={'/user/account'} element={isAuthenticated ? <UserProfile/> : <AuthPage/>}/>
 
                 </Routes>
             </div>

@@ -7,7 +7,6 @@ const {isAuthenticated} = require("../middleware/auth");
 
 const router = express.Router();
 
-
 router.route(`/register`).post(register)
 router.route(`/login`).post(login)
 router.route(`/logout`).post(logout)
@@ -19,4 +18,5 @@ router.route(`/user/:id`).get(isAuthenticated, getUserProfile)
 router.route(`/users`).get(isAuthenticated, getAllUsers)
 router.route(`/user/forgot-password`).post(forgotPassword)
 router.route(`/reset-password/:token`).put(resetPassword)
+router.route(`/`).get(isAuthenticated, searchUser)
 module.exports = router;

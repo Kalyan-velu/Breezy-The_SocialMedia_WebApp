@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import './user.css'
 
 
-function Contact({userId, avatar, name, email}) {
+function LoggedInUser({userId, avatar, name, email}) {
 
     return (
         <div className={'container'}>
@@ -43,4 +43,4 @@ function Contact({userId, avatar, name, email}) {
     )
 }
 
-export default Contact
+export default LoggedInUser

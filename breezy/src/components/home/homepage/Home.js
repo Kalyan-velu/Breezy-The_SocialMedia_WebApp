@@ -2,10 +2,10 @@ import React, {useEffect} from 'react'
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import Post from "../../post/Post";
-import {getAllUsers, getFollowingPosts} from "../../../features/action/userAction";
+import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../loader/Loader";
 import {Typography} from "@mui/material";
-import Contact from "../../profile/Contact";
+import LoggedInUser from "../../profile/LoggedInUser";
 import BasicTabs from "../../profile/followingsAndFollowers";
 
 
@@ -19,7 +19,6 @@ function Home() {
 
     useEffect(() => {
         dispatch(getFollowingPosts())
-        dispatch(getAllUsers())
     }, []);
 
 
@@ -50,11 +49,12 @@ function Home() {
             </Sections>
             <Section>
                 <div>
-                    <Contact
+                    <LoggedInUser
                         userId={user._id}
                         avatar={user.avatar}
                         name={user.name}
-                        email={user.email}/>
+                        email={user.email}
+                    />
                 </div>
                 <div>
                     <BasicTabs/>

@@ -72,15 +72,15 @@ export const postOfFollowingReducer = createReducer(initialState, {
     }
 })
 
-export const allUsersReducer = createReducer(initialState, {
-    allUsersRequest: (state) => {
+export const specificUsersReducer = createReducer(initialState, {
+    specificUsersRequest: (state) => {
         state.loading = true
     },
-    allUsersSuccess: (state, action) => {
+    specificUsersSuccess: (state, action) => {
         state.loading = false;
         state.users = action.payload;
     },
-    allUsersFailed: (state, action) => {
+    specificUsersFailed: (state, action) => {
         state.loading = false;
         state.error = action.payload;
     },

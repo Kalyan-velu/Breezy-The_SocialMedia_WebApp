@@ -19,17 +19,17 @@ import {
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
-import {ChatBubbleOutlined, DeleteForever, Edit, Favorite, FavoriteBorder,} from "@mui/icons-material";
+import {DeleteForever, Edit, Favorite, FavoriteBorder,} from "@mui/icons-material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {useDispatch, useSelector} from "react-redux";
-import {likePost} from "../../features/action/postAction";
-import { addCommentOnPost} from "../../features/action/postAction";
+import {addCommentOnPost, likePost} from "../../features/action/postAction";
 import {Alert} from "@mui/lab";
 import {getFollowingPosts} from "../../features/action/userAction";
 import {pink} from "@mui/material/colors";
-import CommentCard from "../CommentCard/CommentCard";
+import CommentComponent from "./comment/CommentDialog";
+
 
 const ITEM_HEIGHT = 48;
 
@@ -259,25 +259,16 @@ const Post = ({
 
                 </div>
                 <div>
-                    <Tooltip title={"Add Comment"}>
-                        <IconButton onClick={() => setCommentToggle(!commentToggle)}>
-                            <ChatBubbleOutlined/>
-                        </IconButton>
-                    </Tooltip>
-
-                    <Button
-                        disableFocusRipple={true}
-                        disableTouchRipple={true}
-                        disableElevation={true}
-                        style={{textTransform: 'none'}}
-                        disableRipple={true}
-                        disabled={comments.length === 0}
-                        onClick={()=>setCommentToggle(true)}
-                    >
-                        <Tooltip title={"View Comments"}>
-                            <Typography fontWeight={200}>{comments.length} comments</Typography>
-                        </Tooltip>
-                    </Button>
+                    <CommentComponent
+                        postId={postId}
+                        comments={comments}
+                        commentToggle={commentToggle}
+                        setCommentToggle={setCommentToggle}
+                        commentValue={commentValue}
+                        setCommentValue={setCommentValue}
+                        addCommentHandler={addCommentHandler}
+                        isAccount={isAccount}
+                    />
 
 
                 </div>
@@ -340,22 +331,6 @@ const Post = ({
                 </DialogContent>
             </Dialog>
 
-            <Dialog maxWidth={"md"} open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
-                <DialogTitle>Comments</DialogTitle>
-                <DialogContent>
-
-                    {comments.length> 0? (comments.map((item) =>(
-                            <CommentCard
-                                userId={item.user._id}
-                                name={item.user.name}
-                                avatar={item.user.avatar.url}
-                                comment={item.comment} commentId={item._id} postId={postId} isAccount={isAccount}/>
-                        ))
-                        ) : (
-                            <Typography>No Comments Yet</Typography>
-                        )}
-                </DialogContent>
-            </Dialog>
 
         </Container>
     )
