@@ -1,6 +1,6 @@
 import React from "react";
 import {Avatar, Button, Typography} from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCommentOnPost} from "../../../features/action/postAction";
@@ -49,10 +49,10 @@ const CommentCard = ({
                 <div className={'icon'}>
                     {
                         isAccount ? <Button onClick={deleteCommentHandle}>
-                            <Delete/>
+                            <DeleteIcon/>
                         </Button> : userId === user._id ? (
                             <Button onClick={deleteCommentHandle}>
-                                <Delete/>
+                                <DeleteIcon/>
                             </Button>
                         ) : null}
                 </div>

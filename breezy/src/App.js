@@ -6,6 +6,8 @@ import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
 import AuthPage from "./components/home/auth/authPage";
 import UserProfile from "./components/profile/UserProfile";
+import Search from "./components/search/Search";
+import SearchData from "./components/search/package2.json";
 
 function App() {
     const dispatch = useDispatch();

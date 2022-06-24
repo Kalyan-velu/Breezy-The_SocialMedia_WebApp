@@ -11,6 +11,9 @@ import {
     Notifications,
     NotificationsOutlined
 } from "@mui/icons-material";
+import Search from "../../search/Search";
+import BookData from '../../search/package2.json'
+import SearchBar from "../../search/Search";
 
 const Header = () => {
     const [tab, setTab] = useState("/")
@@ -25,8 +28,8 @@ const Header = () => {
                         <span>Breezy</span>
                     </Logo>
                 </ImageContainer>
-               
-                <RightContainer>
+                <SearchBar placeholder="Enter a Book Name..." data={BookData} />
+               <RightContainer>
                     <NavMenu>
                         <Link to={'/newpost'} onClick={() => setTab('/newpost')}>
                             <AddIcon/>
