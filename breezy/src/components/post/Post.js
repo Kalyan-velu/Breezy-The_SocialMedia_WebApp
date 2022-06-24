@@ -29,6 +29,7 @@ import {Alert} from "@mui/lab";
 import {getFollowingPosts} from "../../features/action/userAction";
 import {pink} from "@mui/material/colors";
 import CommentComponent from "./comment/CommentDialog";
+import CommentShort from "./comment/CommentShort";
 
 
 const ITEM_HEIGHT = 48;
@@ -231,11 +232,23 @@ const Post = ({
             </PostHeader>
 
             <Divider sx={{my: 0.5}}/>
-
-            <PostImg>
-                <img src={postImage} alt={"post"}/>
-            </PostImg>
-
+            {postImage ? (
+                <PostImg>
+                    <img src={postImage} alt={"post"}/>
+                </PostImg>
+            ) : (
+                <PostText>
+                    <Typography
+                        fontWeight={700}
+                        sx={{
+                            fontSize: '14px',
+                            lineHeight: '1.5',
+                        }}>
+                        {caption}
+                    </Typography>
+                </PostText>
+            )}
+            <Divider sx={{my: 0.5}}/>
             <PostFooterFirst>
                 <div>
                     <Tooltip title={liked ? 'Liked' : 'Unliked'}>
@@ -274,7 +287,7 @@ const Post = ({
                 </div>
             </PostFooterFirst>
 
-            <Divider sx={{my: 0.5}}/>
+
 
             <PostDetails>
                 <List>
@@ -290,17 +303,20 @@ const Post = ({
                     </Typography>
                 </List>
                 <List>
-                    <Link to={`/user/${ownerId}`}>
-                        <Typography
-                            fontWeight={700}
-                        >
-                            {ownerName}
-                        </Typography>
-                    </Link>
-                    <Typography noWrap>
-                        {caption}
-                    </Typography>
+                    {comments.length > 0 ? (
+                        <CommentShort
+                            postId={postId}
+                            comments={comments}
+                            commentToggle={commentToggle}
+                            setCommentToggle={setCommentToggle}
+                            commentValue={commentValue}
+                            setCommentValue={setCommentValue}
+                            addCommentHandler={addCommentHandler}
+                            isAccount={isAccount}
+                        />
+                    ) : null}
                 </List>
+
             </PostDetails>
 
             <Stack spacing={2} sx={{width: '100%'}}>
@@ -379,11 +395,21 @@ a {
 }
 `
 const PostImg = styled.div`
-	width: 100%;
-	img{
-		width: 100%;
-		object-fit:contain;
-	}
+  width: 100%;
+
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+`
+const PostText = styled.div`
+    width: 100%;
+    margin: 5px 10px 10px;
+    text-align: center;
+    font-family: 'Poppins',sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #7e879a;
 `
 const PostFooterFirst = styled.div`
 	display: flex;

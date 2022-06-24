@@ -15,14 +15,13 @@ const CommentCard = ({
                          avatar,
                          comment,
                          CommentId,
-    postId,
-    isAccount
-
-}) => {
+                         postId,
+                         isAccount
+                     }) => {
     const {user} = useSelector(state => state.user);
     const dispatch = useDispatch()
-    const deleteCommentHandle = () => {
-        dispatch(deleteCommentOnPost(postId, CommentId));
+    const deleteCommentHandle = async () => {
+        await dispatch(deleteCommentOnPost(postId, CommentId));
         dispatch(getFollowingPosts())
     };
     return (
