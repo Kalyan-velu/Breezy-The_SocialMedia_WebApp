@@ -1,5 +1,5 @@
 import React from 'react'
-import {Grid, Paper, Typography} from "@mui/material";
+import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 
 const Login = () => {
     const dispatch = useDispatch()
+    const [showPassword, setShowPassword] = React.useState(false);
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -35,7 +36,8 @@ const Login = () => {
 
     const initialValues = {
         email: '',
-        password: ''
+        password: '',
+        showPassword: false
     }
 
     const validationSchema = Yup.object().shape({
@@ -53,40 +55,53 @@ const Login = () => {
         console.log(values)
     };
 
+    function handleChange() {
+        setShowPassword(!showPassword)
+    }
+
     return (
 
-            <Grid style={gridStyle} id={"suspense"}>
+        <Grid style={gridStyle} id={"suspense"}>
 
             <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}>
-                    {(props) => (
-                        <Form noValidate>
-                            <Paper
-                                elevation={0}
-                                style={paperStyle}>
-                                <div style={styleField}>
-                                    <Field as={TextField}
-                                           padding={"dense"}
-                                           margin={"dense"}
-                                           name='email'
-                                           label='Enter Email'
-                                           fullWidth
-                                           error={props.errors.email && props.touched.email}
-                                           helperText={<ErrorMessage name='email'/>}
-                                           required/>
-                                    <Field as={TextField}
-                                           padding={"dense"}
-                                           margin={"dense"}
-                                           type={"password"}
-                                           name='password'
-                                           label='Enter Password'
-                                           fullWidth
-                                           error={props.errors.password && props.touched.password}
-                                           helperText={<ErrorMessage name='password'/>}
-                                           required/>
-                                </div>
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}>
+                {(props) => (
+                    <Form noValidate>
+                        <Paper
+                            elevation={0}
+                            style={paperStyle}>
+                            <div style={styleField}>
+                                <Field as={TextField}
+                                       padding={"dense"}
+                                       margin={"dense"}
+                                       autoComplete="off"
+                                       name='email'
+                                       label='Enter Email'
+                                       fullWidth
+                                       error={props.errors.email && props.touched.email}
+                                       helperText={<ErrorMessage name='email'/>}
+                                       required/>
+                                <Field as={TextField}
+                                       padding={"dense"}
+                                       margin={"dense"}
+                                       autoComplete="off"
+                                       type={showPassword ? 'text' : 'password'}
+                                       name='password'
+                                       label='Enter Password'
+                                       fullWidth
+                                       error={props.errors.password && props.touched.password}
+                                       helperText={<ErrorMessage name='password'/>}
+                                       required/>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox onChange={handleChange} name="jason"/>
+                                    }
+                                    label="Show Password"
+                                />
+
+                            </div>
 
                             </Paper>
                             <Grid align='center'>

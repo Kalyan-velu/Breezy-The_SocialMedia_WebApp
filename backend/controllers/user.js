@@ -7,6 +7,7 @@ exports.register = async (req, res) => {
     try {
         //get the user data from the request
         const {name, email, password} = req.body;
+        console.log(name, email, password);
         const newUserData = {
             name,
             email,

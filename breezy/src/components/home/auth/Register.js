@@ -1,14 +1,15 @@
 import React from 'react'
-import {Button, Grid, Paper, TextField, Typography} from '@mui/material'
+import {Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from '@mui/material'
 import {ErrorMessage, Field, Form, Formik} from 'formik'
 import * as Yup from 'yup'
 import {registerUser} from "../../../features/action/userAction";
 import {useDispatch} from "react-redux";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 const Register = () => {
     const dispatch = useDispatch()
-
+    const [showPassword, setShowPassword] = React.useState(false);
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -61,14 +62,18 @@ const Register = () => {
         console.log(values)
     };
 
+    function handleChange() {
+        setShowPassword(!showPassword)
+    }
+
     return (
         <Grid style={gridStyle}>
 
-        <Formik
+            <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}>
-                {(formik) => (
+                {(props) => (
                     <Form noValidate>
                         <Paper
                             elevation={0}
@@ -80,7 +85,7 @@ const Register = () => {
                                        name='name'
                                        label='Username'
                                        fullWidth
-                                       error={formik.errors.name && formik.touched.name}
+                                       error={props.errors.name && props.touched.name}
                                        helperText={<ErrorMessage name='name'/>}
                                        required/>
 
@@ -88,35 +93,45 @@ const Register = () => {
                                 <Field as={TextField}
                                        margin={"dense"}
                                        padding={"dense"}
+                                       autoComplete="off"
                                        name="email"
+                                       type="email"
                                        label='Email Address'
                                        fullWidth
-                                       error={formik.errors.email && formik.touched.email}
+                                       error={props.errors.email && props.touched.email}
                                        helperText={<ErrorMessage name='email'/>}
                                        required/>
 
                                 <Field as={TextField}
                                        margin={"dense"}
                                        padding={"dense"}
+                                       autoComplete="off"
                                        name='password'
                                        label='Password'
-                                       type='password'
+                                       type={showPassword ? 'text' : 'password'}
                                        fullWidth
-                                       error={formik.errors.password && formik.touched.password}
+                                       error={props.errors.password && props.touched.password}
                                        helperText={
                                            <ErrorMessage name='password'/>}
                                        required/>
 
                                 <Field as={TextField}
                                        margin={"dense"}
+                                       autoComplete="off"
                                        padding={"dense"}
                                        name='confirmPassword'
                                        label='Confirm Password'
-                                       type='password'
+                                       type={showPassword ? 'text' : 'password'}
                                        fullWidth
-                                       error={formik.errors.confirmPassword && formik.touched.confirmPassword}
+                                       error={props.errors.confirmPassword && props.touched.confirmPassword}
                                        helperText={<ErrorMessage name='confirmPassword'/>}
                                        required/>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox onChange={handleChange} name="jason"/>
+                                    }
+                                    label="Show Password"
+                                />
                             </div>
                         </Paper>
                         <Grid align='center'>
@@ -131,14 +146,14 @@ const Register = () => {
                             justifyContent: "center",
                             padding: "15px"
                         }}>
-                            <Button
+                            <LoadingButton
                                 type='submit'
                                 style={btnStyle}
                                 variant='outlined'
-                                disabled={formik.isSubmitting}
+                                disabled={props.isSubmitting}
                             >
                                 Register
-                            </Button>
+                            </LoadingButton>
                         </div>
                     </Form>
                 )}

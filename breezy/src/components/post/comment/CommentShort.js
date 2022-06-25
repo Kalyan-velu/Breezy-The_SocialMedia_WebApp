@@ -20,11 +20,15 @@ const CommentShort = ({
                 <div className={'list'} key={item.user._id}>
                     <Link to={`/user/${item.user._id}`}>
                         <div className={'user-details'}>
-                            <Typography style={{minWidth: "6max"}}>{item.user.name}</Typography>
+                            <Typography
+                                fontWeight={500}>{item.user.name}</Typography>
                         </div>
                     </Link>
                     <div className={'user-details'}>
-                        <Typography>
+                        <Typography
+                            fontWeight={200}
+                            fontFamily={'Popins'}
+                        >
                             {item.comment}
                         </Typography>
                     </div>
@@ -48,7 +52,6 @@ const CommentUser = styled.div`
                     justify-content: space-between;
                     text-decoration: none;
                     color: rgba(0, 0, 0, 0.87);
-                    transition: all 0.3s;
 
                     :hover {
                     transform: scale(1.1);

@@ -11,10 +11,6 @@ const Modal = () => {
     const [loading, setLoading] = useState(false);
 
 
-
-
-
-
     const selectedPhoto = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {

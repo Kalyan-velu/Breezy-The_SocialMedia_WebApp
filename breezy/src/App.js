@@ -10,8 +10,9 @@ import UserProfile from "./components/profile/UserProfile";
 function App() {
     const dispatch = useDispatch();
 
+
     useEffect(() => {
-        dispatch(loadUser());                                            //load user from local storage
+        dispatch(loadUser());
     }, [])
 
     const {isAuthenticated} = useSelector((state) => state.user); //check if the user is authenticated
