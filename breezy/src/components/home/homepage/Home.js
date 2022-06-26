@@ -6,7 +6,6 @@ import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../loader/Loader";
 import {Typography} from "@mui/material";
 import LoggedInUser from "../../profile/LoggedInUser";
-import BasicTabs from "../../profile/followingsAndFollowers";
 
 
 function Home() {
@@ -54,12 +53,11 @@ function Home() {
                         avatar={user.avatar}
                         name={user.name}
                         email={user.email}
+                        followers={user.followers}
+                        following={user.following}
+                        posts={user.posts}
                     />
                 </div>
-                <div>
-                    <BasicTabs/>
-                </div>
-
             </Section>
         </Container>
 

@@ -64,12 +64,7 @@ export const registerUser = (values) =>
             console.log(values)
             const {data} = await axios.post(                                    // post request to server
                 "/api/v1/register",
-                values, {
-                    headers:
-                        {
-                            'Content-Type': 'application/json',
-                        }
-                }
+                values
             );
             console.log(data)
             dispatch({                                                         //dispatching the token to the reducer
@@ -133,7 +128,15 @@ export const getAllUsers = () => async (dispatch) => {
     }
 }
 export const logOutUser = () => async (dispatch) => {
-    dispatch({
-        type: 'Logout'
-    })
+    try {
+        dispatch({
+            type: 'Logout'
+        });
+        await axios.post(
+            '/api/v1/logout'
+        )// post request to server
+
+    } catch (e) {
+        console.log(e)
+    }
 }
