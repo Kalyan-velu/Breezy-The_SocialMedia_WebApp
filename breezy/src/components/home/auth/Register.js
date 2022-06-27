@@ -1,15 +1,26 @@
-import React from 'react'
-import {Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from '@mui/material'
+import React, {useEffect, useState} from 'react'
+import {Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from '@mui/material'
 import {ErrorMessage, Field, Form, Formik} from 'formik'
+import Snackbar from '@mui/material/Snackbar'
 import * as Yup from 'yup'
+import MuiAlert from '@mui/material/Alert';
 import {registerUser} from "../../../features/action/userAction";
-import {useDispatch} from "react-redux";
-import LoadingButton from '@mui/lab/LoadingButton';
+import {useDispatch, useSelector} from "react-redux";
 
+
+const Alert = React.forwardRef( function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+} );
 
 const Register = () => {
-    const dispatch = useDispatch()
+    const [ open, setOpen ] = React.useState( false );
+    const [ openS, setOpenS ] = React.useState( false );
+    const [ error, setError ] = useState( null );
+    const [ success, setSuccess ] = useState( null );
     const [showPassword, setShowPassword] = React.useState(false);
+    const {error: errorRegister, loading: loadingRegister, success: successRegister} = useSelector(state => state.user);
+    const dispatch=useDispatch()
+
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -30,9 +41,8 @@ const Register = () => {
         width: "50%"
     }
 
-
-    const emailRegularExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passwordRegularExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+    const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
     const initialValues = {
         name: '',
@@ -42,33 +52,44 @@ const Register = () => {
     }
 
 
-    const validationSchema = Yup.object().shape({
-        name: Yup.string()
-            .min(3, "Minimum  characters should be 3")
-            .required("Required"),
-        phoneNumber: Yup.string()
-            .matches(emailRegularExp, "Enter valid Phone number")
-            .required("Required"),
-        password: Yup.string().min(6, "Minimum characters should be 6")
-            .matches(passwordRegularExp, "Password must have one upper, lower case, number, special symbol")
-            .required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matches")
-            .required('Required'),
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenS( false )
+        setOpen( false );
+    };
 
-    })
+    const validationSchema = Yup.object().shape( {
+        name: Yup.string()
+            .required( "Required" ),
+        email: Yup.string()
+            .matches(emailRegExp, "Enter Valid Email")
+            .required('Required'),
+        password: Yup.string().min( 6, "Minimum characters should be 6" )
+            .matches( passwordRegExp, "Password must have one upper, lower case, number, special symbol" )
+            .required( 'Required' ),
+        confirmPassword: Yup.string().oneOf( [ Yup.ref( 'password' ) ], "Password not matches" ).required( 'Required' )
+    } )
 
     const onSubmit = async (values) => {
         dispatch(registerUser(values))
-        console.log(values)
     };
 
+    useEffect(() => {
+        if (errorRegister) {
+            setError(errorRegister)
+        }
+        if (successRegister) {
+            setSuccess(successRegister)
+        }
+    })
     function handleChange() {
         setShowPassword(!showPassword)
     }
 
     return (
         <Grid style={gridStyle}>
-
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -86,17 +107,13 @@ const Register = () => {
                                        label='Username'
                                        fullWidth
                                        error={props.errors.name && props.touched.name}
-                                       helperText={<ErrorMessage name='name'/>}
-                                       required/>
-
+                                       helperText={<ErrorMessage name='name'/>} required/>
 
                                 <Field as={TextField}
                                        margin={"dense"}
                                        padding={"dense"}
-                                       autoComplete="off"
                                        name="email"
-                                       type="email"
-                                       label='Email Address'
+                                       label='Email'
                                        fullWidth
                                        error={props.errors.email && props.touched.email}
                                        helperText={<ErrorMessage name='email'/>}
@@ -105,10 +122,9 @@ const Register = () => {
                                 <Field as={TextField}
                                        margin={"dense"}
                                        padding={"dense"}
-                                       autoComplete="off"
                                        name='password'
                                        label='Password'
-                                       type={showPassword ? 'text' : 'password'}
+                                       type='password'
                                        fullWidth
                                        error={props.errors.password && props.touched.password}
                                        helperText={
@@ -117,22 +133,35 @@ const Register = () => {
 
                                 <Field as={TextField}
                                        margin={"dense"}
-                                       autoComplete="off"
                                        padding={"dense"}
                                        name='confirmPassword'
                                        label='Confirm Password'
-                                       type={showPassword ? 'text' : 'password'}
+                                       type='password'
                                        fullWidth
                                        error={props.errors.confirmPassword && props.touched.confirmPassword}
                                        helperText={<ErrorMessage name='confirmPassword'/>}
                                        required/>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox onChange={handleChange} name="jason"/>
-                                    }
-                                    label="Show Password"
-                                />
                             </div>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox onChange={handleChange} name="jason"/>
+                                }
+                                label="Show Password"
+                            />
+                            <Grid align='center'>
+                                <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
+                                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                                        {success}
+                                    </Alert>
+                                </Snackbar>
+                                {error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                                        <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                                            {error}
+                                        </Alert>
+                                    </Snackbar>
+                                    : null}
+                            </Grid>
+
                         </Paper>
                         <Grid align='center'>
                             <Typography
@@ -146,18 +175,18 @@ const Register = () => {
                             justifyContent: "center",
                             padding: "15px"
                         }}>
-                            <LoadingButton
+                            <Button
                                 type='submit'
                                 style={btnStyle}
                                 variant='outlined'
-                                disabled={props.isSubmitting}
                             >
                                 Register
-                            </LoadingButton>
+                            </Button>
                         </div>
                     </Form>
                 )}
             </Formik>
+
         </Grid>
     )
 }
