@@ -50,7 +50,7 @@ export const loadUser = () =>
         } catch (e) {
             dispatch({
                 type: 'LoadUserFailure',
-                payload: e.data,
+                payload: e.response.data.message,
             })
         }
     }

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from '@mui/material'
+import { Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from '@mui/material'
 import {ErrorMessage, Field, Form, Formik} from 'formik'
 import Snackbar from '@mui/material/Snackbar'
 import * as Yup from 'yup'
 import MuiAlert from '@mui/material/Alert';
 import {registerUser} from "../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 
 const Alert = React.forwardRef( function Alert(props, ref) {
@@ -17,8 +18,9 @@ const Register = () => {
     const [ openS, setOpenS ] = React.useState( false );
     const [ error, setError ] = useState( null );
     const [ success, setSuccess ] = useState( null );
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
-    const {error: errorRegister, loading: loadingRegister, success: successRegister} = useSelector(state => state.user);
+    const {error: errorRegister, success: successRegister} = useSelector(state => state.user);
     const dispatch=useDispatch()
 
     const gridStyle = {
@@ -74,16 +76,20 @@ const Register = () => {
 
     const onSubmit = async (values) => {
         dispatch(registerUser(values))
+        setLoading(true)
     };
 
-    useEffect(() => {
+    useEffect( () => {
+        setLoading(false)
         if (errorRegister) {
+            setOpen(true)
             setError(errorRegister)
         }
         if (successRegister) {
-            setSuccess(successRegister)
+            setOpenS(true)
+            setSuccess('User registered successfully')
         }
-    })
+    },[errorRegister, successRegister])
     function handleChange() {
         setShowPassword(!showPassword)
     }
@@ -124,7 +130,7 @@ const Register = () => {
                                        padding={"dense"}
                                        name='password'
                                        label='Password'
-                                       type='password'
+                                       type={showPassword ? 'text': 'password'}
                                        fullWidth
                                        error={props.errors.password && props.touched.password}
                                        helperText={
@@ -175,13 +181,14 @@ const Register = () => {
                             justifyContent: "center",
                             padding: "15px"
                         }}>
-                            <Button
+                            <LoadingButton
                                 type='submit'
                                 style={btnStyle}
                                 variant='outlined'
+                                loading={loading}
                             >
                                 Register
-                            </Button>
+                            </LoadingButton>
                         </div>
                     </Form>
                 )}

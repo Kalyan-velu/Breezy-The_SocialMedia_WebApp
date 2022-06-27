@@ -1,16 +1,25 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 import {loginUser} from "../../../features/action/userAction";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
-
+const Alert = React.forwardRef( function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+} );
 const Login = () => {
     const dispatch = useDispatch()
+    const [ open, setOpen ] = React.useState( false );
+    const [ openS, setOpenS ] = React.useState( false );
+    const [ error, setError ] = useState( null );
+    const [ success, setSuccess ] = useState( null );
     const [showPassword, setShowPassword] = React.useState(false);
+    const {error: errorLogin, loading: loadingLogin, success: successLogin} = useSelector(state => state.user);
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -52,10 +61,27 @@ const Login = () => {
     const onSubmit = async (values) => {
         dispatch(loginUser(values))
     };
-
+    useEffect(() => {
+        if(errorLogin){
+            setOpen(true)
+            setError(errorLogin)
+        }
+        if(successLogin){
+            setOpenS(true)
+            setSuccess(successLogin)
+        }
+    },[errorLogin, successLogin])
     function handleChange() {
         setShowPassword(!showPassword)
     }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenS( false )
+        setOpen( false );
+    };
+
 
     return (
 
@@ -109,6 +135,19 @@ const Login = () => {
                                 >Fill the form to login into your account
                                 </Typography>
                             </Grid>
+                        <Grid align='center'>
+                            <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                                    {success}
+                                </Alert>
+                            </Snackbar>
+                            {error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                                        {error}
+                                    </Alert>
+                                </Snackbar>
+                                : null}
+                        </Grid>
                             <div style={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -118,6 +157,7 @@ const Login = () => {
                                     type='submit'
                                     style={btnStyle}
                                     variant='outlined'
+                                    loading={loadingLogin}
                                     disabled={props.isSubmitting}
                                 >
                                     login
