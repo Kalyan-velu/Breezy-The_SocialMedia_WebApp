@@ -164,7 +164,7 @@ const Post = ({
                 <List>
                     <Avatar
                         title={ownerName}
-                        src={ownerAvatar}
+                        src={`https://images.unsplash.com/photo-1644982647531-daff2c7383f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60`}
                         alt={ownerName}
                         sx={{
                             height: "50px",

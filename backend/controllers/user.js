@@ -7,7 +7,6 @@ exports.register = async (req, res) => {
     try {
         //get the user data from the request
         const {name, email, password} = req.body;
-        console.log(name, email, password);
         const newUserData = {
             name,
             email,
@@ -20,7 +19,7 @@ exports.register = async (req, res) => {
         //see if user already exists
         let user = await User.findOne({email});
         if (user) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'User already exists'
             })
@@ -98,7 +97,7 @@ exports.login = async (req, res) => {
     catch (error) {
         res.status(500).json({
             success: false,
-            message: error
+            message: error.message
         })
     }
 }
@@ -106,7 +105,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         res.clearCookie("token");
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Logged out"
         })
@@ -179,7 +178,7 @@ exports.updateProfile = async (req, res) => {
         //save the user
         await user.save();
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Profile updated"
         })
@@ -242,12 +241,12 @@ exports.myProfile = async (req, res) => {
         //get the user from the request
         const user = await User.findById(req.user._id).populate("posts following followers"); //populate the posts
         //send the user back to the client
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             user
         })
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: e.message
         })
@@ -264,13 +263,13 @@ exports.getUserProfile = async (req, res) => {
             })
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             user
         })
 
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: e.message
         })
@@ -308,7 +307,7 @@ exports.forgotPassword = async (req, res) => {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpiry = undefined;
             await user.save({validateBeforeSave: false});
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: e.message
             })

@@ -41,3 +41,8 @@ a:hover {
 .list .icon {
     margin-left: 80%;
 }
+.details{
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 10px;
+}

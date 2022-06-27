@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import User from "./User";
+import User from "../User";
 import {useSelector} from "react-redux";
 
 import PropTypes from 'prop-types';

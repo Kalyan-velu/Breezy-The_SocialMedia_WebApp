@@ -76,11 +76,9 @@ const Register = () => {
 
     const onSubmit = async (values) => {
         dispatch(registerUser(values))
-        setLoading(true)
     };
 
     useEffect( () => {
-        setLoading(false)
         if (errorRegister) {
             setOpen(true)
             setError(errorRegister)
@@ -90,6 +88,7 @@ const Register = () => {
             setSuccess('User registered successfully')
         }
     },[errorRegister, successRegister])
+    console.log(error)
     function handleChange() {
         setShowPassword(!showPassword)
     }

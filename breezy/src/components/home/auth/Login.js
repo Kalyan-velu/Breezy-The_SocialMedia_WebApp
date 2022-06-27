@@ -8,6 +8,7 @@ import {loginUser} from "../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import ForgotPassword from "./forgetpassword/ForgotPassword";
 
 const Alert = React.forwardRef( function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -126,8 +127,10 @@ const Login = () => {
                                 />
 
                             </div>
-
                             </Paper>
+                        <Grid align='center'>
+                           <ForgotPassword/>
+                        </Grid>
                             <Grid align='center'>
                                 <Typography
                                     variant='caption'
@@ -157,7 +160,6 @@ const Login = () => {
                                     type='submit'
                                     style={btnStyle}
                                     variant='outlined'
-                                    loading={loadingLogin}
                                     disabled={props.isSubmitting}
                                 >
                                     login

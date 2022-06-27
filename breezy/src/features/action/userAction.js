@@ -1,4 +1,5 @@
-import axios from 'axios';
+import {axiosInstance} from "../../config/axios";
+import axios from "axios";
 
 export const loginUser = (values) =>
 
@@ -9,8 +10,8 @@ export const loginUser = (values) =>
                 type: 'LoginRequest',                                           // request auth
             })
             //fetching data from server
-            const {data} = await axios.post(                                    // post request to server
-                "http://localhost:8000/api/v1/login",
+            const {data} = await axiosInstance.post(                                    // post request to server
+                "/login",
                 values, {
                     headers:
                         {
@@ -22,13 +23,15 @@ export const loginUser = (values) =>
                 type: 'LoginSuccess',
                 payload: data.user,
             })
+
         } catch (error) {
-            console.log(error);
-            dispatch({              //dispatching the error to the reducer
+            await dispatch({              //dispatching the error to the reducer
                 type: 'LoginFailed',
                 payload: error.response.data.message,
             })
-
+            dispatch({
+                type:'clearError',
+            })
         }
     }
 
@@ -39,8 +42,8 @@ export const loadUser = () =>
                 type: 'LoadUserRequest'
             })
             //fetching data from server
-            const {data} = await axios.get(                                    // post request to server
-                "/api/v1/me"
+            const {data} = await axiosInstance.get(                                    // post request to server
+                "/me"
             );
             dispatch({                                                         //dispatching the token to the reducer
                 type: 'LoadUserSuccess',
@@ -52,6 +55,9 @@ export const loadUser = () =>
                 type: 'LoadUserFailure',
                 payload: e.response.data.message,
             })
+            dispatch({
+                type:'clearError',
+            })
         }
     }
 
@@ -62,8 +68,8 @@ export const registerUser = (values) =>
                 type: 'RegisterRequest'
             })
             console.log(values)
-            const {data} = await axios.post(                                    // post request to server
-                "http://localhost:8000/api/v1/register",
+            const {data} = await axiosInstance.post(                                    // post request to server
+                "/register",
                 values, {
                     headers:
                         {
@@ -78,10 +84,13 @@ export const registerUser = (values) =>
             })
 
         } catch (e) {
-            console.log(e);
-            dispatch({              //dispatching the error to the reducer
+            console.log(e.response.data.message);
+           await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: e.response.data.message,
+            })
+            dispatch({
+                type:'clearError',
             })
         }
 
@@ -93,8 +102,8 @@ export const getFollowingPosts = () => async (dispatch) => {
             type: 'postOfFollowingRequest'
         })
         //fetching data from server
-        const {data} = await axios.get(                                    // post request to server
-            "/api/v1/posts"
+        const {data} = await axiosInstance.get(                                    // post request to server
+            "/posts"
         );
         console.log(data)
         dispatch({                                                         //dispatching the token to the reducer
@@ -116,8 +125,8 @@ export const getAllUsers = () => async (dispatch) => {
             type: 'allUsersRequest'
         })
         //fetching data from server
-        const {data} = await axios.get(                                    // post request to server
-            "/api/v1/users"
+        const {data} = await axiosInstance.get(                                    // post request to server
+            "/users"
         );
         console.log(data)
         dispatch({                                                         //dispatching the token to the reducer
@@ -143,5 +152,63 @@ export const logOutUser = () => async (dispatch) => {
 
     } catch (e) {
         console.log(e)
+    }
+}
+export const forgotPassword = (email) => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'forgotPasswordRequest'
+        })
+        console.log(email)
+        //fetching data from server
+        const {data} = await axiosInstance.post(                                    // post request to server
+            '/user/forgot-password', {
+                email
+            },{
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+            }
+        );
+        console.log(data)
+        dispatch({                                                         //dispatching the token to the reducer
+            type: 'forgotPasswordSuccess',
+            payload: data.users,
+        })
+
+    } catch (e) {
+        dispatch({
+            type: 'forgotPasswordFailure',
+            payload: e.response.data.message
+        })
+    }
+}
+export const resetPassword = (token,password) => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'resetPasswordRequest'
+        })
+        console.log(token)
+        //fetching data from server
+        const {data} = await axios.put(                                    // post request to server
+            `/api/v1/reset-password/${token}`, {
+                password
+            },{
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+            }
+        );
+        console.log(data)
+        dispatch({                                                         //dispatching the token to the reducer
+            type: 'resetPasswordSuccess',
+            payload: data.users,
+        })
+
+    } catch (e) {
+        dispatch({
+            type: 'resetPasswordFailure',
+            payload: e.response.data.message,
+        })
     }
 }
