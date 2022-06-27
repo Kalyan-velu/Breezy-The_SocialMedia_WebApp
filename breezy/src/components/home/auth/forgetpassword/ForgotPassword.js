@@ -2,13 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import TextField from "@mui/material/TextField";
-import {Field} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-
 import {useEffect, useState} from "react";
-import {Grid, Link} from "@mui/material";
+import {Grid} from "@mui/material";
 import {forgotPassword} from "../../../../features/action/userAction";
 
 const style = {
@@ -25,47 +22,38 @@ const style = {
 
 export default function ForgotPassword() {
     const [email,setEmail]=useState('')
-    const {error,loading,message} = useSelector((state) => state.user);
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [error, setError] = useState(null);
+    const[success,setSuccess]=React.useState(null)
     const dispatch = useDispatch();
+    const {error : errorForgot,message:messageForgot} = useSelector((state) => state.like);
 
 
     const submitHandler=(e)=>{
         e.preventDefault();
         dispatch(forgotPassword(email));
     }
-    useEffect(() => {
 
-        if (error) {
-            console.log(error)
-            alert(error);
+    useEffect(() => {
+        if (errorForgot) {
+            alert(error)
+            setError(errorForgot);
             dispatch({type: "clearErrors"});
         }
-        if (message) {
-            console.log(message)
-            alert(message);
+        if (messageForgot) {
+            alert(success)
+            setSuccess(messageForgot);
             dispatch({type: "ClearMessage"});
         }
-    },[ error,message,dispatch])
+    },[ alert,errorForgot,messageForgot,dispatch])
+    console.log(success)
     return (
-        <div>
-            <Link to={'/api/v1/user/forgot-password'}>
-                <Button onClick={handleOpen} onSubmit={submitHandler}>Forget Password</Button>
-            </Link>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+        <div >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Forget Password
                     </Typography>
                     <form onSubmit={submitHandler}>
-                    <Field as={TextField}
+                    <TextField
                            padding={"dense"}
                            margin={"dense"}
                            autoComplete="off"
@@ -80,7 +68,5 @@ export default function ForgotPassword() {
                     </Grid>
                     </form>
                 </Box>
-
-            </Modal>
         </div>
     )}

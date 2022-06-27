@@ -8,7 +8,7 @@ import {loginUser} from "../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import ForgotPassword from "./forgetpassword/ForgotPassword";
+import {Link} from "react-router-dom";
 
 const Alert = React.forwardRef( function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -20,7 +20,7 @@ const Login = () => {
     const [ error, setError ] = useState( null );
     const [ success, setSuccess ] = useState( null );
     const [showPassword, setShowPassword] = React.useState(false);
-    const {error: errorLogin, loading: loadingLogin, success: successLogin} = useSelector(state => state.user);
+    const {error: errorLogin, success: successLogin} = useSelector(state => state.user);
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -125,18 +125,18 @@ const Login = () => {
                                     }
                                     label="Show Password"
                                 />
-
                             </div>
+                            <Grid align='center'>
+                                <Link to="/user/forgot-password">Forgot Password?</Link>
+                            </Grid>
+
                             </Paper>
-                        <Grid align='center'>
-                           <ForgotPassword/>
-                        </Grid>
                             <Grid align='center'>
                                 <Typography
                                     variant='caption'
                                     color={"secondary"}
                                 >Fill the form to login into your account
-                                </Typography>
+                            </Typography>
                             </Grid>
                         <Grid align='center'>
                             <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>

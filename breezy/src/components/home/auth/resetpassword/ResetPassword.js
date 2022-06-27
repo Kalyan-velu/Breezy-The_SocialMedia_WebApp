@@ -1,8 +1,8 @@
 import React, {useState,useEffect} from "react";
-import {Button, Link, Typography} from "@mui/material";
+import {Button, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {resetPassword} from "../../../../features/action/userAction";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import "./ResetPassword.css";
 
 
@@ -40,17 +40,21 @@ const ResetPassword =() =>{
                     placeholder="New Password"
                     required
                     value={newPassword}
-                    className="updatePasswordInputs"
+                    className="resetPasswordInputs"
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
                 <Link to="/">
-                    <Typography>Login!</Typography>
+                    <Grid align={'center'}>
+                    <Button variant="contained" color="primary">
+                        Login
+                    </Button>
+                    </Grid>
                 </Link>
                 <Typography>Or</Typography>
                 <Link to="/reset-password/:token">
                     <Typography>Request Another Token!</Typography>
                 </Link>
-                <Button disabled={loading} type="submit">
+                <Button variant="contained" color="primary" type="submit">
                     Reset Password
                 </Button>
             </form>
