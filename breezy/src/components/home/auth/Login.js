@@ -37,7 +37,6 @@ const Login = () => {
     const initialValues = {
         email: '',
         password: '',
-        showPassword: false
     }
 
     const validationSchema = Yup.object().shape({
@@ -52,7 +51,6 @@ const Login = () => {
 
     const onSubmit = async (values) => {
         dispatch(loginUser(values))
-        console.log(values)
     };
 
     function handleChange() {

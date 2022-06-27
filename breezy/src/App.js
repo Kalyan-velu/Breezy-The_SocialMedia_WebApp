@@ -4,11 +4,15 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
-import AuthPage from "./components/home/auth/authPage";
-import UserProfile from "./components/profile/UserProfile";
+
+const AuthPage=React.lazy(() =>
+import("./components/home/auth/authPage"));
+const UserProfile=React.lazy(()=>
+import("./components/profile/UserProfile"));
 
 function App() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
+
 
 
     useEffect(() => {
@@ -22,9 +26,8 @@ function App() {
             <div className="App">
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
-                    <Route path={'/'} exect element={isAuthenticated ? <Home/> : <AuthPage/>}/>
+                    <Route path={'/'} exect element={isAuthenticated ? <Home /> : <AuthPage/>}/>
                     <Route path={'/user/account'} element={isAuthenticated ? <UserProfile/> : <AuthPage/>}/>
-
                 </Routes>
             </div>
         </Router>

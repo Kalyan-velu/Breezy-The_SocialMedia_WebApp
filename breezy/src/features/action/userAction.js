@@ -10,7 +10,7 @@ export const loginUser = (values) =>
             })
             //fetching data from server
             const {data} = await axios.post(                                    // post request to server
-                "/api/v1/login",
+                "http://localhost:8000/api/v1/login",
                 values, {
                     headers:
                         {
@@ -26,7 +26,7 @@ export const loginUser = (values) =>
             console.log(error);
             dispatch({              //dispatching the error to the reducer
                 type: 'LoginFailed',
-                payload: error.data,
+                payload: error.response.data.message,
             })
 
         }
@@ -63,8 +63,13 @@ export const registerUser = (values) =>
             })
             console.log(values)
             const {data} = await axios.post(                                    // post request to server
-                "/api/v1/register",
-                values
+                "http://localhost:8000/api/v1/register",
+                values, {
+                    headers:
+                        {
+                            'Content-Type': 'application/json',
+                        }
+                }
             );
             console.log(data)
             dispatch({                                                         //dispatching the token to the reducer
@@ -76,7 +81,7 @@ export const registerUser = (values) =>
             console.log(e);
             dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
-                payload: e.data,
+                payload: e.response.data.message,
             })
         }
 

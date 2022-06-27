@@ -7,7 +7,8 @@
 
 /breezy/.pnp
 /breezy/.pnp.js
-
+/.idea
+/.dist
 # testing
 /breezy/coverage
 

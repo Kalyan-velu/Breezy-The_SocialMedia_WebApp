@@ -20,11 +20,12 @@ exports.register = async (req, res) => {
         //see if user already exists
         let user = await User.findOne({email});
         if (user) {
-            return res.status(400).json({
+            res.status(400).json({
                 success: false,
                 message: 'User already exists'
             })
         }
+
         //create a new user
         user = await User.create(newUserData);
         //create a token
@@ -34,7 +35,7 @@ exports.register = async (req, res) => {
             httpOnly: true,
         }
         //send the token back to the client
-        res.status(200)
+        return res.status(200)
             .cookie(
                 "token",
                 token,
@@ -97,7 +98,7 @@ exports.login = async (req, res) => {
     catch (error) {
         res.status(500).json({
             success: false,
-            message: error.message
+            message: error
         })
     }
 }
