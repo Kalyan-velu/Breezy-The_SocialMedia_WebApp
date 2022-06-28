@@ -386,3 +386,28 @@ exports.searchUser = async (req, res) => {
         })
     }
 }
+exports.getMyPosts = async (req, res) => {
+    try{
+        const user = await User.findById(req.user._id)
+        const posts=[]
+        for(let i=0;i<user.posts.length;i++){
+            const post = await Post.findById(user.posts[i]).populate(
+                "comments.user likes")
+            posts.push(post)
+        }
+        //sorting the posts by date
+       const sortedPosts= posts.sort((a,b)=>{
+            return b.createdAt-a.createdAt
+        } )
+        return res.status(200).json({
+            success: true,
+           sortedPosts
+        })
+    }
+    catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: e.message
+        })
+    }
+}

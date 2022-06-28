@@ -16,10 +16,10 @@ const Header = () => {
     const [tab, setTab] = useState("/")
 
 
-    console.log(tab)
     return (
         <Container>
             <Wrapper>
+
                 <ImageContainer>
                     <Logo>
                         <span>Breezy</span>
@@ -27,28 +27,32 @@ const Header = () => {
                 </ImageContainer>
                
                 <RightContainer>
+
                     <NavMenu>
+
                         <Link to={'/newpost'} onClick={() => setTab('/newpost')}>
                             <AddIcon/>
                         </Link>
+
                         <Link to={'/'} onClick={() => setTab('/')}>
                             {
                                 tab === "/" ? <HomeIcon/> : <HomeOutlined/>
                             }
                         </Link>
+
                         <Link to={'/notifications'} onClick={() => setTab('/notifications')}>
                             {
                                 tab === "/notifications" ? <Notifications/> : <NotificationsOutlined/>
                             }
-
                         </Link>
+
                         <Link to={'/user/account'} onClick={() => setTab('/account')}>
                             {
                                 tab === "/user/account" ? <AccountCircle/> : <AccountCircleOutlined/>
                             }
                         </Link>
-                    </NavMenu>
 
+                    </NavMenu>
                 </RightContainer>
             </Wrapper>
         </Container>

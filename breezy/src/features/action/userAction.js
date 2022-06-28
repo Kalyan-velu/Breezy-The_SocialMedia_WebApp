@@ -67,7 +67,6 @@ export const registerUser = (values) =>
             dispatch({
                 type: 'RegisterRequest'
             })
-            console.log(values)
             const {data} = await axiosInstance.post(                                    // post request to server
                 "/register",
                 values, {
@@ -77,14 +76,12 @@ export const registerUser = (values) =>
                         }
                 }
             );
-            console.log(data)
             dispatch({                                                         //dispatching the token to the reducer
                 type: 'RegisterSuccess',
                 payload: data.user
             })
 
         } catch (e) {
-            console.log(e.response.data.message);
            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: e.response.data.message,
@@ -105,7 +102,6 @@ export const getFollowingPosts = () => async (dispatch) => {
         const {data} = await axiosInstance.get(                                    // post request to server
             "/posts"
         );
-        console.log(data)
         dispatch({                                                         //dispatching the token to the reducer
             type: 'postOfFollowingSuccess',
             payload: data.sortedPosts,
@@ -118,7 +114,31 @@ export const getFollowingPosts = () => async (dispatch) => {
         })
     }
 }
+export  const getMyPosts = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'myPostsRequest'
+        })
+        //fetching data from server
+        const {data} = await axiosInstance.get(                                    // post request to server
+            "/me/posts"
+        );
+        dispatch({                                                         //dispatching the token to the reducer
+            type: 'myPostsSuccess',
+            payload: data.sortedPosts,
+        })
 
+    } catch (e) {
+       await dispatch({
+            type: 'myPostsFailed',
+            payload: e.response.data.message,
+        })
+        dispatch({
+
+        })
+    }
+
+}
 export const getAllUsers = () => async (dispatch) => {
     try {
         dispatch({

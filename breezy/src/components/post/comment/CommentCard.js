@@ -27,7 +27,7 @@ const CommentCard = ({
         <div className={'container'}>
             <div className={'list'}>
                 <Avatar
-                    src={avatar}
+                    src={`chrome://branding/content/about-logo.png`}
                     alt={name}
                     sx={{
                         width: '50px',

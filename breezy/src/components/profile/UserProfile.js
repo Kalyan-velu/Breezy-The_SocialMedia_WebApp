@@ -1,12 +1,19 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Avatar, Typography} from "@mui/material";
 import './user.css'
 import styled from "styled-components";
+import {getMyPosts, logOutUser} from "../../features/action/userAction";
 
 const UserProfile = () => {
     const {user} = useSelector(state => state.user)
-
+    const dispatch=useDispatch()
+    const handleClick = () => {
+        dispatch(logOutUser())
+    }
+   useEffect(() => {
+        dispatch(getMyPosts())
+    }, [dispatch])
     return (
         <Containers>
             <Section>

@@ -1,79 +1,26 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {
-    alpha,
     Avatar,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
     Divider,
-    IconButton,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
     Snackbar,
     Stack,
-    styled as muiStyled,
-    Tooltip,
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
-import {DeleteForever, Edit, Favorite, FavoriteBorder,} from "@mui/icons-material";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../features/action/postAction";
-import {Alert} from "@mui/lab";
+import Alert from "@mui/material/Alert";
 import {getFollowingPosts} from "../../features/action/userAction";
-import {pink} from "@mui/material/colors";
-import CommentComponent from "./comment/CommentDialog";
-import CommentShort from "./comment/CommentShort";
 
-
-const ITEM_HEIGHT = 48;
-
-const StyledMenu = muiStyled((props) => (
-    <Menu
-        elevation={0}
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-        }}
-        transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        {...props}
-    />
-))(({theme}) => ({
-    '& .MuiPaper-root': {
-        borderRadius: 6,
-        marginTop: theme.spacing(1),
-        minWidth: 180,
-        color:
-            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-        boxShadow:
-            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-        '& .MuiMenu-list': {
-            padding: '4px 0',
-        },
-        '& .MuiMenuItem-root': {
-            '& .MuiSvgIcon-root': {
-                fontSize: 18,
-                color: theme.palette.text.secondary,
-                marginRight: theme.spacing(1.5),
-            },
-            '&:active': {
-                backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    theme.palette.action.selectedOpacity,
-                ),
-            },
-        },
-    },
-}));
+const DeleteAndEdit =React.lazy(()=>
+    import("./deletepost/DeleteAndEdit"));
+const PostLikes=React.lazy(() =>
+import ("./likes/PostLikes"));
+const CommentComponent=React.lazy(() =>
+    import ("./comment/CommentDialog"));
+const CommentShort=React.lazy(() =>
+    import("./comment/CommentShort"));
 
 const Post = ({
                   postImage,
@@ -125,6 +72,7 @@ const Post = ({
             dispatch(getFollowingPosts())
         }
     }
+
     const addCommentHandler = async (e) => {
         e.preventDefault();
         await dispatch(addCommentOnPost(postId,commentValue));
@@ -135,6 +83,7 @@ const Post = ({
             dispatch(getFollowingPosts())
         }
     };
+
     useEffect(() => {
         likes.forEach(item => {
             if (item._id === user._id) {
@@ -159,9 +108,10 @@ const Post = ({
 
 
     return (
-        <Container>
-            <PostHeader>
-                <List>
+        <Container key={postId} >
+            <div key={ownerId}>
+            <PostHeader >
+                <List >
                     <Avatar
                         title={ownerName}
                         src={`https://images.unsplash.com/photo-1644982647531-daff2c7383f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60`}
@@ -191,42 +141,13 @@ const Post = ({
 
                 </List>
                 {isAccount ?
-                    <div>
-                        <IconButton
-                            aria-label="more"
-                            id="long-button"
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-haspopup="true"
-                            onClick={handleClick}
-                        >
-                            <MoreVertIcon/>
-                        </IconButton>
-                        <StyledMenu
-                            id="long-menu"
-                            MenuListProps={{
-                                'aria-labelledby': 'long-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                                style: {
-                                    maxHeight: ITEM_HEIGHT * 4.5,
-                                    width: '20ch',
-                                },
-                            }}
-                        >
-                            <MenuItem onClick={handleClose} disableRipple>
-                                <DeleteForever/>
-                                Delete
-                            </MenuItem>
-                            <MenuItem onClick={handleClose} disableRipple>
-                                <Edit/>
-                                Edit
-                            </MenuItem>
-                        </StyledMenu>
-                    </div>
+                    <DeleteAndEdit
+                        open={open}
+                        handleClick={handleClick}
+                        handleClose={handleClose}
+                        anchorEl={anchorEl}
+                        setAnchorEl={setAnchorEl}
+                    />
                     : null
                 }
             </PostHeader>
@@ -237,7 +158,7 @@ const Post = ({
                     <img src={postImage} alt={"post"}/>
                 </PostImg>
             ) : (
-                <PostText>
+                <PostText >
                     <Typography
                         fontWeight={700}
                         sx={{
@@ -248,28 +169,19 @@ const Post = ({
                     </Typography>
                 </PostText>
             )}
-            <Divider sx={{my: 0.5}}/>
-            <PostFooterFirst>
-                <div>
-                    <Tooltip title={liked ? 'Liked' : 'Unliked'}>
-                        <IconButton onClick={handleLike}>
-                            {liked ? <Favorite sx={{color: pink[500]}}/> : <FavoriteBorder/>}
-                        </IconButton>
-                    </Tooltip>
-                    <Button
-                        onClick={() => {
-                            setLikesUser(!likesUser)
-                        }}
-                        disableFocusRipple={true}
-                        disableTouchRipple={true}
-                        disableElevation={true}
-                        style={{textTransform: 'none'}}
-                        disableRipple={true}
-                        disabled={likes.length === 0}
-                    >
-                        <Typography fontWeight={200}>{likes.length} likes</Typography>
-                    </Button>
 
+            <Divider sx={{my: 0.5}}/>
+
+            <PostFooterFirst >
+                <div>
+                    <PostLikes
+                        likes={likes}
+                        likesUser={likesUser}
+                        setLikesUser={setLikesUser}
+                        liked={liked}
+                        handleLike={handleLike}
+                        postId={postId}
+                    />
                 </div>
                 <div>
                     <CommentComponent
@@ -282,14 +194,13 @@ const Post = ({
                         addCommentHandler={addCommentHandler}
                         isAccount={isAccount}
                     />
-
-
                 </div>
             </PostFooterFirst>
 
 
 
-            <PostDetails>
+            <PostDetails  >
+
                 <List>
                     <Link to={`/user/${ownerId}`}>
                         <Typography
@@ -302,9 +213,11 @@ const Post = ({
                         {caption}
                     </Typography>
                 </List>
+
                 <List>
                     {comments.length > 0 ? (
                         <CommentShort
+                            key={comments[0]._id}
                             postId={postId}
                             comments={comments}
                             commentToggle={commentToggle}
@@ -327,27 +240,9 @@ const Post = ({
                 </Snackbar>
             </Stack>
 
-            <Dialog maxWidth={"md"} open={likesUser} onClose={() => setLikesUser(!likesUser)}>
-                <DialogTitle>Liked By</DialogTitle>
-                <DialogContent>
-                    <List>
-                        {likes.map((like, index) => {
-                            return (
-                                <Link to={`/user/${like._id}`}>
-                                    <ListItem key={index}>
-                                        <ListItemAvatar>
-                                            <Avatar alt={like.name} src={like.avatar}/>
-                                        </ListItemAvatar>
-                                        <ListItemText primary={like.name}/>
-                                    </ListItem>
-                                </Link>
-                            )
-                        })}
-                    </List>
-                </DialogContent>
-            </Dialog>
 
 
+            </div>
         </Container>
     )
 }

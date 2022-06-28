@@ -1,11 +1,14 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,Suspense} from 'react'
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import Post from "../../post/Post";
 import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../loader/Loader";
 import {Typography} from "@mui/material";
-import LoggedInUser from "../../profile/LoggedInUser";
+
+const Post=React.lazy(()=>
+    import( "../../post/Post"));
+const LoggedInUser=React.lazy(()=>
+    import( "../../profile/LoggedInUser"));
 
 
 function Home() {
@@ -13,7 +16,6 @@ function Home() {
     const {loading, posts, error} = useSelector((state) => state.postOfFollowing);
     useSelector((state) => state.user);
     const {user} = useSelector(state => state.user)
-    console.log(user.following)
 
 
     useEffect(() => {
@@ -28,6 +30,7 @@ function Home() {
             <Sections>
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
+                        <Suspense key={post._id} fallback={<Loader/>}>
                         <Post
                             key={post._id}
                             ownerId={post.owner._id}
@@ -39,15 +42,17 @@ function Home() {
                             comments={post.comments}
                             createdAt={post.createdAt}
                             postId={post._id}
-                        />))
+                        />
+                        </Suspense>))
                 ) : (
-                    <Typography variant="h6" color="textSecondary" align="center">
+                    <Typography variant="h6" color="textSecondary" align="center" >
                         No posts to show
                     </Typography>
                 )}
             </Sections>
             <Section>
                 <div>
+                    <Suspense fallback={<Loader/>}>
                     <LoggedInUser
                         userId={user._id}
                         avatar={user.avatar}
@@ -57,6 +62,7 @@ function Home() {
                         following={user.following}
                         posts={user.posts}
                     />
+                    </Suspense>
                 </div>
             </Section>
         </Container>
