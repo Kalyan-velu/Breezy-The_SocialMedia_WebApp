@@ -3,9 +3,9 @@ import {Avatar, Button, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCommentOnPost} from "../../../features/action/postAction";
-import {getFollowingPosts} from "../../../features/action/userAction";
-import '../../profile/user.css'
+import {deleteCommentOnPost} from "../../../../features/action/postAction";
+import {getFollowingPosts, getMyPosts} from "../../../../features/action/userAction";
+import '../../../profile/user.css'
 
 
 const CommentCard = ({
@@ -22,6 +22,7 @@ const CommentCard = ({
     const deleteCommentHandle = async () => {
         await dispatch(deleteCommentOnPost(postId, CommentId));
         dispatch(getFollowingPosts())
+
     };
     return (
         <div className={'container'}>

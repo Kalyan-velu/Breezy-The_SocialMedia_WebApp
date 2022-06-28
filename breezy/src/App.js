@@ -7,12 +7,12 @@ import Home from "./components/home/homepage/Home";
 import UpdatePassword from "./components/profile/updateprofile/UpdatePassword";
 import ForgotPassword from "./components/home/auth/forgetpassword/ForgotPassword";
 import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
-import Loader from "./components/loader/Loader";
+import Loader from "./components/styledComponents/loader/Loader";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));
 const UserProfile=React.lazy(()=>
-import("./components/profile/UserProfile"));
+import("./components/profile/account/UserProfile"));
 
 function App() {
     const dispatch = useDispatch()

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import styled from 'styled-components'
 import {
     Avatar,
     Divider,
@@ -12,15 +11,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../features/action/postAction";
 import Alert from "@mui/material/Alert";
 import {getFollowingPosts} from "../../features/action/userAction";
-
+import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "../styledComponents/PostStyled";
 const DeleteAndEdit =React.lazy(()=>
-    import("./deletepost/DeleteAndEdit"));
+    import("./post-functions/deletepost/DeleteAndEdit"));
 const PostLikes=React.lazy(() =>
-import ("./likes/PostLikes"));
+import ("./post-functions/likes/PostLikes"));
 const CommentComponent=React.lazy(() =>
-    import ("./comment/CommentDialog"));
+    import ("./post-functions/comment/CommentDialog"));
 const CommentShort=React.lazy(() =>
-    import("./comment/CommentShort"));
+    import("./post-functions/comment/CommentShort"));
 
 const Post = ({
                   postImage,
@@ -97,12 +96,10 @@ const Post = ({
         if (error) {
             setAlertOpen(true)
             setErrorAlert(error)
-            dispatch({type: "clearError"})
         }
         if (message) {
             setAlertOpen(true)
             setMessageAlert(message)
-            dispatch({type: "clearMessage"})
         }
     }, [error, message]);
 
@@ -175,6 +172,7 @@ const Post = ({
             <PostFooterFirst >
                 <div>
                     <PostLikes
+                        key={postId}
                         likes={likes}
                         likesUser={likesUser}
                         setLikesUser={setLikesUser}
@@ -247,66 +245,3 @@ const Post = ({
     )
 }
 export default Post
-
-const Container = styled.div`
-	width: 100%;
-	border-radius: 5px;
-	box-shadow: #7e879a;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	max-width: 714px;
-	background-color: white;
-	margin: 0 auto;
-	padding: 15px 0;
-
-	@media (min-width:1024px){
-		margin-top: 20px;
-		
-	}
-`
-const PostHeader = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin: 5px 10px 10px;
-`
-const PostDetails = styled.div`
-	text-decoration: none;
-	color: black;
-	margin: 5px 10px 10px;
-	a{
-		text-decoration: none;
-		color: black;
-		margin: 1vmax;
-	}
-`
-const List = styled.div`
-display: flex;
-align-items: center;
-a {
-	text-decoration: none;
-  font-family: 'Poppins',sans-serif;
-  margin-left: 20px;
-}
-`
-const PostImg = styled.div`
-  width: 100%;
-
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-`
-const PostText = styled.div`
-    width: 100%;
-    margin: 5px 10px 10px;
-    text-align: center;
-    font-family: 'Poppins',sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #7e879a;
-`
-const PostFooterFirst = styled.div`
-	display: flex;
-	justify-content: space-around;
-`

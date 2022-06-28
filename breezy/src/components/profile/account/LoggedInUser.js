@@ -1,10 +1,10 @@
 import React from 'react'
 import {Avatar, Button, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import './user.css'
+import '../user.css'
 import {LogoutOutlined} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import {logOutUser} from "../../features/action/userAction";
+import {logOutUser} from "../../../features/action/userAction";
 
 
 function LoggedInUser({

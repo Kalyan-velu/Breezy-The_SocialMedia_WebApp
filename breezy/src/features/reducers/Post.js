@@ -2,6 +2,7 @@ import {createReducer} from "@reduxjs/toolkit";
 
 const initialState = {
     posts: [],
+    fetchAgain:false
 }
 
 export const likeReducer = createReducer(initialState, {
@@ -11,6 +12,7 @@ export const likeReducer = createReducer(initialState, {
     likeSuccess: (state, action) => {
         state.loading = false;
         state.message = action.payload;
+        state.fetchAgain = true;
     },
     likeFailure: (state, action) => {
         state.loading = false;
@@ -22,6 +24,7 @@ export const likeReducer = createReducer(initialState, {
     addCommentSuccess: (state, action) => {
         state.loading = false;
         state.message = action.payload;
+        state.fetchAgain = true;
     },
     addCommentFailure: (state, action) => {
         state.loading = false;
@@ -33,6 +36,7 @@ export const likeReducer = createReducer(initialState, {
     deleteCommentSuccess: (state, action) => {
         state.loading = false;
         state.message = action.payload;
+        state.fetchAgain=true
     },
     deleteCommentFailure: (state, action) => {
         state.loading = false;

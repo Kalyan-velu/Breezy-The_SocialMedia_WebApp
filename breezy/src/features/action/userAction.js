@@ -134,7 +134,7 @@ export  const getMyPosts = () => async (dispatch) => {
             payload: e.response.data.message,
         })
         dispatch({
-
+            type:'clearError',
         })
     }
 

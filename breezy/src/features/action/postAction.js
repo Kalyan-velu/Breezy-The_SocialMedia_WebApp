@@ -45,7 +45,7 @@ export const addCommentOnPost = (id,comment) => async (dispatch) => {
     } catch (e) {
         dispatch({
             type: 'addCommentFailure',
-            payload: e.data.message
+            payload: e.response.data.message
         })
     }
 }

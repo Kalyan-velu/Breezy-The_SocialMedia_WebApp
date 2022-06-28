@@ -4,14 +4,7 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 const CommentShort = ({
-                          postId,
                           comments,
-                          isAccount,
-                          commentValue,
-                          commentToggle,
-                          addCommentHandler,
-                          setCommentToggle,
-                          setCommentValue,
                       }) => {
     return (
         <div>
@@ -34,27 +27,7 @@ const CommentShort = ({
                     </div>
                 </div>
             ))) : null}
-
-
         </div>
-
     )
 }
 export default CommentShort
-
-const CommentUser = styled.div`
-                    display: flex;
-                    align-items: center;
-                    margin: 0.5vmax 0.5vmax 0.5vmax 0.5vmax;
-
-                    a {
-                    display: flex;
-                    justify-content: space-between;
-                    text-decoration: none;
-                    color: rgba(0, 0, 0, 0.87);
-
-                    :hover {
-                    transform: scale(1.1);
-                    cursor: pointer
-                }
-                    `

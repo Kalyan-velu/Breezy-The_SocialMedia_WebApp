@@ -15,12 +15,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import {pink} from "@mui/material/colors";
+import * as PropTypes from "prop-types";
+import Like from './Like'
 
-const PostLikes=({likes=[],setLikesUser,liked,likesUser,handleLike})=>{
-    const [open, setOpen] = React.useState(false);
-
+const PostLikes=({postId,likes=[],setLikesUser,liked,likesUser,handleLike})=>{
     return(
-        <div>
+        <div key={postId}>
             <Tooltip title={liked ? 'Liked' : 'Unliked'}>
                 <IconButton onClick={handleLike}>
                     {liked ? <Favorite sx={{color: pink[500]}}/> : <FavoriteBorder/>}
@@ -44,17 +44,13 @@ const PostLikes=({likes=[],setLikesUser,liked,likesUser,handleLike})=>{
             <Dialog  maxWidth={"md"} open={likesUser} onClose={() => setLikesUser(!likesUser)}>
             <DialogTitle>Liked By</DialogTitle>
             <DialogContent>
-                <List>
+                <List key={postId}>
                     {likes.map((like) => {
                         return (
-                            <Link to={`/user/${like._id}`}>
-                                <ListItem key={like.id}>
-                                    <ListItemAvatar>
-                                        <Avatar alt={like.name} src={like.avatar}/>
-                                    </ListItemAvatar>
-                                    <ListItemText primary={like.name}/>
-                                </ListItem>
-                            </Link>
+                            <Like
+                                postId={postId}
+                                like={like}
+                            />
                         )
                     })}
                 </List>

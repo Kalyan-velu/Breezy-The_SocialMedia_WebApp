@@ -1,14 +1,14 @@
-import React, {useEffect,Suspense} from 'react'
-import styled from "styled-components";
+import React, {useEffect, Suspense, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {getFollowingPosts} from "../../../features/action/userAction";
-import Loader from "../../loader/Loader";
+import Loader from "../../styledComponents/loader/Loader";
 import {Typography} from "@mui/material";
+import {Container, Section, Sections} from "../../styledComponents/HomeStyled";
 
 const Post=React.lazy(()=>
     import( "../../post/Post"));
 const LoggedInUser=React.lazy(()=>
-    import( "../../profile/LoggedInUser"));
+    import( "../../profile/account/LoggedInUser"));
 
 
 function Home() {
@@ -42,6 +42,7 @@ function Home() {
                             comments={post.comments}
                             createdAt={post.createdAt}
                             postId={post._id}
+
                         />
                         </Suspense>))
                 ) : (
@@ -71,33 +72,3 @@ function Home() {
 }
 
 export default Home
-const Container = styled.div`
-display:grid;
-grid-template-columns: repeat(1,minmax(0,1fr));
-  
-  @media(min-width: 760px){
-    grid-template-columns: repeat(3,minmax(0,1fr));
-    max-width: 72rem;
-  }
-  @media(min-width: 640px){
-    max-width: 48rem;
-  }
-  @media(min-width: 1290px){
-    max-width: 80rem;
-  }
-  margin: 0 auto;
-`
-const Sections = styled.div`
-grid-column: span 2 /span 2;
-  margin: 0 auto;
-	width: 80%;
-`
-const Section = styled.div`
-  margin: 0 auto;
-  @media (min-width: 1280px) {
-
-  }
-  @media (min-width: 760px) {
-
-  }
-`
