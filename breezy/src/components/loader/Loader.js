@@ -1,10 +1,7 @@
-import React from 'react';
-
-const Loader = () => {
+import * as React from 'react'
+import './loader.css'
+export default function Loader() {
     return (
-        <div className="loader">
-            <div className="loader__spinner">Loading</div>
-        </div>
+        <div className={"loader-container"}/>
     );
 }
-export default Loader;
