@@ -5,9 +5,17 @@ import Typography from '@mui/material/Typography';
 import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {Grid} from "@mui/material";
+import {Grid, IconButton} from "@mui/material";
 import {forgotPassword} from "../../../../features/action/userAction";
+import {Link} from "react-router-dom";
+import {ArrowBack} from "@mui/icons-material";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
+
+const Alert = React.forwardRef( function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+} );
 const style = {
     position: 'absolute',
     top: '50%',
@@ -16,14 +24,21 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
+    borderRadius: '5px',
     boxShadow: 24,
     p: 4,
 };
+const styleDiv = {
+    display: 'flex',
+    flexDirection: 'column',
+}
 
 export default function ForgotPassword() {
     const [email,setEmail]=useState('')
     const [error, setError] = useState(null);
     const[success,setSuccess]=React.useState(null)
+    const [ open, setOpen ] = React.useState( false );
+    const [ openS, setOpenS ] = React.useState( false );
     const dispatch = useDispatch();
     const {error : errorForgot,message:messageForgot} = useSelector((state) => state.like);
 
@@ -35,23 +50,42 @@ export default function ForgotPassword() {
 
     useEffect(() => {
         if (errorForgot) {
-            alert(error)
+            console.log(error)
+             setOpen(true);
             setError(errorForgot);
-            dispatch({type: "clearErrors"});
         }
         if (messageForgot) {
-            alert(success)
-            setSuccess(messageForgot);
-            dispatch({type: "ClearMessage"});
+           setOpenS(true);
+           setSuccess(messageForgot);
         }
     },[ alert,errorForgot,messageForgot,dispatch])
     console.log(success)
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenS( false )
+        setOpen( false );
+    };
     return (
         <div >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Forget Password
-                    </Typography>
+                        <Link to={'/'}>
+                            <IconButton>
+                                  <ArrowBack/>
+                             </IconButton>
+                        </Link>
+                        <Typography
+                            sx={{
+                                fontWeight:"700",
+                                fontSize: "20px",
+                                textAlign: "center",
+                                bottom: "10px",
+                            }}
+                        >
+                            Forget Password
+                        </Typography>
+
                     <form onSubmit={submitHandler}>
                     <TextField
                            padding={"dense"}
@@ -68,5 +102,20 @@ export default function ForgotPassword() {
                     </Grid>
                     </form>
                 </Box>
+            <div>
+            <Grid align='center'>
+                <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                        {success}
+                    </Alert>
+                </Snackbar>
+                {error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                            {error}
+                        </Alert>
+                    </Snackbar>
+                    : null}
+            </Grid>
+            </div>
         </div>
     )}

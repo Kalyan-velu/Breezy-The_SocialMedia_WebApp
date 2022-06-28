@@ -173,14 +173,17 @@ export const forgotPassword = (email) => async (dispatch) => {
         console.log(data)
         dispatch({                                                         //dispatching the token to the reducer
             type: 'forgotPasswordSuccess',
-            payload: data.users,
+            payload: data.message,
         })
 
     } catch (e) {
-        dispatch({
+        await dispatch({
             type: 'forgotPasswordFailure',
             payload: e.response.data.message
         })
+        dispatch({
+                type:'clearError',
+            })
     }
 }
 export const resetPassword = (token,password) => async (dispatch) => {

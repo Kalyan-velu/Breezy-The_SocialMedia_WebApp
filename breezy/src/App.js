@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,Suspense} from 'react';
 import Header from "./components/home/header/Header";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
@@ -7,6 +7,7 @@ import Home from "./components/home/homepage/Home";
 import UpdatePassword from "./components/profile/updateprofile/UpdatePassword";
 import ForgotPassword from "./components/home/auth/forgetpassword/ForgotPassword";
 import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
+import Loader from "./components/loader/Loader";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));
@@ -29,8 +30,28 @@ function App() {
             <div className="App">
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
-                    <Route path={'/'} exect element={isAuthenticated ? <Home /> : <AuthPage/>}/>
-                    <Route path={'/user/account'} element={isAuthenticated ? <UserProfile/> : <AuthPage/>}/>
+
+                      <Route path={'/'}
+                             exect
+                             element=
+                                 {isAuthenticated ?
+                                     <Suspense fallback={<Loader/>}>
+                                             <Home />
+                                     </Suspense>    :
+                                     <Suspense fallback={<Loader />}>
+                                             <AuthPage/>}/>
+                                     </Suspense>}
+                      />
+                    <Route path={'/user/account'}
+                           element=
+                               {isAuthenticated ?
+                                   <Suspense fallback={<Loader />}>
+                                      <UserProfile/>
+                                   </Suspense> :
+                                   <Suspense fallback={<Loader />}>
+                                        <AuthPage/>}/>
+                                   </Suspense>}
+                       />
                     <Route path={'/user/forgot-password'} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
                 </Routes>
