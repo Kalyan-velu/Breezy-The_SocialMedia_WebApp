@@ -29,7 +29,7 @@ const Header = () => {
 
                     <NavMenu>
 
-                        <Link to={'/newpost'} onClick={() => setTab('/newpost')}>
+                        <Link to={'/NewPost'} onClick={() => setTab('/NewPost')}>
                             <AddIcon/>
                         </Link>
 

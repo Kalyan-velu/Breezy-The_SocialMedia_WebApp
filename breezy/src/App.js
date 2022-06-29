@@ -8,6 +8,8 @@ import UpdatePassword from "./components/profile/updateprofile/UpdatePassword";
 import ForgotPassword from "./components/home/auth/forgetpassword/ForgotPassword";
 import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
 import Loader from "./components/styledComponents/loader/Loader";
+import {Login} from "@mui/icons-material";
+import NewPost from "./components/post/NewPost/NewPost";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));
@@ -54,6 +56,7 @@ function App() {
                        />
                     <Route path={'/user/forgot-password'} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
+                    <Route path={'/NewPost'} element={isAuthenticated ? <NewPost/> : <Login/> }/>
                 </Routes>
             </div>
         </Router>

@@ -42,6 +42,18 @@ export const likeReducer = createReducer(initialState, {
         state.loading = false;
         state.error = action.payload;
     },
+    newPostRequest: (state) => {
+        state.loading = true;
+    },
+    newPostSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+        state.fetchAgain=true
+    },
+    newPostFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
     clearMessage: (state) => {
         state.message = null;
     },

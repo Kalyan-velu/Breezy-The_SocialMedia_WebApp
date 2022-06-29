@@ -8,14 +8,7 @@ export const Header = styled.div`
   margin: 5px 10px 10px;  
 `
 export const StyledContainer = muiStyled(Container)({
-  ['@media (max-width: 768px)']: {
-    maxWidth: '100%',
-    margin: '0 auto',
-    },
-  ['@media (min-width: 1024px)']: {
-    maxWidth: '80rem',
-    margin: '0 auto',
-    },
+
 })
   
 
@@ -88,3 +81,10 @@ export const StyledAvatar=muiStyled(Avatar)({
   marginTop: '10px',
   marginBottom: '10px',
   })
+export const Component=styled.div`
+  display: flex;
+  flex-direction: row;
+  a{
+    text-decoration: none;
+  }
+`
