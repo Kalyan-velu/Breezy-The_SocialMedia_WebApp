@@ -20,13 +20,10 @@ export const Sections = styled.div`
 grid-column: span 2 /span 2;
   margin: 0 auto;
 	width: 80%;
+  @media(max-width: 480px){
+    width:100%
+  }
 `
 export const Section = styled.div`
   margin: 0 auto;
-  @media (min-width: 1280px) {
-
-  }
-  @media (min-width: 760px) {
-
-  }
 `

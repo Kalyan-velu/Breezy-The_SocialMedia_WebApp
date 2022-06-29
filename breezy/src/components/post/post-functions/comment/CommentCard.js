@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCommentOnPost} from "../../../../features/action/postAction";
 import {getFollowingPosts, getMyPosts} from "../../../../features/action/userAction";
-import '../../../profile/user.css'
+import '../../../profile/account/user.css'
 
 
 const CommentCard = ({

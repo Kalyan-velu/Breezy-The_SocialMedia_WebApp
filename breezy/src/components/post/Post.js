@@ -32,7 +32,7 @@ const Post = ({
                   createdAt,
                   postId,
                   isDelete = false,
-                  isAccount = false,
+                  isAccount = true,
               }) => {
 
 
@@ -148,6 +148,17 @@ const Post = ({
                     : null
                 }
             </PostHeader>
+                <PostHeader>
+                    <div style={{flexGrow:0.3}}/>
+                    <List>
+                        <Typography noWrap>
+                              {caption}
+                        </Typography>
+                     </List>
+                    <div style={{flexGrow:1}}/>
+                    <div style={{flexGrow:1}}/>
+                </PostHeader>
+
 
             <Divider sx={{my: 0.5}}/>
             {postImage ? (
@@ -198,19 +209,6 @@ const Post = ({
 
 
             <PostDetails  >
-
-                <List>
-                    <Link to={`/user/${ownerId}`}>
-                        <Typography
-                            fontWeight={700}
-                        >
-                            {ownerName}
-                        </Typography>
-                    </Link>
-                    <Typography noWrap>
-                        {caption}
-                    </Typography>
-                </List>
 
                 <List>
                     {comments.length > 0 ? (

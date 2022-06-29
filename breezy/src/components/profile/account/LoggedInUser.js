@@ -1,8 +1,7 @@
 import React from 'react'
 import {Avatar, Button, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import '../user.css'
-import {LogoutOutlined} from "@mui/icons-material";
+import './user.css'
 import {useDispatch} from "react-redux";
 import {logOutUser} from "../../../features/action/userAction";
 
@@ -17,10 +16,6 @@ function LoggedInUser({
                           posts = [],
                       }) {
     const dispatch = useDispatch();
-    const logout = () => {
-        dispatch(logOutUser());
-        localStorage.removeItem('token')
-    }
 
     return (
         <div className={'container'}>
@@ -31,7 +26,6 @@ function LoggedInUser({
                     alt={name}
                 />
                 <div className={'details'}>
-                    <div className={'user-details'}>
                         <Link to={`/user/${userId}`}>
                         <Typography
                             fontWeight={600}
@@ -42,7 +36,7 @@ function LoggedInUser({
                             {name}
                         </Typography>
                          </Link>
-                        <Link to={`/user/update-profile`}>
+                        <Link to={`/user/account`}>
                             <Typography>Edit Profile</Typography>
                         </Link>
 
@@ -55,8 +49,7 @@ function LoggedInUser({
                         >
                             Email:{email}
                         </Typography>
-                    </div>
-                    <div className={'user-details'}>
+
                         <Typography
                             fontWeight={600}
                             sx={{
@@ -66,11 +59,7 @@ function LoggedInUser({
                         >
                             {posts.length} Posts {followers.length} Followers {following.length} Following
                         </Typography>
-                    </div>
                 </div>
-                <Button
-                    onClick={logout}
-                    endIcon={<LogoutOutlined/>}/>
             </div>
         </div>
     )

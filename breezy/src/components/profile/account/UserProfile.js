@@ -1,12 +1,18 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Avatar, Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
-import '../user.css'
+import { Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import './user.css'
 import {getMyPosts, logOutUser} from "../../../features/action/userAction";
-import {Section, Sections} from "../../styledComponents/HomeStyled";
-import {AccountDetails, Containers, Header, List} from "../../styledComponents/UserAccountStyled";
+import { Sections} from "../../styledComponents/HomeStyled";
+import {
+    StyledBox,
+    AccountDetails,
+    List,
+    StyledAvatar, StyledContainer, StyledBoxUpdate
+} from "../../styledComponents/UserAccountStyled";
 import Loader from "../../styledComponents/loader/Loader";
 import User from "../User";
+import UpdateProfile from "../updateprofile/UpdateProfile";
 const Post=React.lazy(()=>
     import( "../../post/Post"));
 
@@ -46,25 +52,14 @@ const UserProfile = () => {
     }, [error, message]);
 
     return (
-        <Containers>
-            <Section>
-                <Header>
-                    <List>
-                        <Avatar
+        <StyledContainer>
+            <StyledBox>
+                        <StyledAvatar
                             src={`https://images.unsplash.com/photo-1655940646108-ff6d32631c2e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=600&q=60`}
                             alt={user.name}
                             title={user.name}
-                            style={{
-                                width: '150px',
-                                height: '150px',
-                                borderRadius: '50%',
-                                margin: '0 auto',
-                                marginTop: '10px',
-                                marginBottom: '10px',
-                            }}
                         />
-
-                        <div>
+                        <List>
                             <Typography
                                 fontWeight={700}
                                 sx={{
@@ -73,6 +68,8 @@ const UserProfile = () => {
                             >
                                 {user.name}
                             </Typography>
+                        </List>
+                        <List>
                             <Typography
                                 fontWeight={300}
                                 sx={{
@@ -82,8 +79,9 @@ const UserProfile = () => {
                             >
                                 {user.email}
                             </Typography>
+                        </List>
 
-                            <AccountDetails>
+                        <AccountDetails>
                                 <Typography
                                     sx={{
                                         fontWeight:'500',
@@ -95,7 +93,7 @@ const UserProfile = () => {
                                     {user.posts.length} Posts
                                 </Typography>
 
-                            </AccountDetails>
+
                             <Button onClick={() => setFollowingToggle(!followingToggle)}>
                                 <Typography
                                     fontWeight={500}
@@ -117,13 +115,12 @@ const UserProfile = () => {
                                 >
                                     {user.followers.length} Followers
                                 </Typography>
-
                             </Button>
-                        </div>
-                    </List>
-                </Header>
-            </Section>
-
+                            </AccountDetails>
+            </StyledBox>
+            <StyledBoxUpdate>
+                 <UpdateProfile/>
+            </StyledBoxUpdate>
             <Sections>
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
@@ -148,6 +145,7 @@ const UserProfile = () => {
                     </Typography>
                 )}
             </Sections>
+
             <Dialog fullWidth maxWidth={'xs'} open={followersToggle} onClose={() => setFollowersToggle(!followersToggle)}>
                <DialogTitle sx={{textAlign:'center'}}>
                    <Typography fontWeight={500} variant="h5">Followers</Typography>
@@ -169,16 +167,13 @@ const UserProfile = () => {
                 </DialogContent>
 
             </Dialog>
-
             <Dialog fullWidth maxWidth={'xs'} open={followingToggle} onClose={() => setFollowingToggle(!followingToggle)}>
-                >
                 <DialogTitle sx={{textAlign:'center'}}>
                     <Typography fontWeight={500} variant="h5">Followings</Typography>
                 </DialogTitle>
                 <DialogContent>
                     <div>
-                    {
-                        user && user.following.length > 0? user.following.map((following) => ((
+                    {user && user.following.length > 0? user.following.map((following) => ((
                                 <User
                                     key={following._id}
                                     userId={following._id}
@@ -187,12 +182,12 @@ const UserProfile = () => {
                                 />
                             ))
                         )  :  (
-                            <Typography>You have no following anyone</Typography>
+                            <Typography>You have not following anyone</Typography>
                         )}
                 </div>
                 </DialogContent>
             </Dialog>
-        </Containers>
+        </StyledContainer>
 
 
     )
