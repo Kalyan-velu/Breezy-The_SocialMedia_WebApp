@@ -8,6 +8,7 @@ export const Header = styled.div`
 export const Containers = styled.div`
   display:grid;
   justify-content: center;
+  
   grid-template-columns: repeat(1,minmax(0,1fr));
   @media(min-width: 760px){
     grid-template-columns: repeat(3,minmax(0,1fr));
@@ -36,6 +37,6 @@ div {
 }
 `
 export const AccountDetails = styled.div`
-  display:flex;
+  display:inline-block;
   flex-direction: row;
   `

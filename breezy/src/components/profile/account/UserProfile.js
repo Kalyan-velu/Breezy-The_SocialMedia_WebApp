@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Avatar, Typography} from "@mui/material";
 import '../user.css'
 import {getMyPosts, logOutUser} from "../../../features/action/userAction";
-import {Section, Sections} from "../../styledComponents/HomeStyled";
-import {AccountDetails, Containers, Header, List} from "../../styledComponents/UserAccountStyled";
+import { Sections} from "../../styledComponents/HomeStyled";
+import { Section,Containers, Header, List} from "../../styledComponents/UserAccountStyled";
 import Loader from "../../styledComponents/loader/Loader";
 const Post=React.lazy(()=>
     import( "../../post/Post"));
@@ -51,8 +51,8 @@ const UserProfile = () => {
                             alt={user.name}
                             title={user.name}
                             style={{
-                                width: '150px',
-                                height: '150px',
+                                width: '140px',
+                                height: '140px',
                                 borderRadius: '50%',
                                 margin: '0 auto',
                                 marginTop: '10px',
@@ -62,9 +62,9 @@ const UserProfile = () => {
 
                         <div>
                             <Typography
-                                fontWeight={700}
+                                fontWeight={600}
                                 sx={{
-                                    fontSize: '1.8rem'
+                                    fontSize: '1.4rem'
                                 }}
                             >
                                 {user.name}
@@ -73,13 +73,11 @@ const UserProfile = () => {
                                 fontWeight={300}
                                 sx={{
                                     color: '#111',
-                                    fontSize: '1.6rem',
+                                    fontSize: '0.8rem',
                                 }}
                             >
                                 {user.email}
                             </Typography>
-
-                            <AccountDetails>
                                 <Typography
                                     sx={{
                                         fontWeight:'500',
@@ -88,11 +86,8 @@ const UserProfile = () => {
                                         paddingRight: '10px',
                                     }}
                                 >
-                                    {user.posts.length}
+                                    {user.posts.length} Posts
                                 </Typography>
-                                <button>Posts</button>
-                            </AccountDetails>
-                            <AccountDetails>
                                 <Typography
                                     fontWeight={500}
                                     sx={{
@@ -102,8 +97,6 @@ const UserProfile = () => {
                                 >
                                     {user.following.length} Following
                                 </Typography>
-                            </AccountDetails>
-                            <AccountDetails>
                                 <Typography
                                     fontWeight={500}
                                     sx={{
@@ -113,8 +106,6 @@ const UserProfile = () => {
                                 >
                                     {user.followers.length} Followers
                                 </Typography>
-
-                            </AccountDetails>
                         </div>
                     </List>
                 </Header>
