@@ -6,7 +6,7 @@ import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
 import {Container, Typography} from "@mui/material";
-import {Link} from "react-router-dom";
+
 
 
 const Register = React.lazy(() => import  ("./Register"));

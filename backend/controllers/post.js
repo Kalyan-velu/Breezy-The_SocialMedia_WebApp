@@ -1,28 +1,30 @@
 const Post = require('../models/post.model')
 const User = require('../models/user.model')
-const cloudinary = require('cloudinary')
+const cloudinary = require("cloudinary");
 
 
 exports.createPost = async (req, res) => {
     try {
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.image,{
+            folder: "posts",
+        });
         const newPostData = {
             caption: req.body.caption,
             image: {
-                public_id: "req.body.image",
-                url: 'req.body.image',
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
             },
             owner: req.user._id,
         }
         //creating new post with data
         const newPost = await Post.create(newPostData)
         const user = await User.findById(req.user._id)
-        user.posts.push(newPost._id)
+        user.posts.unshift(newPost._id)
         await user.save()
 
         res.status(201).json({
             message: 'Post created successfully',
             success: true,
-            post: newPost,
         })
 
     } catch (error) {
@@ -192,7 +194,11 @@ exports.addComment = async (req, res) => {
         }
 
     } catch (e) {
-
+        res.json.status(401).json({
+                success:false,
+                message:e.message
+            }
+        )
     }
 }
 
@@ -238,20 +244,6 @@ exports.deleteComment = async (req, res) => {
                 success: true,
                 message: "Your has been Comment Deleted"
             })
-        }
-
-
-        if (commentIndex !== -1) {
-            post.comments.splice(commentIndex, 1)
-
-            await post.save()
-
-            return res.status(200).json({
-                success: true,
-                message: "Comment Deleted"
-            })
-        } else {
-            return res.status(404).json({})
         }
     } catch (e) {
         res.status(500).json({
