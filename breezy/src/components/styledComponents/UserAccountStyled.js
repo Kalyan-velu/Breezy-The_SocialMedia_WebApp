@@ -39,4 +39,5 @@ div {
 export const AccountDetails = styled.div`
   display:inline-block;
   flex-direction: row;
+  text-align: center;
   `
