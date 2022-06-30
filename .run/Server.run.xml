@@ -6,6 +6,7 @@
       <script value="dev" />
     </scripts>
     <node-interpreter value="project" />
+    <package-manager value="C:\Users\Kalyan\AppData\Roaming\npm\yarn.cmd" />
     <envs />
     <method v="2" />
   </configuration>

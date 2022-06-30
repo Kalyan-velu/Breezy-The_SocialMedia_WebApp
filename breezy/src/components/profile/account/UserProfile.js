@@ -1,40 +1,43 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import { Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import './user.css'
-import {getMyPosts, logOutUser} from "../../../features/action/userAction";
+import {getMyPosts, logoutUser} from "../../../features/action/userAction";
 import { Sections} from "../../styledComponents/HomeStyled";
 import {
     StyledBox,
     AccountDetails,
     List,
-    StyledAvatar, StyledContainer, StyledBoxUpdate
+    StyledAvatar, StyledContainer, StyledBoxUpdate, StyledBoxNewPost
 } from "../../styledComponents/UserAccountStyled";
 import Loader from "../../styledComponents/loader/Loader";
 import User from "../User";
 import UpdateProfile from "../updateprofile/UpdateProfile";
+import Modal from "../../post/NewPost/NewPostModal";
 const Post=React.lazy(()=>
     import( "../../post/Post"));
 
 const UserProfile = () => {
-    const {user} = useSelector(state => state.user)
-    const {loading, posts, error} = useSelector((state) => state.myPosts);
-    const {error:likeError, message} = useSelector((state) => state.like)
     const [errorAlert, setErrorAlert] = React.useState('')
     const [messageAlert, setMessageAlert] = React.useState('')
     const [alertOpen, setAlertOpen] = useState(false);
+    const [followersToggle,setFollowersToggle] =useState(false);
+    const [followingToggle,setFollowingToggle] =useState(false);
+    const {user} = useSelector(state => state.user)
+    const {loading, posts, error} = useSelector((state) => state.myPosts);
+    const {error:likeError, message} = useSelector((state) => state.like)
+
 
 
     const dispatch=useDispatch()
     const handleLogout = () => {
-        dispatch(logOutUser())
+        dispatch(logoutUser())
     }
     const handleAlertClose = () => {
         setAlertOpen(false);
     };
 
-    const [followersToggle,setFollowersToggle] =useState(false);
-    const [followingToggle,setFollowingToggle] =useState(false);
+
 
     useEffect(() => {
         dispatch(getMyPosts())
@@ -121,6 +124,9 @@ const UserProfile = () => {
             <StyledBoxUpdate>
                  <UpdateProfile/>
             </StyledBoxUpdate>
+            <StyledBoxNewPost>
+                            <Modal/>
+            </StyledBoxNewPost>
             <Sections>
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
@@ -137,6 +143,8 @@ const UserProfile = () => {
                                 comments={post.comments}
                                 createdAt={post.createdAt}
                                 postId={post._id}
+                                isAccount={true}
+                                isDelete={true}
                             />}
                         </Suspense>))
                 ) : (

@@ -2,6 +2,7 @@ import React from'react';
 import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
 import {Component} from "../../styledComponents/UserAccountStyled";
+import Modal from "../../post/NewPost/NewPostModal";
 const UpdateProfile = () => {
     return (
         <Component >

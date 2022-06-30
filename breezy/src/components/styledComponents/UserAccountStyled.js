@@ -88,3 +88,19 @@ export const Component=styled.div`
     text-decoration: none;
   }
 `
+export const StyledBoxNewPost=styled(Box)`
+  grid-column: span 3 /span 3;
+  margin: 20px auto;
+  width: 10%;
+  background-color: #fff;
+  z-index: 59;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  @media (max-width: 480px) {
+    width:25%;
+    border-radius: 50%;
+  }
+`

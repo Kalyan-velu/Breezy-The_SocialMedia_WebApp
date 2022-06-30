@@ -22,13 +22,13 @@ exports.createPost = async (req, res) => {
         user.posts.unshift(newPost._id)
         await user.save()
 
-        res.status(201).json({
+       return res.status(201).json({
             message: 'Post created successfully',
             success: true,
         })
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         })
@@ -53,6 +53,7 @@ exports.deletePost = async (req, res) => {
                 success: false
             })
         }
+        await cloudinary.v2.uploader.destroy(post.image.public_id)
         //deleting post
         await post.remove()
         //deleting post from user
@@ -61,11 +62,15 @@ exports.deletePost = async (req, res) => {
         user.posts.splice(index, 1)
         await user.save()
         return res.status(200).json({
+            success: true,
             message: "Post deleted successfully",
-            success: true
         })
     } catch (e) {
+            return res.status(500).json({
+                success:false,
+                message:e.message,
 
+            })
     }
 }
 
@@ -185,16 +190,15 @@ exports.addComment = async (req, res) => {
                 user: req.user._id,
                 comment: req.body.comment,
             })
-
             await post.save()
-            return res.json.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message: "Comment Added"
             })
         }
 
     } catch (e) {
-        res.json.status(401).json({
+        res.status(401).json({
                 success:false,
                 message:e.message
             }
@@ -232,13 +236,11 @@ exports.deleteComment = async (req, res) => {
                 message: "Selected Comment has been Deleted"
             })
         } else {
-
             post.comments.forEach((item, index) => {
                 if (item.user.toString() === req.user._id.toString()) {
                     return post.comments.splice(index, 1)
                 }
             })
-
             await post.save()
             return res.status(200).json({
                 success: true,
@@ -246,7 +248,7 @@ exports.deleteComment = async (req, res) => {
             })
         }
     } catch (e) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: e.message
         })

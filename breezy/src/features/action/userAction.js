@@ -161,19 +161,34 @@ export const getAllUsers = () => async (dispatch) => {
         })
     }
 }
-export const logOutUser = () => async (dispatch) => {
-    try {
-        dispatch({
-            type: 'Logout'
-        });
-        await axios.post(
-            '/api/v1/logout'
-        )// post request to server
+export const logoutUser = () =>
 
-    } catch (e) {
-        console.log(e)
+    async (dispatch) => {
+        try {
+
+            dispatch({
+                type: 'LogoutUserRequest',                                           // request auth
+            })
+
+            await axiosInstance.get(                                    //  request to server
+                "/logout",
+            );
+            dispatch({                                                         //dispatching the token to the reducer
+                type: 'LogoutUserSuccess',
+            })
+
+        } catch (error) {
+            console.log(error)
+            await dispatch({              //dispatching the error to the reducer
+                type: 'LogoutUserFailed',
+                payload: error.response.data.message,
+            })
+            dispatch({
+                type:'clearError',
+            })
+        }
     }
-}
+
 export const forgotPassword = (email) => async (dispatch) => {
     try {
         dispatch({

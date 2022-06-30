@@ -10,6 +10,7 @@ import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
 import Loader from "./components/styledComponents/loader/Loader";
 import {Login} from "@mui/icons-material";
 import NewPost from "./components/post/NewPost/NewPost";
+import Model from "./components/post/NewPost/NewPostModal";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));

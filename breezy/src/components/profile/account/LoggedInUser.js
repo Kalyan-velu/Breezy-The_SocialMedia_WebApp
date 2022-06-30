@@ -2,8 +2,9 @@ import React from 'react'
 import {Avatar, Button, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import './user.css'
+import {LogoutOutlined} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import {logOutUser} from "../../../features/action/userAction";
+import {logoutUser} from "../../../features/action/userAction";
 
 
 function LoggedInUser({
@@ -16,6 +17,9 @@ function LoggedInUser({
                           posts = [],
                       }) {
     const dispatch = useDispatch();
+    const logout = () => {
+        dispatch(logoutUser());
+    }
 
     return (
         <div className={'container'}>
@@ -60,6 +64,7 @@ function LoggedInUser({
                             {posts.length} Posts {followers.length} Followers {following.length} Following
                         </Typography>
                 </div>
+                <Button endIcon={<LogoutOutlined/>} onClick={logout}/>
             </div>
         </div>
     )

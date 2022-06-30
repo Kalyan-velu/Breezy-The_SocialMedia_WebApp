@@ -1,21 +1,16 @@
 import React from 'react'
 import {
-    Avatar,
     Dialog,
     DialogContent,
     DialogTitle,
     IconButton,
-    ListItem,
-    ListItemAvatar,
-    ListItemText, Tooltip
+    Tooltip
 } from "@mui/material";
-import {Link} from "react-router-dom";
 import {Favorite, FavoriteBorder} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import {pink} from "@mui/material/colors";
-import * as PropTypes from "prop-types";
 import Like from './Like'
 
 const PostLikes=({postId,likes=[],setLikesUser,liked,likesUser,handleLike})=>{
@@ -48,6 +43,7 @@ const PostLikes=({postId,likes=[],setLikesUser,liked,likesUser,handleLike})=>{
                     {likes.map((like) => {
                         return (
                             <Like
+                                key={like._id}
                                 postId={postId}
                                 like={like}
                             />

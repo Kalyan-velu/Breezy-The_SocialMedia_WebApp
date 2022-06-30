@@ -1,11 +1,12 @@
 import React from "react";
 import {Avatar, Button, Typography} from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import {Delete, DeleteForever} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCommentOnPost} from "../../../../features/action/postAction";
-import {getFollowingPosts, getMyPosts} from "../../../../features/action/userAction";
+import {getFollowingPosts, getMyPosts, loadUser} from "../../../../features/action/userAction";
 import '../../../profile/account/user.css'
+import {pink} from "@mui/material/colors";
 
 
 const CommentCard = ({
@@ -21,8 +22,16 @@ const CommentCard = ({
     const dispatch = useDispatch()
     const deleteCommentHandle = async () => {
         await dispatch(deleteCommentOnPost(postId, CommentId));
-        dispatch(getFollowingPosts())
-
+        if(isAccount){
+            dispatch(
+                getMyPosts()
+            )
+            dispatch(loadUser())
+        }else{
+            dispatch(
+                getFollowingPosts(user.userId)
+            )
+        }
     };
     return (
         <div className={'container'}>
@@ -46,7 +55,7 @@ const CommentCard = ({
                     </Typography>
                 </div>
                 {isAccount ? <Button onClick={deleteCommentHandle}>
-                    <Delete/>
+                    <DeleteForever sx={{color:pink}}/>
                 </Button> : userId === user._id ? (
                     <Button onClick={deleteCommentHandle}>
                         <Delete/>

@@ -1,10 +1,14 @@
 import React from 'react'
-import {alpha, IconButton} from "@mui/material";
-import {DeleteForever, Edit} from "@mui/icons-material";
+import {alpha, Button, CircularProgress, Dialog, DialogTitle, IconButton, TextField, Typography} from "@mui/material";
+import {Delete, Edit, Update} from "@mui/icons-material";
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {styled as muiStyled} from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
+import {useDispatch, useSelector} from "react-redux";
+import {deletePost, updateCaption} from "../../../../features/action/postAction";
+import {getMyPosts} from "../../../../features/action/userAction";
+
 
 const ITEM_HEIGHT = 48;
 
@@ -49,7 +53,19 @@ const StyledMenu = muiStyled((props) => (
     },
 }));
 
-const DeleteAndEdit=({open,handleClick,handleClose,anchorEl})=>{
+const DeleteAndEdit=({loading,postId,open,handleClick,handleClose,anchorEl,captionValue,setCaptionValue})=>{
+    const[captionToggle,setCaptionToggle]=React.useState(false);
+    const dispatch=useDispatch();
+    const updateCaptionHandler=(e)=>{
+        e.preventDefault()
+        dispatch(updateCaption(captionValue,postId));
+        dispatch(getMyPosts());
+    }
+    const deleteHandler=()=>{
+        dispatch(deletePost(postId));
+        dispatch(getMyPosts());
+    }
+    
     return(
         <div  >
             <IconButton
@@ -77,15 +93,39 @@ const DeleteAndEdit=({open,handleClick,handleClose,anchorEl})=>{
                     },
                 }}
             >
-                <MenuItem onClick={handleClose} disableRipple>
-                    <DeleteForever/>
-                    Delete
+                <MenuItem onClick={ deleteHandler} disableRipple>
+                    {loading ? (<CircularProgress/>) : (<Delete/>)}
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={()=>
+                    handleClose && setCaptionToggle(!captionToggle)} disableRipple>
                     <Edit/>
                     Edit
                 </MenuItem>
             </StyledMenu>
+            <Dialog maxWidth={'xs'} fullWidth open={captionToggle} onClose={() => setCaptionToggle(!captionToggle)}>
+                <DialogTitle sx={{textAlign:'center',}}>Update Caption</DialogTitle>
+                <form onSubmit={updateCaptionHandler}>
+                    <TextField id="outlined-basic" variant="standard"
+                               value={captionValue}
+                               onChange={(e) => setCaptionValue(e.target.value)}
+                               rows={1}
+                               fullWidth
+                               inputProps={{
+                                   maxLength: 100,
+                               }}
+                               placeholder={"Caption Here..."}
+                    />
+                    <Button type={"submit"} variant="contained" color="primary"
+                            fullWidth
+                            disabled={captionValue.length === 0}
+                            endIcon={<Update/>}
+                    >
+                        Update Caption
+                    </Button>
+                </form>
+
+            </Dialog>
+
         </div>
     )
 }

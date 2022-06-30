@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route(`/register`).post(register)
 router.route(`/login`).post(login)
-router.route(`/logout`).post(logout)
+router.route(`/logout`).get(logout)
 router.route(`/update/password`).put(isAuthenticated, updatePassword)
 router.route(`/update/profile`).put(isAuthenticated, updateProfile)
 router.route(`/me/delete/:id`).delete(isAuthenticated, deleteProfile)

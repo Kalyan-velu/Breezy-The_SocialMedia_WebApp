@@ -1,4 +1,4 @@
-import React, {useEffect, Suspense, useState} from 'react'
+import React, {useEffect, Suspense} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../styledComponents/loader/Loader";

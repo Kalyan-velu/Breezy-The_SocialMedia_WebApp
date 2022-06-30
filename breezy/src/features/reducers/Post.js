@@ -54,12 +54,6 @@ export const likeReducer = createReducer(initialState, {
         state.loading = false;
         state.error = action.payload;
     },
-    clearMessage: (state) => {
-        state.message = null;
-    },
-    clearError: (state) => {
-        state.error = null;
-    },
     forgotPasswordRequest: (state) => {
         state.loading = true;
     },
@@ -81,6 +75,35 @@ export const likeReducer = createReducer(initialState, {
     resetPasswordFailure: (state, action) => {
         state.loading = false;
         state.error = action.payload;
+    },
+    updateCaptionRequest: (state) => {
+        state.loading = true;
+    },
+    updateCaptionSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+        state.fetchAgain=true
+    },
+    updateCaptionFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    deletePostRequest: (state) => {
+        state.loading = true;
+    },
+    deletePostSuccess: (state, action) => {
+        state.loading=false;
+        state.message=action.payload
+    },
+    deletePostFailure:(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+    },
+    clearMessage: (state) => {
+        state.message = null;
+    },
+    clearError: (state) => {
+        state.error = null;
     },
 });
 

@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
         const {email, password} = req.body;
         console.log(email, password);
         //see if user exists
-        let user = await User.findOne({email}).select("+password");
+        let user = await User.findOne({email}).select("+password").populate("posts following followers");
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -392,7 +392,7 @@ exports.getMyPosts = async (req, res) => {
         const posts=[]
         for(let i=0;i<user.posts.length;i++){
             const post = await Post.findById(user.posts[i]).populate(
-                "comments.user likes")
+                "comments.user likes owner")
             posts.push(post)
         }
         //sorting the posts by date

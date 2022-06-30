@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {
     Avatar,
-    Divider,
     Snackbar,
     Stack,
     Typography
@@ -10,7 +9,7 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../features/action/postAction";
 import Alert from "@mui/material/Alert";
-import {getFollowingPosts} from "../../features/action/userAction";
+import {getFollowingPosts, getMyPosts} from "../../features/action/userAction";
 import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "../styledComponents/PostStyled";
 const DeleteAndEdit =React.lazy(()=>
     import("./post-functions/deletepost/DeleteAndEdit"));
@@ -32,7 +31,7 @@ const Post = ({
                   createdAt,
                   postId,
                   isDelete = false,
-                  isAccount = true,
+                  isAccount = false,
               }) => {
 
 
@@ -44,8 +43,9 @@ const Post = ({
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [errorAlert, setErrorAlert] = React.useState('')
     const [messageAlert, setMessageAlert] = React.useState('')
+    const[captionValue,setCaptionValue] = useState('');
     const [alertOpen, setAlertOpen] = useState(false);
-    const {error, message} = useSelector((state) => state.like)
+    const {error,loading, message} = useSelector((state) => state.like)
     const {user} = useSelector(state => state.user)
     const open = Boolean(anchorEl);
 
@@ -66,7 +66,7 @@ const Post = ({
         setLiked(!liked);
         await dispatch(likePost(postId));
         if (isAccount) {
-            dispatch(getFollowingPosts(user._id))
+            dispatch(getMyPosts())
         } else {
             dispatch(getFollowingPosts())
         }
@@ -77,7 +77,8 @@ const Post = ({
         await dispatch(addCommentOnPost(postId,commentValue));
 
         if (isAccount) {
-            dispatch(getFollowingPosts(user._id))
+            dispatch(getMyPosts(user._id))
+            console.log('Bring Me  My Post')
         } else {
             dispatch(getFollowingPosts())
         }
@@ -144,6 +145,10 @@ const Post = ({
                         handleClose={handleClose}
                         anchorEl={anchorEl}
                         setAnchorEl={setAnchorEl}
+                        captionValue={captionValue}
+                        setCaptionValue={setCaptionValue}
+                        postId={postId}
+                        loading={loading}
                     />
                     : null
                 }
@@ -160,7 +165,7 @@ const Post = ({
                 </PostHeader>
 
 
-            <Divider sx={{my: 0.5}}/>
+
             {postImage ? (
                 <PostImg>
                     <img src={postImage} alt={"post"}/>
@@ -178,7 +183,6 @@ const Post = ({
                 </PostText>
             )}
 
-            <Divider sx={{my: 0.5}}/>
 
             <PostFooterFirst >
                 <div>
@@ -205,8 +209,6 @@ const Post = ({
                     />
                 </div>
             </PostFooterFirst>
-
-
 
             <PostDetails  >
 
@@ -235,9 +237,6 @@ const Post = ({
                     </Alert>
                 </Snackbar>
             </Stack>
-
-
-
             </div>
         </Container>
     )
