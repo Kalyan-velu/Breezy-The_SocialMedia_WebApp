@@ -102,3 +102,20 @@ export const specificUsersReducer = createReducer(initialState, {
         state.isAuthenticated = false;
     }
 })
+
+export const updateProfileReducer = createReducer(initialState, {
+    updateProfileRequest: (state) => {
+        state.loading = true
+    },
+    updateProfileSuccess: (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+    },
+    updateProfileFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearError: (state) => {
+        state.error = null;
+    }
+})

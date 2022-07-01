@@ -53,17 +53,18 @@ const StyledMenu = muiStyled((props) => (
     },
 }));
 
-const DeleteAndEdit=({loading,postId,open,handleClick,handleClose,anchorEl,captionValue,setCaptionValue})=>{
+const DeleteAndEdit=({fetchAgain,setFetchAgain,loading,postId,open,handleClick,handleClose,anchorEl,captionValue,setCaptionValue})=>{
     const[captionToggle,setCaptionToggle]=React.useState(false);
     const dispatch=useDispatch();
     const updateCaptionHandler=(e)=>{
         e.preventDefault()
         dispatch(updateCaption(captionValue,postId));
-        dispatch(getMyPosts());
+        setFetchAgain(!fetchAgain);
+        handleClose();
     }
     const deleteHandler=()=>{
         dispatch(deletePost(postId));
-        dispatch(getMyPosts());
+        setFetchAgain(!fetchAgain);
     }
     
     return(
@@ -94,7 +95,9 @@ const DeleteAndEdit=({loading,postId,open,handleClick,handleClose,anchorEl,capti
                 }}
             >
                 <MenuItem onClick={ deleteHandler} disableRipple>
-                    {loading ? (<CircularProgress/>) : (<Delete/>)}
+                    {loading ? (<CircularProgress/>) : (<Delete/>)} {
+                    loading ? 'Deleting...' : 'Delete'
+                }
                 </MenuItem>
                 <MenuItem onClick={()=>
                     handleClose && setCaptionToggle(!captionToggle)} disableRipple>

@@ -107,6 +107,33 @@ export const StyledButton = muiStyled(Button)({
     }
 
 })
+
+
+export const StyledPicButton = muiStyled(Button)({
+    padding:'10px 0',
+    margin: '30px',
+    width:'30%',
+    borderRadius: '20px',
+    border:'none',
+    backgroundColor:'rgb(55,93,130)' ,
+    color:'white',
+    pointer:'pointer',
+    '.MuiButton-label':{
+        fontSize:'15px',
+        fontWeight:'bold'
+    },
+    ':hover':{
+        transform:'scale(1.1)',
+        transition:'all 0.3s ease-in-out',
+        backgroundColor:'rgb(55,93,130)',
+        color:'white',
+        endIcon:{
+            color:'white'
+        }
+    }
+
+})
+
 export const BootstrapDialog = muiStyled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),

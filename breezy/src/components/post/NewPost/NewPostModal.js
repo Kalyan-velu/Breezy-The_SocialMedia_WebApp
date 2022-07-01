@@ -50,7 +50,10 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-const Modal = () => {
+const Modal = ({
+    fetchAgain,
+    setFetchAgain
+               }) => {
     const [input, setInput] = useState('');
     const filePicker = useRef(null)
     const [selected, setSelected] = useState(null);
@@ -85,11 +88,10 @@ const Modal = () => {
 
     useEffect(() => {
         if (error) {
-
             dispatch({type:"clearErrors"});
         }
         if (message) {
-
+            setFetchAgain(!fetchAgain)
             dispatch({type:"clearMessage"});
         }
     }, [error,message,]);

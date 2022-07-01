@@ -2,20 +2,11 @@ const User = require('../models/user.model');
 const Post = require('../models/post.model');
 const {sendEmail} = require("../middleware/sendEmail");
 const crypto = require('crypto');
-
+const cloudinary = require('cloudinary');
 exports.register = async (req, res) => {
     try {
         //get the user data from the request
-        const {name, email, password} = req.body;
-        const newUserData = {
-            name,
-            email,
-            password,
-            avatar: {
-                public_id: "sample",
-                url: "sample",
-            }
-        }
+        const {name, email, password,avatar} = req.body;
         //see if user already exists
         let user = await User.findOne({email});
         if (user) {
@@ -24,9 +15,19 @@ exports.register = async (req, res) => {
                 message: 'User already exists'
             })
         }
-
+        console.log(avatar)//uploading the avatar to cloudinary
+        const myCloud = await cloudinary.v2.uploader.upload(avatar,{
+            folder: "avatars"
+        })
         //create a new user
-        user = await User.create(newUserData);
+        user = await User.create({
+            name,
+            email,
+            password,
+            avatar:{
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url
+        }});
         //create a token
         const token = await user.getJWT();
         const options = {
@@ -159,22 +160,26 @@ exports.updatePassword = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     try {
         //get the user data from the request
-        const {name, email} = req.body;
+        const {name, email,avatar} = req.body;
         //get the user from the request
         const user = await User.findById(req.user._id);
         //update the user
         if (name) {
             user.name = name;
         }
+        //update
         if (name) {
             user.email = email;
         }
-        //avatar
-        //if(req.file) {
-        //  user.avatar.public_id = req.file.public_id;
-        // user.avatar.url = req.file.url;
-        // }
 
+        if(avatar) {
+            await cloudinary.v2.uploader.destroy(user.avatar.public._id)
+            const myCloud = await cloudinary.v2.uploader.upload(avatar,{
+                folder: "avatars"
+            })
+            user.avatar.public_id = myCloud.public_id;
+            user.avatar.url = myCloud.secure_url;
+        }
         //save the user
         await user.save();
 

@@ -22,13 +22,14 @@ exports.createPost = async (req, res) => {
         user.posts.unshift(newPost._id)
         await user.save()
 
-       return res.status(201).json({
-            message: 'Post created successfully',
+        res.status(201).json({
             success: true,
+            message: 'Post created successfully',
+
         })
 
     } catch (error) {
-        return res.status(500).json({
+         res.status(500).json({
             success: false,
             message: error.message
         })
@@ -61,7 +62,7 @@ exports.deletePost = async (req, res) => {
         const index = user.posts.indexOf(req.params.id)
         user.posts.splice(index, 1)
         await user.save()
-        return res.status(200).json({
+         res.status(200).json({
             success: true,
             message: "Post deleted successfully",
         })
@@ -69,7 +70,6 @@ exports.deletePost = async (req, res) => {
             return res.status(500).json({
                 success:false,
                 message:e.message,
-
             })
     }
 }

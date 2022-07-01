@@ -103,4 +103,4 @@ export const StyledBoxNewPost=styled(Box)`
     width:25%;
     border-radius: 50%;
   }
-`
+    `

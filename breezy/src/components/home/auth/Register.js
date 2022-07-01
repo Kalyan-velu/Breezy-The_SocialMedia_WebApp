@@ -141,7 +141,7 @@ const Register = () => {
                                        padding={"dense"}
                                        name='confirmPassword'
                                        label='Confirm Password'
-                                       type='password'
+                                       type={showPassword ? 'text': 'password'}
                                        fullWidth
                                        error={props.errors.confirmPassword && props.touched.confirmPassword}
                                        helperText={<ErrorMessage name='confirmPassword'/>}

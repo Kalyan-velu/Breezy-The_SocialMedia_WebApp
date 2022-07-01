@@ -4,13 +4,12 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
+import Loader from "./components/styledComponents/loader/Loader";
+import SetProfilePic from "./components/profile/account/SetPic";
 import UpdatePassword from "./components/profile/updateprofile/UpdatePassword";
 import ForgotPassword from "./components/home/auth/forgetpassword/ForgotPassword";
 import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
-import Loader from "./components/styledComponents/loader/Loader";
-import {Login} from "@mui/icons-material";
 import NewPost from "./components/post/NewPost/NewPost";
-import Model from "./components/post/NewPost/NewPostModal";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));
@@ -33,7 +32,6 @@ function App() {
             <div className="App">
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
-
                       <Route path={'/'}
                              exect
                              element=
@@ -42,7 +40,7 @@ function App() {
                                              <Home />
                                      </Suspense>    :
                                      <Suspense fallback={<Loader />}>
-                                             <AuthPage/>}/>
+                                             <AuthPage/>
                                      </Suspense>}
                       />
                     <Route path={'/user/account'}
@@ -55,9 +53,20 @@ function App() {
                                         <AuthPage/>}/>
                                    </Suspense>}
                        />
+                    <Route path={'/NewPost'}
+                           element=
+                               {isAuthenticated ?
+                                   <Suspense fallback={<Loader />}>
+                                        <NewPost/>
+                                   </Suspense>
+                                   :
+                                   <Suspense fallback={<Loader />}>
+                                         <AuthPage/>
+                                   </Suspense>}
+                    />
+                    <Route path={'/user/profile'} element={isAuthenticated ?<SetProfilePic/>: <AuthPage/>}/>
                     <Route path={'/user/forgot-password'} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
-                    <Route path={'/NewPost'} element={isAuthenticated ? <NewPost/> : <Login/> }/>
                 </Routes>
             </div>
         </Router>

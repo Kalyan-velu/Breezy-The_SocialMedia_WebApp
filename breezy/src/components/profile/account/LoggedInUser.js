@@ -26,8 +26,12 @@ function LoggedInUser({
             <div className={'list'}>
                 <Avatar
                     title={name}
-                    src={`https://images.unsplash.com/photo-1644982647531-daff2c7383f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60`}
+                    src={avatar}
                     alt={name}
+                    sx={{
+                        width: '96px',
+                        height: '96px',
+                    }}
                 />
                 <div className={'details'}>
                         <Link to={`/user/${userId}`}>
@@ -43,17 +47,6 @@ function LoggedInUser({
                         <Link to={`/user/account`}>
                             <Typography>Edit Profile</Typography>
                         </Link>
-
-                        <Typography
-                            fontWeight={400}
-                            sx={{
-                                color: `#111`,
-                                fontSize: '0.6rem',
-                            }}
-                        >
-                            Email:{email}
-                        </Typography>
-
                         <Typography
                             fontWeight={600}
                             sx={{

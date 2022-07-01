@@ -14,6 +14,7 @@ import Loader from "../../styledComponents/loader/Loader";
 import User from "../User";
 import UpdateProfile from "../updateprofile/UpdateProfile";
 import Modal from "../../post/NewPost/NewPostModal";
+import {useNavigate} from "react-router-dom";
 const Post=React.lazy(()=>
     import( "../../post/Post"));
 
@@ -26,22 +27,22 @@ const UserProfile = () => {
     const {user} = useSelector(state => state.user)
     const {loading, posts, error} = useSelector((state) => state.myPosts);
     const {error:likeError, message} = useSelector((state) => state.like)
-
-
-
+    const navigate=useNavigate()
     const dispatch=useDispatch()
-    const handleLogout = () => {
-        dispatch(logoutUser())
-    }
+    const[fetchAgain,setFetchAgain] = useState(false)
+
     const handleAlertClose = () => {
         setAlertOpen(false);
     };
 
-
+    const setFetchAgainH=()=>{
+        setFetchAgain(!fetchAgain)
+    }
 
     useEffect(() => {
         dispatch(getMyPosts())
-    }, [dispatch])
+        console.log("Fetching Again....")
+    }, [dispatch,fetchAgain])
 
     useEffect(() => {
         if (likeError) {
@@ -58,9 +59,10 @@ const UserProfile = () => {
         <StyledContainer>
             <StyledBox>
                         <StyledAvatar
-                            src={`https://images.unsplash.com/photo-1655940646108-ff6d32631c2e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=600&q=60`}
+                            src={user.avatar.url}
                             alt={user.name}
                             title={user.name}
+                            onClick={() => navigate('/user/profile')}
                         />
                         <List>
                             <Typography
@@ -122,10 +124,16 @@ const UserProfile = () => {
                             </AccountDetails>
             </StyledBox>
             <StyledBoxUpdate>
-                 <UpdateProfile/>
+                 <UpdateProfile
+                     setFetchAgain={setFetchAgain}
+                     fetchAgain={fetchAgain}
+                 />
             </StyledBoxUpdate>
             <StyledBoxNewPost>
-                            <Modal/>
+                            <Modal
+                                setFetchAgain={setFetchAgain}
+                                fetchAgain={fetchAgain}
+                            />
             </StyledBoxNewPost>
             <Sections>
                 {posts && posts.length > 0 ? (
@@ -136,7 +144,7 @@ const UserProfile = () => {
                                 key={post._id}
                                 ownerId={post.owner._id}
                                 ownerName={user.name}
-                                ownerAvatar={user.avatar}
+                                ownerAvatar={user.avatar.url}
                                 caption={post.caption}
                                 postImage={post.image.url}
                                 likes={post.likes}
@@ -145,6 +153,8 @@ const UserProfile = () => {
                                 postId={post._id}
                                 isAccount={true}
                                 isDelete={true}
+                                setFetchAgain={setFetchAgain}
+                                fetchAgain={fetchAgain}
                             />}
                         </Suspense>))
                 ) : (

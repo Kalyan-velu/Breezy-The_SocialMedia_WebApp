@@ -9,7 +9,7 @@ import {Container, Typography} from "@mui/material";
 
 
 
-const Register = React.lazy(() => import  ("./Register"));
+const Register = React.lazy(() => import  ("./RegisterNew"));
 const Login = React.lazy(() => import  ("./Login"));
 
 
@@ -131,9 +131,6 @@ export default function AuthPage() {
                     </Box>
                 </div>
             </Container>
-            <>
-
-            </>
         </>
     );
 }

@@ -1,5 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {postOfFollowingReducer, specificUsersReducer, userReducer} from "../features/reducers/user";
+import {
+    postOfFollowingReducer,
+    specificUsersReducer,
+    updateProfileReducer,
+    userReducer
+} from "../features/reducers/user";
 import {likeReducer, myPostsReducer} from "../features/reducers/Post";
 
 
@@ -10,5 +15,6 @@ export const store = configureStore({
         specificUsers: specificUsersReducer,
         like: likeReducer,
         myPosts: myPostsReducer,
+        updateProfile:updateProfileReducer,
     },
 });

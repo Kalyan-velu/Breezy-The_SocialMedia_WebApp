@@ -30,6 +30,8 @@ const Post = ({
                   comments = {},
                   createdAt,
                   postId,
+                  setFetchAgain,
+                  fetchAgain,
                   isDelete = false,
                   isAccount = false,
               }) => {
@@ -65,23 +67,13 @@ const Post = ({
     const handleLike = async () => {
         setLiked(!liked);
         await dispatch(likePost(postId));
-        if (isAccount) {
-            dispatch(getMyPosts())
-        } else {
-            dispatch(getFollowingPosts())
-        }
+        setFetchAgain(true);
     }
 
     const addCommentHandler = async (e) => {
         e.preventDefault();
         await dispatch(addCommentOnPost(postId,commentValue));
-
-        if (isAccount) {
-            dispatch(getMyPosts(user._id))
-            console.log('Bring Me  My Post')
-        } else {
-            dispatch(getFollowingPosts())
-        }
+        setFetchAgain(true);
     };
 
     useEffect(() => {
@@ -112,7 +104,7 @@ const Post = ({
                 <List >
                     <Avatar
                         title={ownerName}
-                        src={`https://images.unsplash.com/photo-1644982647531-daff2c7383f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60`}
+                        src={ownerAvatar}
                         alt={ownerName}
                         sx={{
                             height: "50px",
@@ -149,6 +141,8 @@ const Post = ({
                         setCaptionValue={setCaptionValue}
                         postId={postId}
                         loading={loading}
+                        setFetchAgain={setFetchAgain}
+                        fetchAgain={fetchAgain}
                     />
                     : null
                 }
@@ -194,6 +188,8 @@ const Post = ({
                         liked={liked}
                         handleLike={handleLike}
                         postId={postId}
+                        setFetchAgain={setFetchAgain}
+                        fetchAgain={fetchAgain}
                     />
                 </div>
                 <div>
@@ -206,6 +202,8 @@ const Post = ({
                         setCommentValue={setCommentValue}
                         addCommentHandler={addCommentHandler}
                         isAccount={isAccount}
+                        fetchAgain={fetchAgain}
+                        setFetchAgain={setFetchAgain}
                     />
                 </div>
             </PostFooterFirst>

@@ -56,7 +56,7 @@ function Home() {
                     <Suspense fallback={<Loader/>}>
                     <LoggedInUser
                         userId={user._id}
-                        avatar={user.avatar}
+                        avatar={user.avatar.url}
                         name={user.name}
                         email={user.email}
                         followers={user.followers}

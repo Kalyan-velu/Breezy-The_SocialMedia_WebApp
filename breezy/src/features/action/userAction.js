@@ -1,5 +1,6 @@
 import {axiosInstance} from "../../config/axios";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export const loginUser = (values) =>
 
@@ -63,6 +64,7 @@ export const loadUser = () =>
 
 export const registerUser = (values) =>
     async (dispatch) => {
+        console.log(values.avatar)
         try {
             dispatch({
                 type: 'RegisterRequest'
@@ -247,6 +249,36 @@ export const resetPassword = (token,password) => async (dispatch) => {
         dispatch({
             type: 'resetPasswordFailure',
             payload: e.response.data.message,
+        })
+    }
+}
+export const updateProfile = (values) => async (dispatch) => {
+    try{
+        dispatch({
+            type: 'updateProfileRequest'
+        })
+        //fetching data from server
+        const {data} = await axiosInstance.put(                                    // post request to server
+            "/update/profile",
+            values, {
+                headers:
+                    {
+                        'Content-Type': 'application/json',
+                    }
+            }
+        );
+        dispatch({                                                         //dispatching the token to the reducer
+            type: 'updateProfileSuccess',
+            payload: data.user,
+        })
+
+    }catch(e){
+        await dispatch({
+            type: 'updateProfileFailure',
+            payload: e.response.data.message,
+        })
+        dispatch({
+            type:'clearError',
         })
     }
 }

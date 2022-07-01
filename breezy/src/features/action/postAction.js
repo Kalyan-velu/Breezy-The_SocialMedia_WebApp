@@ -1,4 +1,3 @@
-import axios from "axios";
 import {axiosInstance} from "../../config/axios";
 
 export const likePost = (id) => async (dispatch) => {
@@ -97,7 +96,7 @@ export const createNewPost=(caption,image)=> async(dispatch)=>{
     }catch(e){
         await dispatch({
             type:'newPostFailure',
-            payload:e
+            payload:e.response.data.message
         })
         dispatch({
                     type:'clearError'
