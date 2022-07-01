@@ -1,6 +1,5 @@
 import {axiosInstance} from "../../config/axios";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 
 export const loginUser = (values) =>
 
@@ -62,16 +61,16 @@ export const loadUser = () =>
         }
     }
 
-export const registerUser = (values) =>
+export const registerUser = ({name,email,password,avatar}) =>
     async (dispatch) => {
-        console.log(values.avatar)
+
         try {
             dispatch({
                 type: 'RegisterRequest'
             })
             const {data} = await axiosInstance.post(                                    // post request to server
                 "/register",
-                values, {
+                {name,email,password,avatar}, {
                     headers:
                         {
                             'Content-Type': 'application/json',

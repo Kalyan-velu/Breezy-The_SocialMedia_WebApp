@@ -39,8 +39,8 @@ const RegisterNew=()=>{
     function handleChange() {
         setShowPassword(!showPassword)
     }
-    const onSubmit = async ({name,email,password,avatar}) => {
-
+    const onSubmit = async ({e,name,email,password,avatar}) => {
+        e.preventDefault()
         dispatch(registerUser({name,email,password,avatar}))
     }
 
@@ -141,7 +141,7 @@ const RegisterNew=()=>{
                                 type='submit'
                                 style={btnStyle}
                                 variant='outlined'
-                                onClick={()=>onSubmit({name,email,password,avatar})}
+                                onClick={(e)=>onSubmit({e,name,email,password,avatar})}
                             >
                                 Register
                             </LoadingButton>
