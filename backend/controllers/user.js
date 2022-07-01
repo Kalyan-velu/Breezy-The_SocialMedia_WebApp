@@ -161,6 +161,7 @@ exports.updateProfile = async (req, res) => {
     try {
         //get the user data from the request
         const {name, email,avatar} = req.body;
+
         //get the user from the request
         const user = await User.findById(req.user._id);
         //update the user
@@ -173,12 +174,19 @@ exports.updateProfile = async (req, res) => {
         }
 
         if(avatar) {
-            await cloudinary.v2.uploader.destroy(user.avatar.public._id)
-            const myCloud = await cloudinary.v2.uploader.upload(avatar,{
+            try {
+                await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+                const myCloud = await cloudinary.v2.uploader.upload(avatar, {
                 folder: "avatars"
             })
             user.avatar.public_id = myCloud.public_id;
             user.avatar.url = myCloud.secure_url;
+            } catch (error) {
+                return res.status(500).json({
+                    success: false,
+                    message: error.message
+                })
+            }
         }
         //save the user
         await user.save();
@@ -192,6 +200,7 @@ exports.updateProfile = async (req, res) => {
             success: false,
             message: e.message
         })
+        console.log(e.message)
     }
 }
 

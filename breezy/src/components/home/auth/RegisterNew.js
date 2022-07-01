@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Checkbox, FormControlLabel, Grid, Input, Paper, TextField} from "@mui/material";
+import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
 import {registerUser} from "../../../features/action/userAction";
 import {useDispatch} from "react-redux";
-import AvatarPreview from "./AvatarPreview";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 
 const gridStyle = {
@@ -18,6 +18,7 @@ const paperStyle = {
 const styleField = {
     padding: '5px 5px 5px 5px',
 }
+
 const btnStyle = {
     color: "#0072E5",
     display: "center",
@@ -32,7 +33,6 @@ const RegisterNew=()=>{
     const [password, setPassword] = useState('');
     const[name, setName] = useState('');
     const[confirmPassword, setConfirmPassword] = useState('');
-    const [state, setState] = useState(null);
     const filePicker = React.useRef(null);
     const dispatch=useDispatch()
 
@@ -40,6 +40,7 @@ const RegisterNew=()=>{
         setShowPassword(!showPassword)
     }
     const onSubmit = async ({name,email,password,avatar}) => {
+
         dispatch(registerUser({name,email,password,avatar}))
     }
 
@@ -131,11 +132,20 @@ const RegisterNew=()=>{
                         }
                         label="Show Password"
                     />
-                        <Button
-                            onClick={()=>onSubmit({name,email,password,avatar})}
-                        >
-                            Register
-                        </Button>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            padding: "15px"
+                        }}>
+                            <LoadingButton
+                                type='submit'
+                                style={btnStyle}
+                                variant='outlined'
+                                onClick={()=>onSubmit({name,email,password,avatar})}
+                            >
+                                Register
+                            </LoadingButton>
+                        </div>
                     </form>
                 </div>
             </Paper>
