@@ -28,10 +28,6 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-const styleDiv = {
-    display: 'flex',
-    flexDirection: 'column',
-}
 
 export default function ForgotPassword() {
     const [email,setEmail]=useState('')
