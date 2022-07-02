@@ -81,8 +81,9 @@ export const registerUser = ({name,email,password,avatar}) =>
                 type: 'RegisterSuccess',
                 payload: data.user
             })
-
+            console.log(data.user)
         } catch (e) {
+            console.log(e)
            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: e.response.data.message,
@@ -251,7 +252,7 @@ export const resetPassword = (token,password) => async (dispatch) => {
         })
     }
 }
-export const updateProfile = (values) => async (dispatch) => {
+export const updateProfile = ({name,email,avatar}) => async (dispatch) => {
     try{
         dispatch({
             type: 'updateProfileRequest'
@@ -259,7 +260,9 @@ export const updateProfile = (values) => async (dispatch) => {
         //fetching data from server
         const {data} = await axiosInstance.put(                                    // post request to server
             "/update/profile",
-            values, {
+            {
+                name,email,avatar
+            }, {
                 headers:
                     {
                         'Content-Type': 'application/json',
@@ -270,10 +273,44 @@ export const updateProfile = (values) => async (dispatch) => {
             type: 'updateProfileSuccess',
             payload: data.user,
         })
-
+        console.log(data)
     }catch(e){
+        console.log(e)
         await dispatch({
             type: 'updateProfileFailure',
+            payload: e.response.data.message,
+        })
+        dispatch({
+            type:'clearError',
+        });
+    }
+};
+export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
+    try{
+        dispatch({
+            type: 'updatePasswordRequest'
+        })
+        //fetching data from server
+        const {data} = await axiosInstance.put(                                    // post request to server
+            "/update/password",
+            {
+                oldPassword,newPassword
+            }, {
+                headers:
+                    {
+                        'Content-Type': 'application/json',
+                    }
+            }
+        );
+        dispatch({                                                         //dispatching the token to the reducer
+            type: 'updatePasswordSuccess',
+            payload: data.user,
+        })
+        console.log(data)
+    }catch(e){
+        console.log(e)
+        await dispatch({
+            type: 'updatePasswordFailure',
             payload: e.response.data.message,
         })
         dispatch({

@@ -2,7 +2,7 @@ import React, {Suspense, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import './user.css'
-import {getMyPosts, logoutUser} from "../../../features/action/userAction";
+import {getMyPosts} from "../../../features/action/userAction";
 import { Sections} from "../../styledComponents/HomeStyled";
 import {
     StyledBox,
@@ -12,7 +12,7 @@ import {
 } from "../../styledComponents/UserAccountStyled";
 import Loader from "../../styledComponents/loader/Loader";
 import User from "../User";
-import UpdateProfile from "../updateprofile/UpdateProfile";
+import UpdateProfile from "../account/updateprofile/UpdateProfile";
 import Modal from "../../post/NewPost/NewPostModal";
 import {useNavigate} from "react-router-dom";
 const Post=React.lazy(()=>
@@ -34,11 +34,6 @@ const UserProfile = () => {
     const handleAlertClose = () => {
         setAlertOpen(false);
     };
-
-    const setFetchAgainH=()=>{
-        setFetchAgain(!fetchAgain)
-    }
-
     useEffect(() => {
         dispatch(getMyPosts())
         console.log("Fetching Again....")
@@ -58,12 +53,14 @@ const UserProfile = () => {
     return (
         <StyledContainer>
             <StyledBox>
+
                         <StyledAvatar
                             src={user.avatar.url}
                             alt={user.name}
                             title={user.name}
                             onClick={() => navigate('/user/profile')}
                         />
+
                         <List>
                             <Typography
                                 fontWeight={700}

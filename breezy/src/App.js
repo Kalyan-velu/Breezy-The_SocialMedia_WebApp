@@ -6,10 +6,11 @@ import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
 import Loader from "./components/styledComponents/loader/Loader";
 import SetProfilePic from "./components/profile/account/SetPic";
-import UpdatePassword from "./components/profile/updateprofile/UpdatePassword";
+
 import ForgotPassword from "./components/home/auth/forgetpassword/ForgotPassword";
 import ResetPassword from "./components/home/auth/resetpassword/ResetPassword";
 import NewPost from "./components/post/NewPost/NewPost";
+import UpdatePassword from "./components/profile/account/updateprofile/UpdatePassword";
 
 const AuthPage=React.lazy(() =>
 import("./components/home/auth/authPage"));
@@ -67,6 +68,7 @@ function App() {
                     <Route path={'/user/profile'} element={isAuthenticated ?<SetProfilePic/>: <AuthPage/>}/>
                     <Route path={'/user/forgot-password'} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
+                    <Route path={'/upload/password'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
                 </Routes>
             </div>
         </Router>

@@ -2,16 +2,14 @@ import React, {useEffect, useRef, useState} from 'react'
 import { IconButton,  Tooltip} from "@mui/material";
 import PropTypes from 'prop-types';
 import {
-    BootstrapDialog,
+    BootstrapDialog, BootstrapInput,
     Camera,
     Caption,
     Container,
     Header,
     StyledButton,
-    StyledInput,
     Wrapper
 } from "../../styledComponents/PostModalStyled";
-import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,7 +18,7 @@ import {createNewPost} from "../../../features/action/postAction";
 import {useDispatch, useSelector} from "react-redux";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} {...props}  />;
 });
 
 const BootstrapDialogTitle = (props) => {
@@ -78,6 +76,7 @@ const Modal = ({
             }
         }
     }
+
 
 
 
@@ -144,7 +143,7 @@ const Modal = ({
                     />
                 </Header>
                 <Caption>
-                    <StyledInput
+                    <BootstrapInput
                         fullWidth
                         type={"text"}
                         value={input}

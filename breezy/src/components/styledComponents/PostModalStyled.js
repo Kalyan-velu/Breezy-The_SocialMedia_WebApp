@@ -76,7 +76,7 @@ export const StyledInput = muiStyled(Input)({
     flex: 1,
     variant: 'Standard',
     padding: '10px',
-    width:'60%',
+    width:'100%',
     textAlign: 'center',
     ':focus' :
         {
