@@ -144,7 +144,9 @@ export const deletePost=(id)=> async(dispatch)=>{
             type:'deletePostSuccess',
             payload:data.message
         })
+        console.log(data.message)
     }catch (e) {
+        console.log(e.response.data.message)
         await dispatch({
             type:'deletePostFailure',
             payload:e.response.data.message
