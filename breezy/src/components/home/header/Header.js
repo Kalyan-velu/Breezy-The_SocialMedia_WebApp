@@ -10,10 +10,11 @@ import {
     NotificationsOutlined
 } from "@mui/icons-material";
 import {Container, ImageContainer, Logo, NavMenu, RightContainer, Wrapper} from "../../styledComponents/HeaderStyled";
+import {useSelector} from "react-redux";
 
 const Header = () => {
     const [tab, setTab] = useState("/")
-
+    const{user}=useSelector((state)=>state.user)
 
     return (
         <Container>
@@ -45,9 +46,9 @@ const Header = () => {
                             }
                         </Link>
 
-                        <Link to={'/user/account'} onClick={() => setTab('/account')}>
+                        <Link to={`/user/${user._id}`} onClick={() => setTab('/account')}>
                             {
-                                tab === "/user/account" ? <AccountCircle/> : <AccountCircleOutlined/>
+                                tab === `/user/${user._id}` ? <AccountCircle/> : <AccountCircleOutlined/>
                             }
                         </Link>
 

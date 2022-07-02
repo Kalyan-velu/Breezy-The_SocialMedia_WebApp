@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {BootstrapInput, StyledPicButton} from "../../styledComponents/PostModalStyled";
+import {BootstrapInput, StyledPicButton} from "../../../styledComponents/PostModalStyled";
 import {Avatar, FormControl, InputLabel} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import './user.css'
+import '../loggeduser/user.css'
 import {Upload} from "@mui/icons-material";
-import {loadUser, updateProfile} from "../../../features/action/userAction";
+import {loadUser, updateProfile} from "../../../../features/action/userAction";
 
 const SetProfilePic=()=>{
     const filePicker = useRef(null)

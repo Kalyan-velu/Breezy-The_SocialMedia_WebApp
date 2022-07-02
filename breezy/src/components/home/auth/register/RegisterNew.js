@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
-import {registerUser} from "../../../features/action/userAction";
+import {registerUser} from "../../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import LoadingButton from "@mui/lab/LoadingButton";
 import MuiAlert from "@mui/material/Alert";

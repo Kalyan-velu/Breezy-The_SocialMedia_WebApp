@@ -219,6 +219,7 @@ exports.deleteProfile = async (req, res) => {
         //delete the posts
         for (let i = 0; i < posts.length; i++) {
             const post = await Post.findById(posts[i]);
+            await cloudinary.v2.uploader.destroy(post.image.public_id);
             await post.remove();
         }
         //Remove user from followers following
@@ -228,15 +229,38 @@ exports.deleteProfile = async (req, res) => {
             follower.following.splice(index, 1);
             await follower.save();
         }
-
+        //Remove user from following's followers
         for (let i = 0; i < following.length; i++) {
             const follows = await User.findById(followers[i]);
             const index = follows.followers.indexOf(user._id);
             follows.followers.splice(index, 1);
             await follows.save();
         }
+        //removing comments of user from all posts
+        const allPosts=await Post.find()
+        for (let i = 0; i < allPosts.length; i++) {
+            const post =await Post.findById(allPosts[i]._id);
+            const comments = post.comments;
+            for (let j = 0; j < comments.length; j++) {
+                if(comments[j].user===user._id){
+                    post.comments.splice(j,1);
+                }
+            }
+            await post.save();
+        }
+        //removing likes of user from all posts
+        for (let i = 0; i < allPosts.length; i++) {
+            const post =await Post.findById(allPosts[i]._id)
+            const likes = post.likes;
+            for (let j = 0; j < likes.length; j++) {
+                if(likes[j].user===user._id){
+                    post.likes.splice(j,1);
+                }
+            }
+            await post.save();
+        }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Profile deleted"
         })
@@ -424,4 +448,30 @@ exports.getMyPosts = async (req, res) => {
             message: e.message
         })
     }
+}
+exports.getUserPosts = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        const posts=[]
+        for(let i=0;i<user.posts.length;i++){
+            const post = await Post.findById(user.posts[i]).populate(
+                "comments.user likes owner")
+            posts.push(post)
+        }
+        //sorting the posts by date
+        const sortedPosts= posts.sort((a,b)=>{
+            return b.createdAt-a.createdAt
+        } )
+        return res.status(200).json({
+            success: true,
+            sortedPosts
+        })
+    }
+    catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: e.message
+        })
+    }
+
 }

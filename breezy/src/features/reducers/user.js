@@ -52,7 +52,7 @@ export const userReducer = createReducer(initialState, {
     LogoutUserRequest: (state) => {
         state.loading = true
     },
-    LogoutUserSuccess: (state, action) => {
+    LogoutUserSuccess: (state) => {
         state.loading = false;
         state.user = null;
         state.postOfFollowing= null;
@@ -112,6 +112,22 @@ export const updateProfileReducer = createReducer(initialState, {
         state.user = action.payload;
     },
     updateProfileFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearError: (state) => {
+        state.error = null;
+    }
+})
+export const getUserProfileReducer = createReducer(initialState, {
+    getUserProfileRequest: (state) => {
+        state.loading = true
+    },
+    getUserProfileSuccess: (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+    },
+    getUserProfileFailure: (state, action) => {
         state.loading = false;
         state.error = action.payload;
     },

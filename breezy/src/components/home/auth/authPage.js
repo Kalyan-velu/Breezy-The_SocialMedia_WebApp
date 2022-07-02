@@ -9,7 +9,7 @@ import {Container, Typography} from "@mui/material";
 
 
 
-const Register = React.lazy(() => import  ("./RegisterNew"));
+const Register = React.lazy(() => import  ("./register/RegisterNew"));
 const Login = React.lazy(() => import  ("./Login"));
 
 

@@ -157,3 +157,28 @@ export const deletePost=(id)=> async(dispatch)=>{
 
     }
 }
+
+export const getUserPosts=(id)=>async(dispatch)=>{
+    try{
+        dispatch({
+            type:'userPostsRequest'
+        })
+        const {data}=await axiosInstance.get(
+            `/user/post/${id}`
+        )
+        dispatch({
+            type:'userPostsSuccess',
+            payload:data.sortedPosts
+        })
+        console.log(data.sortedPosts)
+    }   catch(e){
+        await dispatch({
+            type:'userPostsFailure',
+            payload:e.response.data.message
+        })
+        console.log(e.response.data.message)
+        dispatch({
+            type:'clearError'
+        })
+    }
+}

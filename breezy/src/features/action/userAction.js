@@ -318,3 +318,51 @@ export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
         })
     }
 }
+
+export const getUserProfile=(id)=>async(dispatch)=>{
+    try{
+        dispatch({
+            type:'getUserProfileRequest'
+        })
+        const {data}=await axiosInstance.get(
+            `/user/${id}`
+        )
+        dispatch({
+            type:'getUserProfileSuccess',
+            payload:data.user
+        })
+        console.log(`Data:${data}`)
+    }   catch(e){
+        console.log(e)
+        await dispatch({
+            type:'getUserProfileFailure',
+            payload:e.response.data.message
+        })
+        dispatch({
+            type:'clearError'
+        })
+    }
+}
+
+export const followUser=(id)=>async(dispatch)=>{
+    try{
+        dispatch({
+            type:'followRequest'
+        })
+        const {data}=await axiosInstance.get(
+            `/follow/${id}`
+        )
+        dispatch({
+            type:'followSuccess',
+            payload:data.message
+        })
+    }catch (e) {
+        await dispatch({
+            type:'followFailure',
+            payload:e.response.data.message
+        })
+        dispatch({
+            type:'clearError'
+        })
+    }
+}

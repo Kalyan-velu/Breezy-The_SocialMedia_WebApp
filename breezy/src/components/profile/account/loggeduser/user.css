@@ -2,10 +2,9 @@
     width: 100%;
     height: auto;
     margin: 10px;
-    background-color: white;
+    background-color: #dddee6;
     display: flex;
     align-items: center;
-
 }
 
 .list {

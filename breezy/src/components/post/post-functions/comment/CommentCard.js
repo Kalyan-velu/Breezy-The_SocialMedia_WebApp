@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCommentOnPost} from "../../../../features/action/postAction";
 import {getFollowingPosts, getMyPosts, loadUser} from "../../../../features/action/userAction";
-import '../../../profile/account/user.css'
+import '../../../profile/account/loggeduser/user.css'
 import {pink} from "@mui/material/colors";
 
 
@@ -37,7 +37,7 @@ const CommentCard = ({
         <div className={'container'}>
             <div className={'list'}>
                 <Avatar
-                    src={`chrome://branding/content/about-logo.png`}
+                    src={avatar}
                     alt={name}
                     sx={{
                         width: '50px',

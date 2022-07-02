@@ -137,3 +137,44 @@ export const myPostsReducer = createReducer(initialState, {
         state.error = null;
     }
 }  )
+
+export const userPostsReducer = createReducer(initialState, {
+    userPostsRequest: (state) => {
+        state.loading = true;
+    },
+    userPostsSuccess: (state, action) => {
+        state.loading = false;
+        state.posts = action.payload;
+    },
+    userPostsFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearMessage: (state) => {
+        state.message = null;
+    },
+    clearError: (state) => {
+        state.error = null;
+    }
+}  )
+
+export const followReducer = createReducer(initialState, {
+    followRequest: (state) => {
+        state.loading = true;
+    },
+    followSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+        state.fetchAgain=true
+    },
+    followFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearMessage: (state) => {
+        state.message = null;
+    },
+    clearError: (state) => {
+        state.error = null;
+    }
+}  )

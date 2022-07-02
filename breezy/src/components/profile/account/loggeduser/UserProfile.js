@@ -2,21 +2,21 @@ import React, {Suspense, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import './user.css'
-import {getMyPosts} from "../../../features/action/userAction";
-import { Sections} from "../../styledComponents/HomeStyled";
+import {getMyPosts} from "../../../../features/action/userAction";
+import { Sections} from "../../../styledComponents/HomeStyled";
 import {
     StyledBox,
     AccountDetails,
     List,
     StyledAvatar, StyledContainer, StyledBoxUpdate, StyledBoxNewPost
-} from "../../styledComponents/UserAccountStyled";
-import Loader from "../../styledComponents/loader/Loader";
-import User from "../User";
-import UpdateProfile from "../account/updateprofile/UpdateProfile";
-import Modal from "../../post/NewPost/NewPostModal";
+} from "../../../styledComponents/UserAccountStyled";
+import Loader from "../../../styledComponents/loader/Loader";
+import User from "../../User";
+import UpdateProfile from "../updateprofile/UpdateProfile";
+import Modal from "../../../post/NewPost/NewPostModal";
 import {useNavigate} from "react-router-dom";
 const Post=React.lazy(()=>
-    import( "../../post/Post"));
+    import( "../../../post/Post"));
 
 const UserProfile = () => {
     const [errorAlert, setErrorAlert] = React.useState('')
@@ -58,7 +58,7 @@ const UserProfile = () => {
                             src={user.avatar.url}
                             alt={user.name}
                             title={user.name}
-                            onClick={() => navigate('/user/profile')}
+                            onClick={() => navigate(`/user/${user._id}/profile`)}
                         />
 
                         <List>

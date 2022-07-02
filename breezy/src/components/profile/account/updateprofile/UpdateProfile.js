@@ -1,11 +1,11 @@
 import React from'react';
-import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
 import {IconButton, Tooltip} from "@mui/material";
 import {RefreshOutlined} from "@mui/icons-material";
-import {Component} from "../../../styledComponents/UserAccountStyled";
+import {Component, StyledButtons} from "../../../styledComponents/UserAccountStyled";
+import {useSelector} from "react-redux";
 const UpdateProfile = ({fetchAgain,setFetchAgain}) => {
-
+    const {user} = useSelector(state => state.user)
     const setFetchAgainH=()=> {
             setFetchAgain(!fetchAgain)
     };
@@ -14,28 +14,18 @@ const UpdateProfile = ({fetchAgain,setFetchAgain}) => {
             <div style={{
                 flexGrow:1
             }}/>
-            <Link to={'/user/profile'}>
-            <Button
+            <Link to={`/${user._id}/profile`}>
+            <StyledButtons
 
             >
-                Update Name
-            </Button>
+                Update Credentials
+            </StyledButtons>
             </Link>
             <div style={{flexGrow:1}}/>
-            <Link to={'/user/profile'}>
-            <Button
-
-            >
-                Update Email
-            </Button>
-            </Link>
-            <div style={{flexGrow:1}}/>
-            <Link to={'/user/forgot-password'}>
-            <Button
-                onClick={()=>setFetchAgainH}
-            >
-                Reset Password
-            </Button>
+            <Link to={`/${user._id}/forgot-password`}>
+            <StyledButtons>
+                Update Password
+            </StyledButtons>
             </Link>
             <div style={{flexGrow:1}}/>
 

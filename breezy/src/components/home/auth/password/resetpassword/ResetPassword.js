@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from "react";
 import {Button, Checkbox, FormControlLabel, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {resetPassword} from "../../../../features/action/userAction";
+import {resetPassword} from "../../../../../features/action/userAction";
 import {Link, useParams} from "react-router-dom";
 import "./ResetPassword.css";
 

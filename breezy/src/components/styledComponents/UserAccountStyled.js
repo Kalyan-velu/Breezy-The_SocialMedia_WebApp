@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { styled as muiStyled } from '@mui/system';
 import {Box} from "@mui/system";
-import {Avatar, Container} from "@mui/material";
+import {Avatar, Button, Container} from "@mui/material";
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -91,16 +91,36 @@ export const Component=styled.div`
 export const StyledBoxNewPost=styled(Box)`
   grid-column: span 3 /span 3;
   margin: 20px auto;
-  width: 10%;
-  background-color: #fff;
-  z-index: 59;
+  width: 60%;
+  background: #dddee6;
+  
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
   display: grid;
   grid-template-columns: repeat(1,minmax(0,1fr));
   @media (max-width: 480px) {
-    width:25%;
-    border-radius: 50%;
+    width:100%
+  }
+    svg{
+    height: 50px;
+    width: 50px;
+    '&:hover': {
+        color: #00bcd4;
+        transform-style: preserve-3d;
+  }
   }
     `
+export const StyledButtons=muiStyled(Button)({
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  color:'#111',
+})

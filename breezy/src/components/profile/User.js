@@ -1,5 +1,5 @@
 import React from 'react'
-import './account/user.css'
+import './account/loggeduser/user.css'
 import {Avatar, IconButton, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import SendIcon from '@mui/icons-material/Send';
@@ -11,7 +11,7 @@ const User = ({userId, name, avatar}) => {
             <div className={'list'}>
                 <Avatar
                     title={name}
-                    src={`avatar`}
+                    src={avatar}
                     alt={name}
                 />
                 <Link to={`/user/${userId}`}>

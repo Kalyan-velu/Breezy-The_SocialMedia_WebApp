@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./UpadatePassword.css";
-import {Typography, Button, FormControlLabel, Checkbox} from "@mui/material";
+import {Typography,FormControlLabel, Checkbox} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {updatePassword} from "../../../../features/action/userAction";
+import {StyledButton} from "../../../styledComponents/PostModalStyled";
 
 
 const UpdatePassword = () => {
@@ -61,9 +62,11 @@ const UpdatePassword = () => {
                     }
                     label="Show Password"
                 />
-                <Button disabled={loading} type="submit">
+                <div className={'update-password-btn'}>
+                <StyledButton fullWidth disabled={loading} type="submit">
                     Change Password
-                </Button>
+                </StyledButton>
+                </div>
             </form>
         </div>
     );
