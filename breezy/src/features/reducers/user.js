@@ -135,3 +135,22 @@ export const getUserProfileReducer = createReducer(initialState, {
         state.error = null;
     }
 })
+export const searchUsersReducer = createReducer(initialState, {
+    searchUsersRequest: (state) => {
+        state.loading = true
+    },
+    searchUsersSuccess: (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+    },
+    searchUsersFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearUsers:(state)=>{
+        state.users=null
+    },
+    clearError: (state) => {
+        state.error = null;
+    }
+})

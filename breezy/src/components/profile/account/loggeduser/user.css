@@ -1,10 +1,14 @@
 .container {
-    width: 100%;
+    width: 95%;
     height: auto;
     margin: 10px;
+    border-radius: 10px;
     background-color: #dddee6;
     display: flex;
     align-items: center;
+}
+.container:hover{
+    transition: transform 150ms ease-out;
 }
 
 .list {
@@ -12,6 +16,7 @@
     align-items: center;
     margin: inherit;
 }
+
 
 .list a {
     text-decoration: none;

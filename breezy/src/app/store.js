@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {
     getUserProfileReducer,
-    postOfFollowingReducer,
+    postOfFollowingReducer, searchUsersReducer,
     specificUsersReducer,
     updateProfileReducer,
     userReducer
@@ -19,6 +19,7 @@ export const store = configureStore({
         updateProfile:updateProfileReducer,
         userPosts:userPostsReducer,
         getUserProfile:getUserProfileReducer,
-        follow:followReducer
+        follow:followReducer,
+        search:searchUsersReducer
     },
 });

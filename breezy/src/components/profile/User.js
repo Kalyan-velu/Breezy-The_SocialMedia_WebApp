@@ -1,12 +1,12 @@
 import React from 'react'
 import './account/loggeduser/user.css'
-import {Avatar, IconButton, Typography} from "@mui/material";
+import {Avatar,  Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import SendIcon from '@mui/icons-material/Send';
+
 
 const User = ({userId, name, avatar}) => {
     return (
-        <div className={'container'}>
+        <div className={'container'} key={userId}>
 
             <div className={'list'}>
                 <Avatar
@@ -26,11 +26,6 @@ const User = ({userId, name, avatar}) => {
                         </Typography>
                     </div>
                 </Link>
-                <div className={'icon'}>
-                    <IconButton>
-                        <SendIcon/>
-                    </IconButton>
-                </div>
             </div>
         </div>
     )

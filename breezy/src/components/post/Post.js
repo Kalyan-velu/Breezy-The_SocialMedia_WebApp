@@ -9,7 +9,6 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../features/action/postAction";
 import Alert from "@mui/material/Alert";
-import {getFollowingPosts, getMyPosts} from "../../features/action/userAction";
 import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "../styledComponents/PostStyled";
 const DeleteAndEdit =React.lazy(()=>
     import("./post-functions/deletepost/DeleteAndEdit"));

@@ -416,9 +416,12 @@ exports.searchUser = async (req, res) => {
         } : {};
         //Not to show current logged-in User
         const users = await User.find(keyword).find({_id: {$ne: req.user._id}})
-        res.send(users)
+        res.status(200).json({
+            success: true,
+            users
+        })
     } catch (e) {
-        return res.status(500).json({
+         res.status(500).json({
             success: false,
             message: e.message
         })

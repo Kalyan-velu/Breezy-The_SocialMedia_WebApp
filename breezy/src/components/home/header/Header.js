@@ -1,15 +1,22 @@
 import React, {useState} from 'react'
 import AddIcon from '@mui/icons-material/Add';
-import {HomeIcon} from "@heroicons/react/solid"
+import {HomeIcon, SearchIcon} from "@heroicons/react/solid"
 import {Link} from "react-router-dom";
 import {
     AccountCircle,
     AccountCircleOutlined,
     HomeOutlined,
     Notifications,
-    NotificationsOutlined
+    NotificationsOutlined, SearchOutlined
 } from "@mui/icons-material";
-import {Container, ImageContainer, Logo, NavMenu, RightContainer, Wrapper} from "../../styledComponents/HeaderStyled";
+import {
+    Container,
+    ImageContainer,
+    Logo,
+    NavMenu,
+    RightContainer,
+    Wrapper
+} from "../../styledComponents/HeaderStyled";
 import {useSelector} from "react-redux";
 
 const Header = () => {
@@ -25,7 +32,6 @@ const Header = () => {
                         <span>Breezy</span>
                     </Logo>
                 </ImageContainer>
-               
                 <RightContainer>
 
                     <NavMenu>
@@ -37,6 +43,11 @@ const Header = () => {
                         <Link to={'/'} onClick={() => setTab('/')}>
                             {
                                 tab === "/" ? <HomeIcon/> : <HomeOutlined/>
+                            }
+                        </Link>
+                        <Link to={'/search'} onClick={() => setTab('/search')}>
+                            {
+                                tab === "/search" ? <SearchIcon/> : <SearchOutlined/>
                             }
                         </Link>
 

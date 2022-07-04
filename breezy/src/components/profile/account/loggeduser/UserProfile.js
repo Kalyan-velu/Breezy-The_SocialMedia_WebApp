@@ -12,8 +12,10 @@ import {
 } from "../../../styledComponents/UserAccountStyled";
 import Loader from "../../../styledComponents/loader/Loader";
 import User from "../../User";
-import UpdateProfile from "../updateprofile/UpdateProfile";
-import Modal from "../../../post/NewPost/NewPostModal";
+const UpdateProfile =React.lazy(()=>
+    import( "../updateprofile/UpdateProfile"));
+const Modal =React.lazy(()=>
+    import( "../../../post/NewPost/NewPostModal"));
 import {useNavigate} from "react-router-dom";
 const Post=React.lazy(()=>
     import( "../../../post/Post"));
@@ -53,14 +55,12 @@ const UserProfile = () => {
     return (
         <StyledContainer>
             <StyledBox>
-
                         <StyledAvatar
                             src={user.avatar.url}
                             alt={user.name}
                             title={user.name}
                             onClick={() => navigate(`/user/${user._id}/profile`)}
                         />
-
                         <List>
                             <Typography
                                 fontWeight={700}

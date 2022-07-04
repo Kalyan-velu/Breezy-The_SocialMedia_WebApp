@@ -90,14 +90,14 @@ exports.likeAndUnlikePost = async (req, res) => {
             await post.save()
             return res.status(200).json({
                 success: true,
-                message: "unliked"
+                message: "Unliked Post"
             })
         } else {
             post.likes.push(req.user._id)
             await post.save()
             return res.status(200).json({
                 success: true,
-                message: "liked"
+                message: "Liked Post"
             })
         }
     } catch (e) {

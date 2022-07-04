@@ -1,13 +1,12 @@
 import React from 'react'
-import {alpha, Button, CircularProgress, Dialog, DialogTitle, IconButton, TextField, Typography} from "@mui/material";
+import {alpha, Button, CircularProgress, Dialog, DialogTitle, IconButton, TextField} from "@mui/material";
 import {Delete, Edit, Update} from "@mui/icons-material";
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {styled as muiStyled} from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {deletePost, updateCaption} from "../../../../features/action/postAction";
-import {getMyPosts} from "../../../../features/action/userAction";
 
 
 const ITEM_HEIGHT = 48;

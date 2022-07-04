@@ -5,7 +5,9 @@ import{alpha,styled as styles} from '@mui/material/styles'
 import Button from "@mui/material/Button";
 import { Input, InputBase} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+
 export const Container = styled.div`
+  font-family: 'Monoton', cursive;;
   position: fixed;
   top: 0;
   left: 0;

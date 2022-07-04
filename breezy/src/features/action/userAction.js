@@ -366,3 +366,29 @@ export const followUser=(id)=>async(dispatch)=>{
         })
     }
 }
+
+export const searchUsers = (search) => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'searchUsersRequest'
+        })
+        //fetching data from server
+        const {data} = await axiosInstance.get(                                    // post request to server
+            `?search=${search}`,
+        );
+        console.log(data)
+        await dispatch({                                                         //dispatching the token to the reducer
+            type: 'searchUsersSuccess',
+            payload: data.users,
+        })
+    } catch (e) {
+        await dispatch({
+            type: 'searchUsersFailure',
+            payload: e.response.data.message,
+        })
+        dispatch({
+            type:'clearError',
+        })
+
+    }
+}

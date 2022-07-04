@@ -11,7 +11,7 @@ import {Sections} from "../../../styledComponents/HomeStyled";
 import Loader from "../../../styledComponents/loader/Loader";
 import User from "../../User";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import {followUser, getUserProfile} from "../../../../features/action/userAction";
 import Post from "../../../post/Post";
 import {getUserPosts} from "../../../../features/action/postAction";
@@ -32,14 +32,11 @@ const OtherProfiles = () => {
     const dispatch=useDispatch()
     const[fetchAgain,setFetchAgain] = useState(false)
 
-    const handleAlertClose = () => {
-        setAlertOpen(false);
-    };
     useEffect(() => {
         dispatch(getUserPosts(params.id))
         dispatch(getUserProfile(params.id))
         console.log("Fetching Again....")
-    }, [fetchAgain,setFetchAgain,params.id,])
+    }, [fetchAgain,setFetchAgain,params.id,dispatch])
 
     useEffect(() => {
         if (likeError) {
@@ -75,11 +72,11 @@ const OtherProfiles = () => {
             if(user){
                 user.followers.map(follower => {
                     if(follower._id===me._id){
-                        setFollowing(true)
+                        return setFollowing(true)
                     }
                 })
             }else{
-                setFollowing(false)
+                return setFollowing(false)
             }
         },[user,me])
 
@@ -191,6 +188,7 @@ const OtherProfiles = () => {
 
                    </Sections>
                </>)}
+
                <Dialog fullWidth maxWidth={'xs'} open={followersToggle} onClose={() => setFollowersToggle(!followersToggle)}>
                <DialogTitle sx={{textAlign:'center'}}>
                    <Typography fontWeight={500} variant="h5">Followers</Typography>

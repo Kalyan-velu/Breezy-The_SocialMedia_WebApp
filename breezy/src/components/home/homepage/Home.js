@@ -5,6 +5,7 @@ import Loader from "../../styledComponents/loader/Loader";
 import {Typography} from "@mui/material";
 import {Container, Section, Sections} from "../../styledComponents/HomeStyled";
 
+
 const Post=React.lazy(()=>
     import( "../../post/Post"));
 const LoggedInUser=React.lazy(()=>
@@ -13,20 +14,36 @@ const LoggedInUser=React.lazy(()=>
 
 function Home() {
     const dispatch = useDispatch();
+    const [fetchAgain, setFetchAgain] = React.useState(false);
     const {loading, posts, error} = useSelector((state) => state.postOfFollowing);
-    useSelector((state) => state.user);
     const {user} = useSelector(state => state.user)
 
 
     useEffect(() => {
         dispatch(getFollowingPosts())
-    }, []);
+    }, [fetchAgain]);
 
 
     return loading === true ? (
         <Loader/>
     ) : (
         <Container>
+            <Section>
+                <div>
+                    <Suspense fallback={<Loader/>}>
+                        <LoggedInUser
+                            userId={user._id}
+                            avatar={user.avatar.url}
+                            name={user.name}
+                            email={user.email}
+                            followers={user.followers}
+                            following={user.following}
+                            posts={user.posts}
+                        />
+                    </Suspense>
+                </div>
+
+            </Section>
             <Sections>
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
@@ -42,7 +59,8 @@ function Home() {
                             comments={post.comments}
                             createdAt={post.createdAt}
                             postId={post._id}
-
+                            setFetchAgain={setFetchAgain}
+                            fetchAgain={fetchAgain}
                         />
                         </Suspense>))
                 ) : (
@@ -51,21 +69,6 @@ function Home() {
                     </Typography>
                 )}
             </Sections>
-            <Section>
-                <div>
-                    <Suspense fallback={<Loader/>}>
-                    <LoggedInUser
-                        userId={user._id}
-                        avatar={user.avatar.url}
-                        name={user.name}
-                        email={user.email}
-                        followers={user.followers}
-                        following={user.following}
-                        posts={user.posts}
-                    />
-                    </Suspense>
-                </div>
-            </Section>
         </Container>
 
     )
