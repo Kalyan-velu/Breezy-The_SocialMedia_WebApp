@@ -61,6 +61,9 @@ const Post = ({
 
     const handleAlertClose = () => {
         setAlertOpen(false);
+        dispatch({
+            type:'clearMessage'
+        })
     };
 
     const handleLike = async () => {
@@ -208,7 +211,6 @@ const Post = ({
             </PostFooterFirst>
 
             <PostDetails  >
-
                 <List>
                     {comments.length > 0 ? (
                         <CommentShort

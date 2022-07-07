@@ -5,10 +5,10 @@ import {Link} from "react-router-dom";
 import {
     AccountCircle,
     AccountCircleOutlined,
-    HomeOutlined,
-    Notifications,
-    NotificationsOutlined, SearchOutlined
+    HomeOutlined, SearchOutlined
 } from "@mui/icons-material";
+import EmailIcon from '@mui/icons-material/Email';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import {
     Container,
     ImageContainer,
@@ -22,6 +22,8 @@ import {useSelector} from "react-redux";
 const Header = () => {
     const [tab, setTab] = useState("/")
     const{user}=useSelector((state)=>state.user)
+
+
 
     return (
         <Container>
@@ -51,9 +53,9 @@ const Header = () => {
                             }
                         </Link>
 
-                        <Link to={'/notifications'} onClick={() => setTab('/notifications')}>
+                        <Link to={'/chat/:id'} onClick={() => setTab('/chat/:id')}>
                             {
-                                tab === "/notifications" ? <Notifications/> : <NotificationsOutlined/>
+                                tab === "/chat/:id" ? <EmailIcon/> : <MailOutlineIcon/>
                             }
                         </Link>
 

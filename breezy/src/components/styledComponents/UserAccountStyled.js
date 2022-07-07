@@ -124,3 +124,18 @@ export const StyledButtons=muiStyled(Button)({
   ].join(','),
   color:'#111',
 })
+export const UserContainer = muiStyled(Box)({
+  width: '95%',
+  height: 'auto',
+  margin: '10px',
+  borderRadius: '10px',
+backgroundColor: '#dddee6',
+display: 'flex',
+alignItems: 'center',
+  '&:hover': {
+    transform: 'scale(1.05)',
+    transition: 'all 0.3s ease-in-out',
+    cursor: 'pointer',
+    backgroundColor: '#fff',
+  }
+})

@@ -11,13 +11,16 @@ import {Sections} from "../../../styledComponents/HomeStyled";
 import Loader from "../../../styledComponents/loader/Loader";
 import User from "../../User";
 import {useDispatch, useSelector} from "react-redux";
-import { useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {followUser, getUserProfile} from "../../../../features/action/userAction";
 import Post from "../../../post/Post";
 import {getUserPosts} from "../../../../features/action/postAction";
+import {accessChat, setSelectedChat} from "../../../../features/action/chatAction";
 
 const OtherProfiles = () => {
     const params=useParams()
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
     const [errorAlert, setErrorAlert] = React.useState('')
     const [messageAlert, setMessageAlert] = React.useState('')
     const [alertOpen, setAlertOpen] = useState(false);
@@ -29,7 +32,8 @@ const OtherProfiles = () => {
     const {loading, posts, error} = useSelector((state) => state.userPosts);
     const {error:likeError, message} = useSelector((state) => state.like)
     const{error:followError, message:followMessage} = useSelector((state) => state.follow)
-    const dispatch=useDispatch()
+    const{chat}=useSelector(state=>state.chats)
+
     const[fetchAgain,setFetchAgain] = useState(false)
 
     useEffect(() => {
@@ -38,16 +42,6 @@ const OtherProfiles = () => {
         console.log("Fetching Again....")
     }, [fetchAgain,setFetchAgain,params.id,dispatch])
 
-    useEffect(() => {
-        if (likeError) {
-            setAlertOpen(true)
-            setErrorAlert(likeError)
-        }
-        if (message) {
-            setAlertOpen(true)
-            setMessageAlert(message)
-        }
-    }, [error, message]);
 
     function followHandle() {
         setFollowing(!following)
@@ -66,7 +60,15 @@ const OtherProfiles = () => {
           setAlertOpen(true)
           setMessageAlert(followMessage)
       }
-    },[followError,followMessage])
+        if (likeError) {
+            setAlertOpen(true)
+            setErrorAlert(likeError)
+        }
+        if (message) {
+            setAlertOpen(true)
+            setMessageAlert(message)
+        }
+    },[followError,followMessage,error, message])
 
     useEffect(() => {
             if(user){
@@ -80,6 +82,12 @@ const OtherProfiles = () => {
             }
         },[user,me])
 
+
+   async function directMessage() {
+       await dispatch(accessChat(params.id))
+        await dispatch(setSelectedChat(chat))
+        navigate(`/chat/${chat._id}`)
+    }
 
     return (
        <StyledContainer>
@@ -99,6 +107,13 @@ const OtherProfiles = () => {
                                }}
                            >
                                {following?'Unfollow':'Follow'}
+                           </Button>
+                       </List>
+                       <List>
+                           <Button
+                               onClick={directMessage}
+                           >
+                               message
                            </Button>
                        </List>
                        <List>

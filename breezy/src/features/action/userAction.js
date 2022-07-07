@@ -81,9 +81,7 @@ export const registerUser = ({name,email,password,avatar}) =>
                 type: 'RegisterSuccess',
                 payload: data.user
             })
-            console.log(data.user)
         } catch (e) {
-            console.log(e)
            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: e.response.data.message,
@@ -331,7 +329,6 @@ export const getUserProfile=(id)=>async(dispatch)=>{
             type:'getUserProfileSuccess',
             payload:data.user
         })
-        console.log(`Data:${data}`)
     }   catch(e){
         console.log(e)
         await dispatch({
@@ -391,4 +388,9 @@ export const searchUsers = (search) => async (dispatch) => {
         })
 
     }
+}
+export const fetchAgain=() =>  (dispatch) => {
+    dispatch({
+        type:'FETCH_AGAIN'
+    })
 }

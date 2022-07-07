@@ -1,3 +1,4 @@
+const express = require("express");
 const {isAuthenticated} = require("../middleware/auth");
 const {
     accessChat,
@@ -7,7 +8,7 @@ const {
     addToGroup,
     removeFromGroup
 } = require("../controllers/chatControllers");
-const router = require('express').Router()
+const router = express.Router();
 
 
 router.route(`/`).post(isAuthenticated, accessChat)

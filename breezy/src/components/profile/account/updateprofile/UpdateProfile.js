@@ -3,11 +3,13 @@ import {Link} from "react-router-dom";
 import {IconButton, Tooltip} from "@mui/material";
 import {RefreshOutlined} from "@mui/icons-material";
 import {Component, StyledButtons} from "../../../styledComponents/UserAccountStyled";
-import {useSelector} from "react-redux";
-const UpdateProfile = ({fetchAgain,setFetchAgain}) => {
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAgain} from "../../../../features/action/userAction";
+const UpdateProfile = () => {
+    const dispatch=useDispatch()
     const {user} = useSelector(state => state.user)
     const setFetchAgainH=()=> {
-            setFetchAgain(!fetchAgain)
+            dispatch(fetchAgain())
     };
     return (
         <Component >

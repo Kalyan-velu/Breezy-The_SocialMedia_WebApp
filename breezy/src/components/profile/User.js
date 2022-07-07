@@ -1,20 +1,23 @@
 import React from 'react'
 import './account/loggeduser/user.css'
 import {Avatar,  Typography} from "@mui/material";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {UserContainer} from "../styledComponents/UserAccountStyled";
 
 
 const User = ({userId, name, avatar}) => {
+    const navigate=useNavigate()
+    const goTo=()=>{
+        navigate(`/user/${userId}`)
+    }
     return (
-        <div className={'container'} key={userId}>
-
+        <UserContainer onClick={goTo} key={userId}>
             <div className={'list'}>
                 <Avatar
                     title={name}
                     src={avatar}
                     alt={name}
                 />
-                <Link to={`/user/${userId}`}>
                     <div className={'user-details'}>
                         <Typography
                             fontWeight={600}
@@ -25,9 +28,9 @@ const User = ({userId, name, avatar}) => {
                             {name}
                         </Typography>
                     </div>
-                </Link>
+
             </div>
-        </div>
+        </UserContainer>
     )
 }
 export default User;

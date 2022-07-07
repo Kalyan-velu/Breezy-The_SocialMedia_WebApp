@@ -16,7 +16,7 @@ const server = app.listen(process.env.PORT, () => {
 })
 
 const io = require('socket.io')(server, {
-    pingTimeout: 60000,
+    pingTimeout: 60000, // 60 seconds
     cors: {
         origin: "*"
     }
@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
         if (!chat.users) return
         console.log("chat.users not defined")
 
-        //not to send same message back to the sender
+        //not to send same chat-styles back to the sender
         chat.users.forEach(user => {
             if (user._id === newMessageReceived.sender._id) return;
             socket.in(user._id).emit("message received", newMessageReceived)

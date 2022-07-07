@@ -27,7 +27,8 @@ const UserProfile=React.lazy(()=>
     import("./components/profile/account/loggeduser/UserProfile"));
 const OtherProfiles =React.lazy(()=>
     import("./components/profile/account/otherusers/OtherProfiles"));
-
+const ChatPage =React.lazy(()=>
+    import  ("./components/messaging/allchats/ChatPage"));
 function App() {
     const dispatch = useDispatch()
     useEffect(() => {
@@ -74,6 +75,17 @@ function App() {
                                          <AuthPage/>
                                    </Suspense>}
                     />
+                    <Route path={'/chat/:id'}
+                           element=
+                               {isAuthenticated ?
+                                   <Suspense fallback={<Loader />}>
+                                       <ChatPage/>
+                                   </Suspense>
+                                   :
+                                   <Suspense fallback={<Loader />}>
+                                       <AuthPage/>
+                                   </Suspense>}
+                    />
 
                     <Route path={`/user/:id`}
                            element={isAuthenticated ?
@@ -98,7 +110,6 @@ function App() {
                                </Suspense>
                                </ErrorBoundary>:
                                <AuthPage/> }/>
-
                     <Route path={"*"} element={<NotFound/>}/>
                 </Routes>
             </div>

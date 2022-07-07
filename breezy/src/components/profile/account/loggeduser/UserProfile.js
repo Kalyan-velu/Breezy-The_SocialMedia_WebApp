@@ -12,11 +12,11 @@ import {
 } from "../../../styledComponents/UserAccountStyled";
 import Loader from "../../../styledComponents/loader/Loader";
 import User from "../../User";
+import {useNavigate} from "react-router-dom";
 const UpdateProfile =React.lazy(()=>
     import( "../updateprofile/UpdateProfile"));
 const Modal =React.lazy(()=>
     import( "../../../post/NewPost/NewPostModal"));
-import {useNavigate} from "react-router-dom";
 const Post=React.lazy(()=>
     import( "../../../post/Post"));
 
@@ -29,6 +29,7 @@ const UserProfile = () => {
     const {user} = useSelector(state => state.user)
     const {loading, posts, error} = useSelector((state) => state.myPosts);
     const {error:likeError, message} = useSelector((state) => state.like)
+    const {fetch}=useSelector((state)=>state.fetch)
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const[fetchAgain,setFetchAgain] = useState(false)
@@ -39,7 +40,7 @@ const UserProfile = () => {
     useEffect(() => {
         dispatch(getMyPosts())
         console.log("Fetching Again....")
-    }, [dispatch,fetchAgain])
+    }, [dispatch,fetch])
 
     useEffect(() => {
         if (likeError) {
@@ -122,8 +123,7 @@ const UserProfile = () => {
             </StyledBox>
             <StyledBoxUpdate>
                  <UpdateProfile
-                     setFetchAgain={setFetchAgain}
-                     fetchAgain={fetchAgain}
+                     fetch={fetch}
                  />
             </StyledBoxUpdate>
             <StyledBoxNewPost>

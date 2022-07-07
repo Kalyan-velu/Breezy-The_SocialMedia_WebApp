@@ -2,6 +2,7 @@ import {createReducer} from "@reduxjs/toolkit";
 
 const initialState = {
     isAuthenticated: false,
+    fetch:false
 }
 
 export const userReducer = createReducer(initialState, {
@@ -153,4 +154,9 @@ export const searchUsersReducer = createReducer(initialState, {
     clearError: (state) => {
         state.error = null;
     }
+})
+export const fetchReducer=createReducer(initialState, {
+    FETCH_AGAIN:(state)=>{
+        state.fetch=!state.fetch
+    },
 })

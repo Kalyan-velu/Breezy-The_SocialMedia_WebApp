@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {
+    fetchReducer,
     getUserProfileReducer,
     postOfFollowingReducer, searchUsersReducer,
     specificUsersReducer,
@@ -7,6 +8,7 @@ import {
     userReducer
 } from "../features/reducers/user";
 import {followReducer, likeReducer, myPostsReducer, userPostsReducer} from "../features/reducers/Post";
+import {accessChat} from "../features/reducers/ChatReducers";
 
 
 export const store = configureStore({
@@ -20,6 +22,8 @@ export const store = configureStore({
         userPosts:userPostsReducer,
         getUserProfile:getUserProfileReducer,
         follow:followReducer,
-        search:searchUsersReducer
+        search:searchUsersReducer,
+        fetch:fetchReducer,
+        chats:accessChat
     },
 });

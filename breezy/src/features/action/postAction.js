@@ -8,16 +8,21 @@ export const likePost = (id) => async (dispatch) => {
         const {data} = await axiosInstance.get(
             `/post/${id}`
         )
-        dispatch({
+        await dispatch({
             type: 'likeSuccess',
             payload: data.message
         })
-
+        dispatch({
+            type:'clearMessage',
+        })
 
     } catch (e) {
-        dispatch({
+       await dispatch({
             type: 'likeFailure',
             payload: e.data.message
+        })
+        dispatch({
+            type: 'clearError',
         })
     }
 }

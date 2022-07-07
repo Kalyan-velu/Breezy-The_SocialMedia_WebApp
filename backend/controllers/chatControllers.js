@@ -159,11 +159,12 @@ const removeFromGroup = async (request, response) => {
         response.json(removed)
     }
 }
+
 module.exports = {
     accessChat: expressAsyncHandler(accessChat),
     fetchChats: expressAsyncHandler(fetchChats),
     createGroupChat: expressAsyncHandler(createGroupChat),
     renameGroupChat: expressAsyncHandler(renameGroupChat),
     addToGroup: expressAsyncHandler(addToGroup),
-    removeFromGroup: expressAsyncHandler(removeFromGroup)
+    removeFromGroup: expressAsyncHandler(removeFromGroup),
 }
