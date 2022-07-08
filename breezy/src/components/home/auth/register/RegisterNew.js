@@ -74,7 +74,7 @@ const RegisterNew=()=>{
        if(errorRegister){
            setLoading(false)
            setOpen(true)
-           setError(errorRegister)
+           setError("User already exists")
        }
     }, [loadingRegister,messageRegister,errorRegister]);
 

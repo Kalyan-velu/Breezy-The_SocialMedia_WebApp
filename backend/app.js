@@ -25,6 +25,7 @@ app.use(allowCrossDomain);
 
 
 //Import routes
+const router = require('./routes/adminRouter')
 const userRoutes = require('./routes/user.routes')
 const postRoutes = require('./routes/post.router')
 const followRoutes = require('./routes/followAndUnfollowRoutes')
@@ -33,10 +34,11 @@ const messageRoutes = require('./routes/messageRoutes')
 
 
 //use routes
-
+app.use('/admin', router)
 app.use('/api/v1/', userRoutes)
 app.use(`/api/v1/`, followRoutes)
 app.use(`/api/v1/`, postRoutes)
+
 
 
 //chat routes
