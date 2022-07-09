@@ -98,7 +98,13 @@ function App() {
                                       <AuthPage/>
                                </Suspense>}
                     />
-                    <Route path={isAuthenticated?`/user/${user._id}/profile`:`/user/profile`} element={isAuthenticated ?<SetProfilePic/>: <AuthPage/>}/>
+                    <Route path={isAuthenticated?`/user/${user._id}/profile`:`/user/profile`}
+                           element={isAuthenticated ?
+                               <ErrorBoundary fallback={<Error/>}>
+                                   <Suspense fallback={<Loader />}>
+                               <SetProfilePic/>
+                                   </Suspense>
+                               </ErrorBoundary>: <AuthPage/>}/>
                     <Route path={isAuthenticated?`/user/${user._id}/forgot-password`:`/user/forgot-password`} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
                     <Route path={'/upload/password'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>

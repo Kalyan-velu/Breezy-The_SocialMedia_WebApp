@@ -13,6 +13,8 @@ import {
 import Loader from "../../../styledComponents/loader/Loader";
 import User from "../../User";
 import {useNavigate} from "react-router-dom";
+import {ErrorBoundary} from "react-error-boundary";
+import Error from "../../../styledComponents/loader/Error";
 const UpdateProfile =React.lazy(()=>
     import( "../updateprofile/UpdateProfile"));
 const Modal =React.lazy(()=>
@@ -54,6 +56,7 @@ const UserProfile = () => {
     }, [error, message]);
 
     return (
+        <ErrorBoundary fallback={<Error/>}>
         <StyledContainer>
             <StyledBox>
                         <StyledAvatar
@@ -120,11 +123,14 @@ const UserProfile = () => {
                                 </Typography>
                             </Button>
                             </AccountDetails>
+
             </StyledBox>
             <StyledBoxUpdate>
-                 <UpdateProfile
-                     fetch={fetch}
-                 />
+                <Suspense fallback={<Loader />}>
+                    <UpdateProfile
+                        fetch={fetch}
+                    />
+                </Suspense>
             </StyledBoxUpdate>
             <StyledBoxNewPost>
                             <Modal
@@ -203,7 +209,7 @@ const UserProfile = () => {
                 </DialogContent>
             </Dialog>
         </StyledContainer>
-
+        </ErrorBoundary>
 
     )
 }

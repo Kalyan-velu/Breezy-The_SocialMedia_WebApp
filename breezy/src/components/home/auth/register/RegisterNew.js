@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
+import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from "@mui/material";
 import {registerUser} from "../../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import LoadingButton from "@mui/lab/LoadingButton";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-
+import '../password/resetpassword/ResetPassword.css'
 
 
 const Alert = React.forwardRef( function Alert(props, ref) {
@@ -91,25 +91,26 @@ const RegisterNew=()=>{
 
     return(
         <Grid style={gridStyle}>
+            <div className={'avatar-container'}>
+            <Avatar
+                src={avatar}
+                alt={"User"}
+                title={"User"}
+                sx={{
+                    width: '100px',
+                    height: '100px',
+                    ':hover': {
+                        cursor: "pointer",
+                    }
+                }}
+                onClick={() => filePicker.current.click()}
+            />
+            </div>
             <Paper
                 elevation={0}
                 style={paperStyle}>
                 <div style={styleField}>
                     <form onSubmit={onSubmit}>
-                        <div className={'avatar-container'}>
-                        <Avatar
-                            src={avatar}
-                            alt={"User"}
-                            title={"User"}
-                            sx={{
-                                width: '100px',
-                                height: '100px',
-                                ':hover': {
-                                    cursor: "pointer",
-                                }
-                            }}
-                            onClick={() => filePicker.current.click()}
-                        />
                         <input
                             type="file"
                             onChange={selectedPhoto}
@@ -117,10 +118,11 @@ const RegisterNew=()=>{
                             name="file" id="file"
                             hidden
                         />
-                        </div>
+
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
+                        size={"small"}
                         name='name'
                         label='Username'
                         fullWidth
@@ -130,6 +132,7 @@ const RegisterNew=()=>{
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
+                        size={"small"}
                         name='email'
                         label='Email'
                         value={email}
@@ -139,6 +142,7 @@ const RegisterNew=()=>{
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
+                        size={"small"}
                         name='password'
                             type={showPassword ? 'text': 'password'}
                         label='Password'
@@ -150,6 +154,7 @@ const RegisterNew=()=>{
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
+                        size={"small"}
                         type={showPassword ? 'text': 'password'}
                         name={"confirm password"}
                         value={confirmPassword}
@@ -171,16 +176,6 @@ const RegisterNew=()=>{
                             justifyContent: "center",
                             padding: "15px"
                         }}>
-
-                            <LoadingButton
-                                type='submit'
-                                style={btnStyle}
-                                variant='outlined'
-
-                                onClick={(e)=>onSubmit({e,name,email,password,avatar})}
-                            >
-                                Register
-                            </LoadingButton>
                         </div>
                     </form>
                     <Grid align='center'>
@@ -198,6 +193,23 @@ const RegisterNew=()=>{
                     </Grid>
                 </div>
             </Paper>
+            <Grid align='center'>
+                <Typography
+                    variant='caption'
+                    color={"secondary"}
+                >Fill the form to create a new account
+                </Typography>
+            </Grid>
+            <Grid align='center'>
+                <LoadingButton
+                    type='submit'
+                    style={btnStyle}
+                    variant='outlined'
+                    onClick={(e)=>onSubmit({e,name,email,password,avatar})}
+                >
+                    Register
+                </LoadingButton>
+            </Grid>
         </Grid>
     )
 }

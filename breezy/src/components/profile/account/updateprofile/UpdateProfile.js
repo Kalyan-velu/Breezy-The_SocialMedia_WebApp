@@ -16,21 +16,12 @@ const UpdateProfile = () => {
             <div style={{
                 flexGrow:1
             }}/>
-            <Link to={`/${user._id}/profile`}>
-            <StyledButtons
-
-            >
-                Update Credentials
-            </StyledButtons>
-            </Link>
-            <div style={{flexGrow:1}}/>
-            <Link to={`/${user._id}/forgot-password`}>
+            <Link to={`/user/${user._id}/profile`}>
             <StyledButtons>
-                Update Password
+                Settings
             </StyledButtons>
             </Link>
             <div style={{flexGrow:1}}/>
-
             <IconButton
                 disableFocusRipple disableRipple
                 disableTouchRipple onClick={()=>setFetchAgainH()}

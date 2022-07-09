@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const Post = require('../models/post.model');
 const {sendEmail} = require("../middleware/sendEmail");
 const crypto = require('crypto');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 exports.register = async (req, res) => {
     try {
         //get the user data from the request
@@ -15,9 +15,10 @@ exports.register = async (req, res) => {
                 message: 'User already exists'
             })
         }
-        console.log(avatar)//uploading the avatar to cloudinary
-        const myCloud = await cloudinary.v2.uploader.upload(avatar,{
-            folder: "avatars"
+        //uploading the avatar to cloudinary
+        const myCloud = await cloudinary.uploader.upload(avatar,{
+            folder: "avatars",
+            quality: "50"     //reduce the quality of image
         })
         //create a new user
         user = await User.create({

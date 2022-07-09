@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import '../loggeduser/user.css'
 import {Upload} from "@mui/icons-material";
 import {loadUser, updateProfile} from "../../../../features/action/userAction";
+import {Link} from "react-router-dom";
+import {StyledButtons} from "../../../styledComponents/UserAccountStyled";
 
 const SetProfilePic=()=>{
     const filePicker = useRef(null)
@@ -88,6 +90,12 @@ const SetProfilePic=()=>{
                 endIcon={<Upload/>}>
                 {loading?'Uploading':'Upload'}
             </StyledPicButton>
+                <Link to={`/user/${user._id}/forgot-password`}>
+                    <StyledButtons>
+                        Update Password
+                    </StyledButtons>
+                </Link>
+                <div style={{flexGrow:1}}/>
             </form >
         </div>
     )
