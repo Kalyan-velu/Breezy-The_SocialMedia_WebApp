@@ -46,9 +46,18 @@ const {notFound, errorHandler} = require("./middleware/errorMiddleware");
 
 app.use(notFound)
 app.use(errorHandler)
-app.use(express.static(path.join(__dirname, '../breezy/build')))    //static files
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../breezy/build/index.html'))    //static files
-})
+
+const __dirname1 = path.resolve()
+if (process.env.NODE_ENV === 'production') {
+	app.use( express.static( path.join( __dirname1, '../breezy/build' ) ) )
+
+	app.get( '*', (request, response) => {
+		response.sendFile( path.resolve( __dirname1, "../breezy", "build", "index.html" ) )
+	} )
+} else {
+	app.get( "/", (request, response) => {
+		response.json( {message: "Server is Up"} );
+	} );
+}
 
 module.exports = app

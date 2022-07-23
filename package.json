@@ -5,8 +5,8 @@
   "main": "backend/Server.js",
   "content-type": "application/javascript;charset=utf-8",
   "scripts": {
-    "dev": "nodemon backend/Server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix breezy && npm run build --prefix breezy"
+    "run": "nodemon",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix breezy && yarn run build --prefix breezy "
   },
   "author": "",
   "license": "ISC",
