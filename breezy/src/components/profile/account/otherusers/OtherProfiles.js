@@ -8,7 +8,7 @@ import {
 } from "../../../styledComponents/UserAccountStyled";
 import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import {Sections} from "../../../styledComponents/HomeStyled";
-import Loader from "../../../styledComponents/loader/Loader";
+import Loader from "../../../styledComponents/error-handlers/Loader";
 import User from "../../User";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";

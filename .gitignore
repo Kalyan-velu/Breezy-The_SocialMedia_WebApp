@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /breezy/node_modules
-/backend/config
+/backend/config/config.env
 
 /breezy/.pnp
 /breezy/.pnp.js
@@ -16,11 +16,11 @@
 /breezy/build
 
 # misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+/breezy/.DS_Store
+/breezy/.env.local
+/breezy/.env.development.local
+/breezy/.env.test.local
+/breezy/.env.production.local
 
 npm-debug.log*
 yarn-debug.log*

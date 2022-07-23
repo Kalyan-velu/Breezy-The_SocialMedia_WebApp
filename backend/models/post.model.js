@@ -5,7 +5,10 @@ const postSchema = new mongoose.Schema({
     image: {
         public_id: String,
         url: String,
-    }, //image is a string of the image url
+    },
+    /*
+    image is a string of the image url
+    */
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

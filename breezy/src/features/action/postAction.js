@@ -98,7 +98,9 @@ export const createNewPost=(caption,image)=> async(dispatch)=>{
             type:'newPostSuccess',
             payload:data.message
         })
+        console.log(data)
     }catch(e){
+        console.log(e)
         await dispatch({
             type:'newPostFailure',
             payload:e.response.data.message
@@ -150,14 +152,14 @@ export const deletePost=(id)=> async(dispatch)=>{
             payload:data.message
         })
         console.log(data.message)
+        dispatch({
+
+        })
     }catch (e) {
         console.log(e.response.data.message)
         await dispatch({
             type:'deletePostFailure',
             payload:e.response.data.message
-        })
-        dispatch({
-            type:'clearError'
         })
 
     }

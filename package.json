@@ -6,7 +6,7 @@
   "content-type": "application/javascript;charset=utf-8",
   "scripts": {
     "dev": "nodemon backend/Server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix breezy && npm run build --prefix breezy"
   },
   "author": "",
   "license": "ISC",

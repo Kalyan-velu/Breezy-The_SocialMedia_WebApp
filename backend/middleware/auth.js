@@ -11,7 +11,9 @@ exports.isAuthenticated = async (req, res, next) => {
         }
         const decoded = await jwt.verify(token, process.env.SECRET_KEY)
         req.user = await User.findById(decoded._id)
+
         next();
+
     } catch (e) {
        return res.status(500).json({
             message: e.message

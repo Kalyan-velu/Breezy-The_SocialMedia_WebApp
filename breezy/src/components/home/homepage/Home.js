@@ -1,7 +1,7 @@
 import React, {useEffect, Suspense} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {getFollowingPosts} from "../../../features/action/userAction";
-import Loader from "../../styledComponents/loader/Loader";
+import Loader from "../../styledComponents/error-handlers/Loader";
 import {Typography} from "@mui/material";
 import {Container, Section, Sections} from "../../styledComponents/HomeStyled";
 

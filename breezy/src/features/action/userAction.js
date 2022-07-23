@@ -51,6 +51,7 @@ export const loadUser = () =>
             })
 
         } catch (e) {
+            console.log(e)
             dispatch({
                 type: 'LoadUserFailure',
                 payload: e.response.data.message,
@@ -82,6 +83,7 @@ export const registerUser = ({name,email,password,avatar}) =>
                 payload: data.user
             })
         } catch (e) {
+            console.log(e)
            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: e.response.data.message,
@@ -108,6 +110,7 @@ export const getFollowingPosts = () => async (dispatch) => {
         })
 
     } catch (e) {
+        console.log(e)
         dispatch({
             type: 'postOfFollowingFailed',
             payload: e.response.data.message,

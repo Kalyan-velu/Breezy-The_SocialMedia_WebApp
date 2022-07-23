@@ -1,12 +1,13 @@
 const Post = require('../models/post.model')
 const User = require('../models/user.model')
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 
 exports.createPost = async (req, res) => {
     try {
-        const myCloud = await cloudinary.v2.uploader.upload(req.body.image,{
+        const myCloud = await cloudinary.uploader.upload(req.body.image,{
             folder: "posts",
+            quality: "60",
         });
         const newPostData = {
             caption: req.body.caption,
@@ -25,9 +26,7 @@ exports.createPost = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Post created successfully',
-
         })
-
     } catch (error) {
          res.status(500).json({
             success: false,
@@ -54,7 +53,7 @@ exports.deletePost = async (req, res) => {
                 success: false
             })
         }
-        await cloudinary.v2.uploader.destroy(post.image.public_id)
+        await cloudinary.uploader.destroy(post.image.public_id)
         //deleting post
         await post.remove()
         //deleting post from user
@@ -111,7 +110,8 @@ exports.likeAndUnlikePost = async (req, res) => {
 exports.getPostsOfFollowing = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).populate('following') //populate following
-        const posts = await Post.find({owner: {$in: user.following}}).populate("owner likes comments.user")//finding posts of all users user is following
+        const posts = await Post.find({owner: {$in: user.following}})
+            .populate("owner likes comments.user")//finding posts of all users user is following
         //sorting posts by date
         const sortedPosts = posts.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt)
@@ -137,7 +137,7 @@ exports.updateCaption = async (req, res) => {
                 message: "Post not found",
             })
         }
-        if (post.owner.toString() !== req.user._id.toString()) {
+        if (post.owner.toString() !== req.user._id.toString()) { //post owner is not same as user
             return res.status(401).json({
                 success: false,
                 message: "You are not authorized to update this post"
@@ -225,9 +225,9 @@ exports.deleteComment = async (req, res) => {
                     message: "Comment Id is required"
                 })
             }
-            post.comments.forEach((item, index) => {
+            post.comments.forEach((item, index) => {    //finding comment by id
                 if (item._id.toString() === req.body.commentId.toString()) {
-                    return post.comments.splice(index, 1)
+                    return post.comments.splice(index, 1)   //deleting comment
                 }
             })
             await post.save()
@@ -236,7 +236,7 @@ exports.deleteComment = async (req, res) => {
                 message: "Selected Comment has been Deleted"
             })
         } else {
-            post.comments.forEach((item, index) => {
+            post.comments.forEach((item, index) => { //checking if comment is of user
                 if (item.user.toString() === req.user._id.toString()) {
                     return post.comments.splice(index, 1)
                 }

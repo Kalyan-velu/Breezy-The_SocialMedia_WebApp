@@ -17,7 +17,7 @@ const sendMessage = async (request, response) => {
     }
     //Querying data
     try {
-        var message = await Message.create(newMessage);
+        var message = await Message.create(newMessage);     //create new message
         //populating instance of mongoose
         message = await message.populate('sender', "name avatar")
         message = await message.populate('chat')
@@ -26,7 +26,7 @@ const sendMessage = async (request, response) => {
             select: "name  email avatar"
         });
 
-        await Chat.findByIdAndUpdate(request.body.chatId, {
+        await Chat.findByIdAndUpdate(request.body.chatId, { //updating chat with the latest message
             latestMessage: message,
         });
         response.json(message)
@@ -39,7 +39,7 @@ const sendMessage = async (request, response) => {
 
 const allMessages = async (request, response) => {
     try {
-        const messages = await Message.find({chat: request.params.chatId})
+        const messages = await Message.find({chat: request.params.chatId})  //find all messages in chat
             .populate("sender", "name avatar email")
             .populate("chat")
 

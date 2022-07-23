@@ -3,12 +3,21 @@ const Post = require('../models/post.model');
 const {sendEmail} = require("../middleware/sendEmail");
 const crypto = require('crypto');
 const cloudinary = require('cloudinary').v2;
-exports.register = async (req, res) => {
+
+
+exports.register = async (req, res) => {                //register
     try {
         //get the user data from the request
         const {name, email, password,avatar} = req.body;
+        if(!avatar){
+            return res.status(400).json({
+                success: false,
+                message: 'Add A Profile Picture'
+            })
+        }
         //see if user already exists
         let user = await User.findOne({email});
+        console.log(user)
         if (user) {
             return res.status(400).json({
                 success: false,
@@ -55,7 +64,9 @@ exports.register = async (req, res) => {
         })
     }
 }
-exports.login = async (req, res) => {
+
+
+exports.login = async (req, res) => {           //login
     try {
         //get the user data from the request
         const {email, password} = req.body;
@@ -104,7 +115,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.logout = async (req, res) => {
+exports.logout = async (req, res) => {        //logout
     try {
         res.clearCookie("token");
         return res.status(200).json({
@@ -122,7 +133,7 @@ exports.logout = async (req, res) => {
 }
 
 //Update
-exports.updatePassword = async (req, res) => {
+exports.updatePassword = async (req, res) => {          //update password
     try {
         //get the user data from the request
         const {oldPassword, newPassword} = req.body;
@@ -158,7 +169,7 @@ exports.updatePassword = async (req, res) => {
     }
 }
 
-exports.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res) => {           //update profile
     try {
         //get the user data from the request
         const {name, email,avatar} = req.body;
@@ -176,9 +187,10 @@ exports.updateProfile = async (req, res) => {
 
         if(avatar) {
             try {
-                await cloudinary.v2.uploader.destroy(user.avatar.public_id)
-                const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-                folder: "avatars"
+                await cloudinary.uploader.destroy(user.avatar.public_id)                //delete the old avatar
+                const myCloud = await cloudinary.uploader.upload(avatar, {
+                folder: "avatars",
+                quality: "50"                                           //reduce the quality of image
             })
             user.avatar.public_id = myCloud.public_id;
             user.avatar.url = myCloud.secure_url;
@@ -205,7 +217,7 @@ exports.updateProfile = async (req, res) => {
     }
 }
 
-exports.deleteProfile = async (req, res) => {
+exports.deleteProfile = async (req, res) => {           //delete profile
     try {
         const user = await User.findById(req.user._id);
         const posts = await Post.find({user: user._id});
@@ -275,7 +287,7 @@ exports.deleteProfile = async (req, res) => {
     }
 }
 
-exports.myProfile = async (req, res) => {
+exports.myProfile = async (req, res) => {           //my profile
     try {
         //get the user from the request
         const user = await User.findById(req.user._id).populate("posts following followers"); //populate the posts
@@ -408,7 +420,7 @@ exports.searchUser = async (req, res) => {
             $or: [
                 {
                     //matching patterns with  regex
-                    name: {$regex: req.query.search, $options: "i"}
+                    name: {$regex: req.query.search, $options: "i"}             //i for case insensitive
                 },
                 {
                     email: {$regex: req.query.search, $options: "i"}
@@ -432,8 +444,8 @@ exports.getMyPosts = async (req, res) => {
     try{
         const user = await User.findById(req.user._id)
         const posts=[]
-        for(let i=0;i<user.posts.length;i++){
-            const post = await Post.findById(user.posts[i]).populate(
+        for(let i=0;i<user.posts.length;i++){                       //getting all the posts of the user
+            const post = await Post.findById(user.posts[i]).populate(     //populate the comments,likes
                 "comments.user likes owner")
             posts.push(post)
         }

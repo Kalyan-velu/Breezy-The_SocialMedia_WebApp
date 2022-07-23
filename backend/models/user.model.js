@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto')
 
-const userSchema = new mongoose.Schema({
+
+const userSchema = new mongoose.Schema({                      //Defining Schema for user
     name: {
         type: String,
         required: [
@@ -57,6 +58,10 @@ const userSchema = new mongoose.Schema({
             ref: 'User'
         }
     ],
+    isAdmin:{
+        type:Boolean,
+        default:false,
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 

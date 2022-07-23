@@ -10,11 +10,11 @@ import {
     List,
     StyledAvatar, StyledContainer, StyledBoxUpdate, StyledBoxNewPost
 } from "../../../styledComponents/UserAccountStyled";
-import Loader from "../../../styledComponents/loader/Loader";
+import Loader from "../../../styledComponents/error-handlers/Loader";
 import User from "../../User";
 import {useNavigate} from "react-router-dom";
 import {ErrorBoundary} from "react-error-boundary";
-import Error from "../../../styledComponents/loader/Error";
+import Error from "../../../styledComponents/error-handlers/Error";
 const UpdateProfile =React.lazy(()=>
     import( "../updateprofile/UpdateProfile"));
 const Modal =React.lazy(()=>

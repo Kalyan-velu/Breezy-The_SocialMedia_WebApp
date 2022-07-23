@@ -1,5 +1,5 @@
 export const getSender = (loggedUser, users) => {
-	return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+	return users[0]._id === loggedUser._id ? users[1].name : users[0].name; //
 }
 export const getSenderProfilePic=(loggedUser,users)=>{
 	return users[0]._id === loggedUser._id ? users[1].avatar.url : users[0].avatar.url;

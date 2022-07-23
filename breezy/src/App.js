@@ -4,10 +4,10 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {loadUser} from "./features/action/userAction";
 import Home from "./components/home/homepage/Home";
-import Loader from "./components/styledComponents/loader/Loader";
-import NotFound from "./components/styledComponents/loader/NotFound";
+import Loader from "./components/styledComponents/error-handlers/Loader";
+import NotFound from "./components/styledComponents/error-handlers/NotFound";
 import {ErrorBoundary} from "react-error-boundary";
-import Error from "./components/styledComponents/loader/Error";
+import Error from "./components/styledComponents/error-handlers/Error";
 
 const SetProfilePic =React.lazy(()=>
     import ( "./components/profile/account/updateprofile/SetPic"));
@@ -105,9 +105,15 @@ function App() {
                                <SetProfilePic/>
                                    </Suspense>
                                </ErrorBoundary>: <AuthPage/>}/>
-                    <Route path={isAuthenticated?`/user/${user._id}/forgot-password`:`/user/forgot-password`} element={isAuthenticated ? <UpdatePassword/> : <ForgotPassword/> }/>
+                    <Route path={isAuthenticated?`/user/${user._id}/forgot-password`:`/user/forgot-password`}
+                           element={isAuthenticated ?
+                               <ErrorBoundary fallback={<Error/>}>
+                               <Suspense fallback={<Loader />}>
+                                 <UpdatePassword/>
+                               </Suspense>
+                               </ErrorBoundary>
+                                   : <ForgotPassword/> }/>
                     <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
-                    <Route path={'/upload/password'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
                     <Route path={'/search'}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error />}>
