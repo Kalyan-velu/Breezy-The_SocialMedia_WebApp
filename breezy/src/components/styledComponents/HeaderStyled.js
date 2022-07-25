@@ -25,7 +25,8 @@ export const Logo = styled.div`
   color: #0a1217;
 
   span {
-    font-family: 'Mochiy Pop P One', 'sans-serif'
+    font-family: 'Mochiy Pop P One', 'sans-serif';
+    font-size: 1.5rem;
   }`
 export const RightContainer = styled.div`
 display: flex;

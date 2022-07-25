@@ -67,3 +67,6 @@ export const PostFooterFirst = styled.div`
 	display: flex;
 	justify-content: space-around;
 `
+export const PostSection = styled.div`
+  width: 100%;    
+`

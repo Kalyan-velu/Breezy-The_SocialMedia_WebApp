@@ -8,7 +8,7 @@ import "./ResetPassword.css";
 
 const ResetPassword =() =>{
     const [newPassword,setNewPassword] =useState("");
-    const { error, loading, message } = useSelector((state) => state.like);
+    const { error, loading, message } = useSelector((state) => state.password);
     const [showPassword, setShowPassword] = React.useState(false);
     const dispatch = useDispatch();
     const params = useParams()

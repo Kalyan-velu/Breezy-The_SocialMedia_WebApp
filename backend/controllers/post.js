@@ -7,7 +7,7 @@ exports.createPost = async (req, res) => {
     try {
         const myCloud = await cloudinary.uploader.upload(req.body.image,{
             folder: "posts",
-            quality: "60",
+            quality: "50",
         });
         const newPostData = {
             caption: req.body.caption,

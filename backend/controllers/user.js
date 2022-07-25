@@ -9,7 +9,7 @@ exports.register = async (req, res) => {                //register
     try {
         //get the user data from the request
         const {name, email, password,avatar} = req.body;
-        if(!avatar){
+        if(avatar===null){
             return res.status(400).json({
                 success: false,
                 message: 'Add A Profile Picture'
@@ -17,7 +17,6 @@ exports.register = async (req, res) => {                //register
         }
         //see if user already exists
         let user = await User.findOne({email});
-        console.log(user)
         if (user) {
             return res.status(400).json({
                 success: false,
@@ -224,7 +223,7 @@ exports.deleteProfile = async (req, res) => {           //delete profile
         const followers = user.followers;
         const following = user.following;
 
-        await user.remove();
+
         //logout user
         res.cookie("token", null,
             {expires: new Date(0)},
@@ -272,7 +271,7 @@ exports.deleteProfile = async (req, res) => {           //delete profile
             }
             await post.save();
         }
-
+        await user.remove();
         return res.status(200).json({
             success: true,
             message: "Profile deleted"

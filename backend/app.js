@@ -42,22 +42,22 @@ app.use(`/api/v1/`, postRoutes)
 app.use("/api/v1/chat", chatRoutes)
 app.use("/api/v1/message", messageRoutes)
 //error handlers
-const {notFound, errorHandler} = require("./middleware/errorMiddleware");
 
-app.use(notFound)
-app.use(errorHandler)
 
-const __dirname1 = path.resolve()
+
 if (process.env.NODE_ENV === 'production') {
-	app.use( express.static( path.join( __dirname1, '../breezy/build' ) ) )
+	app.use( express.static( path.join( __dirname, '../breezy','build' ) ) )
 
 	app.get( '*', (request, response) => {
-		response.sendFile( path.resolve( __dirname1, "../breezy", "build", "index.html" ) )
+		response.sendFile( path.join( __dirname, "../breezy", "build", "index.html" ) )
 	} )
 } else {
 	app.get( "/", (request, response) => {
 		response.json( {message: "Server is Up"} );
 	} );
 }
+const {notFound, errorHandler} = require("./middleware/errorMiddleware");
 
+app.use(notFound)
+app.use(errorHandler)
 module.exports = app

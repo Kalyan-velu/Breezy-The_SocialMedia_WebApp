@@ -94,11 +94,13 @@ export const createNewPost=(caption,image)=> async(dispatch)=>{
                 }
             }
         )
-        dispatch({
+        await dispatch({
             type:'newPostSuccess',
             payload:data.message
         })
-        console.log(data)
+        dispatch({
+            type:'clearMessage'
+        })
     }catch(e){
         console.log(e)
         await dispatch({

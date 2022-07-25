@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import "./UpadatePassword.css";
-import {Typography,FormControlLabel, Checkbox} from "@mui/material";
+import "./UpdatePassword.css";
+import {FormControlLabel, Checkbox} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {updatePassword} from "../../../../features/action/userAction";
 import {StyledButton} from "../../../styledComponents/PostModalStyled";
+import Typography  from '@mui/joy/Typography';
+import ErrorSnackbar from "../../../styledComponents/error-message/ErrorMessage";
 
 
 const UpdatePassword = () => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [error, setError] = useState(null);
+    const[success,setSuccess]=React.useState(null)
+    const [ openE, setOpenE ] = React.useState( false );
+    const [ openS, setOpenS ] = React.useState( false );
     const [showPassword, setShowPassword] = React.useState(false);
     const dispatch = useDispatch();
-
-
-    const { error, loading, message } = useSelector((state) => state.like);
+    const { error:updateError, loading, message } = useSelector((state) => state.password);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -21,16 +25,16 @@ const UpdatePassword = () => {
     };
 
     useEffect(() => {
-        if (error) {
-            console.log(error);
-            dispatch({ type: "clearErrors" });
+        if (updateError) {
+            setOpenE(true);
+            setError(updateError);
         }
 
         if (message) {
-            console.log(message);
-            dispatch({ type: "clearMessage" });
+            setOpenS(true);
+            setSuccess(message);
         }
-    }, [dispatch, error, console, message]);
+    }, [dispatch,message,updateError]);
 
     return (
         <div className="updatePassword">
@@ -61,6 +65,14 @@ const UpdatePassword = () => {
                         <Checkbox onChange={()=>setShowPassword(!showPassword)} name="jason"/>
                     }
                     label="Show Password"
+                />
+                <ErrorSnackbar
+                    openS={openS}
+                    setOpenS={setOpenS}
+                    openE={openE}
+                    setOpenE={setOpenE}
+                    error={error}
+                    success={success}
                 />
                 <div className={'update-password-btn'}>
                 <StyledButton fullWidth disabled={loading} type="submit">

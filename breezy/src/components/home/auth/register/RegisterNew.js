@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography} from "@mui/material";
+import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
+import Typography from '@mui/joy/Typography';
 import {registerUser} from "../../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import LoadingButton from "@mui/lab/LoadingButton";
-import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 import '../password/resetpassword/ResetPassword.css'
+import ErrorSnackbar from "../../../styledComponents/error-message/ErrorMessage";
+import {InfoOutlined} from "@mui/icons-material";
 
-
-const Alert = React.forwardRef( function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-} );
 
 const RegisterNew=()=>{
     const [ open, setOpen ] = React.useState( false );
@@ -24,7 +21,6 @@ const RegisterNew=()=>{
     const[name, setName] = useState('');
     const[confirmPassword, setConfirmPassword] = useState('');
     const filePicker = React.useRef(null);
-    const [loading, setLoading] = useState(false);
     const {loading:loadingRegister,error:errorRegister,success:messageRegister}=useSelector(state=>state.user)
     const dispatch=useDispatch()
 
@@ -48,33 +44,23 @@ const RegisterNew=()=>{
         marginTop: 10,
         width: "50%"
     }
+
     function handleChange() {
         setShowPassword(!showPassword)
     }
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenS( false )
-        setOpen( false );
-    };
+
     const onSubmit = async ({e,name,email,password,avatar}) => {
         e.preventDefault()
         dispatch(registerUser({name, email, password, avatar}))
     }
     useEffect(() => {
-       if(loadingRegister){
-           setLoading(true)
-       }
        if(messageRegister){
-           setLoading(false)
            setOpenS(true)
            setSuccess('User registered successfully')
        }
        if(errorRegister){
-           setLoading(false)
            setOpen(true)
-           setError("User already exists")
+           setError(errorRegister)
        }
     }, [loadingRegister,messageRegister,errorRegister]);
 
@@ -117,6 +103,7 @@ const RegisterNew=()=>{
                             ref={filePicker}
                             name="file" id="file"
                             hidden
+                            required
                         />
 
                     <TextField
@@ -125,24 +112,29 @@ const RegisterNew=()=>{
                         size={"small"}
                         name='name'
                         label='Username'
+                        autoComplete={'off'}
                         fullWidth
                         value={name}
                         onChange={(e)=>setName(e.target.value)}
+                        required
                     />
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
                         size={"small"}
                         name='email'
+                        autoComplete={'off'}
                         label='Email'
                         value={email}
                         onChange={(e)=>setEmail(e.target.value)}
                         fullWidth
+                        required
                     />
                     <TextField
                         margin={"dense"}
                         padding={"dense"}
                         size={"small"}
+                        autoComplete={'off'}
                         name='password'
                             type={showPassword ? 'text': 'password'}
                         label='Password'
@@ -158,6 +150,7 @@ const RegisterNew=()=>{
                         type={showPassword ? 'text': 'password'}
                         name={"confirm password"}
                         value={confirmPassword}
+                        autoComplete={'off'}
                         label='Confirm Password'
                         onChange={(e)=>setConfirmPassword(e.target.value)}
                         fullWidth
@@ -178,25 +171,21 @@ const RegisterNew=()=>{
                         }}>
                         </div>
                     </form>
-                    <Grid align='center'>
-                        <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
-                            <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-                                {success}
-                            </Alert>
-                        </Snackbar>
-                        {error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                                    {error}
-                                </Alert>
-                            </Snackbar>
-                            : null}
-                    </Grid>
+                   <ErrorSnackbar
+                    openS={openS}
+                    openE={open}
+                    setOpenE={setOpen}
+                    setOpenS={setOpenS}
+                    error={error}
+                    success={success}
+                   />
                 </div>
             </Paper>
             <Grid align='center'>
                 <Typography
-                    variant='caption'
-                    color={"secondary"}
+                    level="body2"
+                    startDecorator={<InfoOutlined />}
+                    sx={{ alignItems: 'flex-start', maxWidth: 240, wordBreak: 'break-all' }}
                 >Fill the form to create a new account
                 </Typography>
             </Grid>
@@ -207,9 +196,10 @@ const RegisterNew=()=>{
                     variant='outlined'
                     onClick={(e)=>onSubmit({e,name,email,password,avatar})}
                 >
-                    Register
+                    {loadingRegister ? 'Registering...':'Register'}
                 </LoadingButton>
             </Grid>
+
         </Grid>
     )
 }

@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import {AddOutlined} from "@mui/icons-material";
 import {createNewPost} from "../../../features/action/postAction";
 import {useDispatch, useSelector} from "react-redux";
+import ErrorSnackbar from "../../styledComponents/error-message/ErrorMessage";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props}  />;
@@ -56,7 +57,11 @@ const Modal = ({
     const filePicker = useRef(null)
     const [selected, setSelected] = useState(null);
     const [open, setOpen] = React.useState(false);
-    const {loading, error, message} = useSelector((state) => state.like);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const [openE, setOpenE] = useState(false);
+    const [openS, setOpenS] = useState(false);
+    const {loading : addPostLoading, error:addPostError, message:successMessage} = useSelector((state) => state.like);
     const dispatch = useDispatch();
 
     const handleClickOpen = () => {
@@ -86,14 +91,17 @@ const Modal = ({
     };
 
     useEffect(() => {
-        if (error) {
-            dispatch({type:"clearErrors"});
+        if (addPostError) {
+            setOpenE(true)
+            setError(addPostError)
         }
-        if (message) {
+        if (successMessage) {
             setFetchAgain(!fetchAgain)
-            dispatch({type:"clearMessage"});
+            handleClose()
+            setOpenS(true)
+            setSuccess(successMessage)
         }
-    }, [error,message,]);
+    }, [addPostError,successMessage,setFetchAgain,fetchAgain]);
 
 
 
@@ -156,12 +164,20 @@ const Modal = ({
                         type={"submit"}
                         onClick={submit}
                     >
-                        {loading ? "Submitting" : "Submit"}
+                        {addPostLoading ? "Submitting" : "Submit"}
                     </StyledButton>
                 </Caption>
             </Wrapper>
         </Container>
         </BootstrapDialog>
+            <ErrorSnackbar
+                open={openE}
+                openS={openS}
+                error={error}
+                success={success}
+                setOpenE={setOpenE}
+                setOpenS={setOpenS}
+            />
         </div>
     )
 }

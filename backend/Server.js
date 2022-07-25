@@ -3,16 +3,18 @@ const {connectDatabase} = require("./config/database");
 const cloudinary = require("cloudinary").v2;
 
 connectDatabase()
-
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({path: 'backend/config/config.env'})
+}
 cloudinary.config({                     //cloudinary configuration
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
 } );
 
-
-const server = app.listen(process.env.PORT || 8000, () => {
-    console.log(`Server is running on port ${process.env.PORT}`)
+const PORT=process.env.PORT||8000
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 })
 
 const io = require('socket.io')(server, {   //socket.io configuration
@@ -37,7 +39,7 @@ io.on("connection", (socket) => {
     socket.on('typing', (room) => socket.in(room).emit("typing"))
     socket.on('stop typing', (room) => socket.in(room).emit("stop typing"))
 
-    socket.on('new message', (newMessageReceived) => {      //
+    socket.on('new message', (newMessageReceived) => {
         let chat = newMessageReceived.chat;
         if (!chat.users) return
         console.log("chat.users not defined")

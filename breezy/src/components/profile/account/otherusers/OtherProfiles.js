@@ -16,20 +16,22 @@ import {followUser, getUserProfile} from "../../../../features/action/userAction
 import Post from "../../../post/Post";
 import {getUserPosts} from "../../../../features/action/postAction";
 import {accessChat, setSelectedChat} from "../../../../features/action/chatAction";
+import ErrorSnackbar from "../../../styledComponents/error-message/ErrorMessage";
 
 const OtherProfiles = () => {
     const params=useParams()
     const dispatch=useDispatch()
     const navigate=useNavigate()
-    const [errorAlert, setErrorAlert] = React.useState('')
-    const [messageAlert, setMessageAlert] = React.useState('')
-    const [alertOpen, setAlertOpen] = useState(false);
+    const [errors, setErrors] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const [openE, setOpenE] = useState(false);
+    const [openS, setOpenS] = useState(false);
     const [followersToggle,setFollowersToggle] =useState(false);
     const [followingToggle,setFollowingToggle] =useState(false);
     const [following, setFollowing] = useState(false);
     const {user} = useSelector(state => state.getUserProfile)
     const {user:me} = useSelector(state => state.user)
-    const {loading, posts, error} = useSelector((state) => state.userPosts);
+    const {loading, posts} = useSelector((state) => state.userPosts);
     const {error:likeError, message} = useSelector((state) => state.like)
     const{error:followError, message:followMessage} = useSelector((state) => state.follow)
     const{chat}=useSelector(state=>state.chats)
@@ -50,25 +52,23 @@ const OtherProfiles = () => {
     }
     useEffect(() => {
       if (followError) {
-        setFollowing(false)
-          setAlertOpen(true)
-          setErrorAlert(followError)
-          console.log(followError)
+          setFollowing(false)
+          setOpenE(true)
+          setErrors(followError)
       }
       if(followMessage) {
-          console.log(followMessage)
-          setAlertOpen(true)
-          setMessageAlert(followMessage)
+          setOpenS(true)
+          setSuccess(followMessage)
       }
         if (likeError) {
-            setAlertOpen(true)
-            setErrorAlert(likeError)
+            setOpenE(true)
+            setErrors(likeError)
         }
         if (message) {
-            setAlertOpen(true)
-            setMessageAlert(message)
+            setOpenS(true)
+            setSuccess(message)
         }
-    },[followError,followMessage,error, message])
+    },[followError,followMessage,message,likeError])
 
     useEffect(() => {
             if(user){
@@ -227,7 +227,7 @@ const OtherProfiles = () => {
            </Dialog>
            <Dialog fullWidth maxWidth={'xs'} open={followingToggle} onClose={() => setFollowingToggle(!followingToggle)}>
                <DialogTitle sx={{textAlign:'center'}}>
-                   <Typography fontWeight={500} variant="h5">Followings</Typography>
+                   <Typography fontWeight={500} >Followings</Typography>
                </DialogTitle>
                <DialogContent>
                    <div>
@@ -239,12 +239,21 @@ const OtherProfiles = () => {
                                    avatar={following.avatar.url}
                                />
                            ))
-                       )  :  (
-                           <Typography>You have not following anyone</Typography>
-                       )}
+                       )  : null}
+                       {user && user.following.length === 0 && (
+                            <Typography >{user.name} have no followings</Typography>
+                          )}
                    </div>
                </DialogContent>
            </Dialog>
+           <ErrorSnackbar
+            openS={openS}
+            openE={openE}
+            setOpenS={setOpenS}
+            setOpenE={setOpenE}
+            success={success}
+            error={errors}
+           />
        </StyledContainer>
     )
 }

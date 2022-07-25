@@ -5,7 +5,7 @@ import {store} from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import ChatProvider from "./components/messaging/context/ChatProvider";
+import ChatProvider from "./components/context/ChatProvider";
 
 const container = document.getElementById('root');
 const root = createRoot(container);

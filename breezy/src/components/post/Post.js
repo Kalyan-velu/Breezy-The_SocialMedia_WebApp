@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import {
     Avatar,
-    Snackbar,
-    Stack,
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../features/action/postAction";
-import Alert from "@mui/material/Alert";
 import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "../styledComponents/PostStyled";
+import ErrorSnackbar from "../styledComponents/error-message/ErrorMessage";
+import {fetchAgain as fetch} from "../../features/action/userAction";
+
+
 const DeleteAndEdit =React.lazy(()=>
     import("./post-functions/deletepost/DeleteAndEdit"));
 const PostLikes=React.lazy(() =>
@@ -45,7 +46,8 @@ const Post = ({
     const [errorAlert, setErrorAlert] = React.useState('')
     const [messageAlert, setMessageAlert] = React.useState('')
     const[captionValue,setCaptionValue] = useState('');
-    const [alertOpen, setAlertOpen] = useState(false);
+    const [openE, setOpenE] = useState(false);
+    const [openS, setOpenS] = useState(false);
     const {error,loading, message} = useSelector((state) => state.like)
     const {user} = useSelector(state => state.user)
     const open = Boolean(anchorEl);
@@ -59,23 +61,18 @@ const Post = ({
         setAnchorEl(null);
     };
 
-    const handleAlertClose = () => {
-        setAlertOpen(false);
-        dispatch({
-            type:'clearMessage'
-        })
-    };
-
     const handleLike = async () => {
         setLiked(!liked);
         await dispatch(likePost(postId));
-        setFetchAgain(true);
+        dispatch(fetch())
+        setFetchAgain(!fetchAgain);
     }
 
     const addCommentHandler = async (e) => {
         e.preventDefault();
         await dispatch(addCommentOnPost(postId,commentValue));
-        setFetchAgain(true);
+        dispatch(fetch())
+        setFetchAgain(!fetchAgain);
     };
 
     useEffect(() => {
@@ -89,11 +86,11 @@ const Post = ({
 
     useEffect(() => {
         if (error) {
-            setAlertOpen(true)
+            setOpenE(true)
             setErrorAlert(error)
         }
         if (message) {
-            setAlertOpen(true)
+            setOpenS(true)
             setMessageAlert(message)
         }
     }, [error, message]);
@@ -196,6 +193,7 @@ const Post = ({
                 </div>
                 <div>
                     <CommentComponent
+                        key={postId}
                         postId={postId}
                         comments={comments}
                         commentToggle={commentToggle}
@@ -228,14 +226,14 @@ const Post = ({
                 </List>
 
             </PostDetails>
-
-            <Stack spacing={2} sx={{width: '100%'}}>
-                <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleAlertClose} severity="success" sx={{width: '100%'}}>
-                        {messageAlert}
-                    </Alert>
-                </Snackbar>
-            </Stack>
+                <ErrorSnackbar
+                    openE={openE}
+                    setOpenE={setOpenE}
+                    openS={openS}
+                    setOpenS={setOpenS}
+                    error={errorAlert}
+                    success={messageAlert}
+                />
             </div>
         </Container>
     )

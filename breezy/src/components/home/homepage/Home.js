@@ -4,10 +4,11 @@ import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../styledComponents/error-handlers/Loader";
 import {Typography} from "@mui/material";
 import {Container, Section, Sections} from "../../styledComponents/HomeStyled";
+import Post from "../../post/Post";
+import {ErrorBoundary} from "react-error-boundary";
+import Error from "../../styledComponents/error-handlers/Error";
 
 
-const Post=React.lazy(()=>
-    import( "../../post/Post"));
 const LoggedInUser=React.lazy(()=>
     import( "../../profile/account/LoggedInUser"));
 
@@ -15,13 +16,13 @@ const LoggedInUser=React.lazy(()=>
 function Home() {
     const dispatch = useDispatch();
     const [fetchAgain, setFetchAgain] = React.useState(false);
-    const {loading, posts, error} = useSelector((state) => state.postOfFollowing);
+    const {loading, posts} = useSelector((state) => state.postOfFollowing);
     const {user} = useSelector(state => state.user)
 
 
     useEffect(() => {
         dispatch(getFollowingPosts())
-    }, [fetchAgain]);
+    }, [fetchAgain,dispatch]);
 
 
     return loading === true ? (
@@ -30,6 +31,7 @@ function Home() {
         <Container>
             <Section>
                 <div>
+                    <ErrorBoundary fallback={<Error/>}>
                     <Suspense fallback={<Loader/>}>
                         <LoggedInUser
                             userId={user._id}
@@ -41,13 +43,15 @@ function Home() {
                             posts={user.posts}
                         />
                     </Suspense>
+                    </ErrorBoundary>
                 </div>
 
             </Section>
-            <Sections>
+            <Sections style={{
+                scrollbarWidth:'none'
+            }}>
                 {posts && posts.length > 0 ? (
                     posts.map((post) => (
-                        <Suspense key={post._id} fallback={<Loader/>}>
                         <Post
                             key={post._id}
                             ownerId={post.owner._id}
@@ -62,7 +66,7 @@ function Home() {
                             setFetchAgain={setFetchAgain}
                             fetchAgain={fetchAgain}
                         />
-                        </Suspense>))
+                        ))
                 ) : (
                     <Typography variant="h6" color="textSecondary" align="center" >
                         No posts to show

@@ -15,6 +15,9 @@ export const ChatContainer = styled.div`
   a{
     text-decoration: none;
   }
+  @media(max-width: 480px){
+    width: 100%;
+  }
 `
 export const ChatSection=styled.div`
   margin: 0 auto;
@@ -103,6 +106,11 @@ export const ChatContent=styled.div`
   justify-content: left;
   padding-left: 10px;
 `
-export const ChatList=styled.div`
-
+export const ChatBoxScroll=styled.div`
+  width: 100%;
+  overflow-y:auto ;
+  overflow-x: hidden;
+  @media(max-width: 480px){
+    width: 100%;
+  }
 `

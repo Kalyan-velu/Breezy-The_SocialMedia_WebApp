@@ -2,7 +2,8 @@ import {createReducer} from "@reduxjs/toolkit";
 
 const initialState = {
     isAuthenticated: false,
-    fetch:false
+    fetch:false,
+    loading:false
 }
 
 export const userReducer = createReducer(initialState, {
@@ -47,9 +48,6 @@ export const userReducer = createReducer(initialState, {
         state.error = action.payload;
         state.isAuthenticated = false
     },
-    clearError: (state) => {
-        state.error = null;
-    },
     LogoutUserRequest: (state) => {
         state.loading = true
     },
@@ -63,6 +61,25 @@ export const userReducer = createReducer(initialState, {
         state.loading = false;
         state.error = action.payload;
         state.isAuthenticated = true
+    },
+    DeleteAccountRequest: (state) => {
+        state.loading = true
+    },
+    DeleteAccountSuccess: (state,action) => {
+        state.loading = false;
+        state.user = null;
+        state.message=action.payload;
+        state.postOfFollowing= null;
+        state.isAuthenticated = false
+    },
+    DeleteAccountFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuthenticated = true
+    },
+
+    clearError: (state) => {
+        state.error = null;
     },
 })
 
@@ -110,11 +127,14 @@ export const updateProfileReducer = createReducer(initialState, {
     },
     updateProfileSuccess: (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.message = action.payload;
     },
     updateProfileFailure: (state, action) => {
         state.loading = false;
         state.error = action.payload;
+    },
+    clearMessage: (state) => {
+        state.message = null;
     },
     clearError: (state) => {
         state.error = null;
@@ -159,4 +179,45 @@ export const fetchReducer=createReducer(initialState, {
     FETCH_AGAIN:(state)=>{
         state.fetch=!state.fetch
     },
+})
+export const passwordReducer=createReducer(initialState, {
+    forgotPasswordRequest: (state) => {
+            state.loading = true;
+            },
+    forgotPasswordSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+    },
+    forgotPasswordFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    updatePasswordRequest: (state) => {
+        state.loading = true;
+    },
+    updatePasswordSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+    },
+    updatePasswordFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    resetPasswordRequest: (state) => {
+        state.loading = true;
+    },
+    resetPasswordSuccess: (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+    },
+    resetPasswordFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+    },
+    clearError: (state) => {
+        state.error = null;
+    },
+    clearMessage: (state) => {
+        state.message = null;
+    }
 })

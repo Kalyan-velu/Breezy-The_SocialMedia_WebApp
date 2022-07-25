@@ -32,14 +32,12 @@ const NewPost = () => {
     };
     useEffect(() => {
         if (error) {
-            console.log(error);
             dispatch({type:"clearErrors"});
         }
         if (message) {
-            console.log(message);
             dispatch({type:"clearMessage"});
         }
-    }, [dispatch,error,message,console]);
+    }, [dispatch,error,message]);
 
 
 

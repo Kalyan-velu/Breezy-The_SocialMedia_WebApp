@@ -4,13 +4,18 @@ import {IconButton, Tooltip} from "@mui/material";
 import {RefreshOutlined} from "@mui/icons-material";
 import {Component, StyledButtons} from "../../../styledComponents/UserAccountStyled";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAgain} from "../../../../features/action/userAction";
+import {DeleteMyAccount, fetchAgain, loadUser} from "../../../../features/action/userAction";
+
 const UpdateProfile = () => {
     const dispatch=useDispatch()
     const {user} = useSelector(state => state.user)
     const setFetchAgainH=()=> {
+            dispatch(loadUser())
             dispatch(fetchAgain())
     };
+    const DeleteAccount = () => {
+        dispatch(DeleteMyAccount())
+    }
     return (
         <Component >
             <div style={{
@@ -21,6 +26,11 @@ const UpdateProfile = () => {
                 Settings
             </StyledButtons>
             </Link>
+            <div style={{flexGrow:1}}/>
+                <StyledButtons onClick={DeleteAccount}>
+                    Delete Profile
+                </StyledButtons>
+
             <div style={{flexGrow:1}}/>
             <IconButton
                 disableFocusRipple disableRipple

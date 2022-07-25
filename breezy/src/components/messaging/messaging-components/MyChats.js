@@ -14,8 +14,6 @@ import Chats from "./Chats";
 import {Link} from "react-router-dom";
 import {fetchChat, setSelectedChat} from "../../../features/action/chatAction";
 
-
-
 const Alert = React.forwardRef( function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 } );
@@ -32,7 +30,7 @@ export default function MyChats({fetchAgain}) {
     /*Request to View Previous Chats*/
     useEffect( () => {
         dispatch(fetchChat())
-    }, [ fetchAgain ] );
+    }, [ fetchAgain,dispatch ] );
     console.log(chats)
 
 

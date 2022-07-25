@@ -1,14 +1,25 @@
 import {Avatar, Tooltip} from "@mui/material";
-import ScrollableFeed from "react-scrollable-feed";
 import {isLastMessage, isSameSender, isSameSenderMargin, isSameUser} from "../../../config/ChatLog";
-import {ChatState} from "../context/ChatProvider";
+import {ChatState} from "../../context/ChatProvider";
+import {ChatBoxScroll} from "../../styledComponents/chat-styles/ChatSections";
+import * as React from "react";
 
 
-const ScrollableChat = ({messages}) => {
+	const ScrollableChat = ({messages}) => {
 	const {user} = ChatState();
+	const bottomRef = React.useRef(null);
+
+
+	React.useEffect( () => {
+		bottomRef.current?.scrollIntoView({behavior: "smooth",block: "end"})
+	},[messages])
 
 	return (
-		<ScrollableFeed style={{width:'100%'}}>
+		<ChatBoxScroll
+			style={{
+			scrollbarWidth:'none'
+			}}
+		>
 			{messages &&
 				messages.map( (m, i) => (
 					<div style={{display: "flex"}} key={m._id}>
@@ -37,11 +48,14 @@ const ScrollableChat = ({messages}) => {
 								padding: "5px 15px",
 							}}
 						>
-              {m.content}
-            </span>
+              					{m.content}
+							<div style={{flexGrow:1}}/>
+								{new Date(m.createdAt).toLocaleTimeString()}
+           				 </span>
 					</div>
 				) )}
-		</ScrollableFeed>
+			<div ref={bottomRef}/>
+		</ChatBoxScroll>
 
 	);
 };

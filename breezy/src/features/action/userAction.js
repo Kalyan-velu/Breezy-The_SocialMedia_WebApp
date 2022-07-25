@@ -52,9 +52,9 @@ export const loadUser = () =>
 
         } catch (e) {
             console.log(e)
-            dispatch({
+            await dispatch({
                 type: 'LoadUserFailure',
-                payload: e.response.data.message,
+                payload: e.message,
             })
             dispatch({
                 type:'clearError',
@@ -64,7 +64,6 @@ export const loadUser = () =>
 
 export const registerUser = ({name,email,password,avatar}) =>
     async (dispatch) => {
-
         try {
             dispatch({
                 type: 'RegisterRequest'
@@ -113,7 +112,7 @@ export const getFollowingPosts = () => async (dispatch) => {
         console.log(e)
         dispatch({
             type: 'postOfFollowingFailed',
-            payload: e.response.data.message,
+            payload: e.message,
         })
     }
 }
@@ -270,13 +269,14 @@ export const updateProfile = ({name,email,avatar}) => async (dispatch) => {
                     }
             }
         );
-        dispatch({                                                         //dispatching the token to the reducer
+        await dispatch({                                                         //dispatching the token to the reducer
             type: 'updateProfileSuccess',
-            payload: data.user,
+            payload: data.message,
         })
-        console.log(data)
+        dispatch({
+            type:'clearMessage',
+        })
     }catch(e){
-        console.log(e)
         await dispatch({
             type: 'updateProfileFailure',
             payload: e.response.data.message,
@@ -305,7 +305,7 @@ export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
         );
         dispatch({                                                         //dispatching the token to the reducer
             type: 'updatePasswordSuccess',
-            payload: data.user,
+            payload: data.message,
         })
         console.log(data)
     }catch(e){
@@ -352,9 +352,12 @@ export const followUser=(id)=>async(dispatch)=>{
         const {data}=await axiosInstance.get(
             `/follow/${id}`
         )
-        dispatch({
+        await dispatch({
             type:'followSuccess',
             payload:data.message
+        })
+        dispatch({
+            type:'clearMessage'
         })
     }catch (e) {
         await dispatch({
@@ -391,6 +394,30 @@ export const searchUsers = (search) => async (dispatch) => {
         })
 
     }
+}
+export const DeleteMyAccount=(userId)=> async (dispatch) => {
+        try {
+            dispatch({
+                type: 'DeleteAccountRequest',                                           // request auth
+            })
+
+            await axiosInstance.get(                                    //  request to server
+                `/me/delete/${userId}`,
+            );
+            dispatch({                                                     //dispatching the token to the reducer
+                type: 'DeleteAccountSuccess',
+                payload: 'Account Deleted Successfully',
+            })
+        } catch (error) {
+            console.log(error)
+            await dispatch({                                            //dispatching the error to the reducer
+                type: 'DeleteUserFailed',
+                payload: error.message,
+            })
+            dispatch({
+                type:'clearError',
+            })
+        }
 }
 export const fetchAgain=() =>  (dispatch) => {
     dispatch({

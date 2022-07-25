@@ -12,7 +12,7 @@ import {purple} from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
 import { chatInstance} from "../../../../config/axios";
-import {ChatState} from "../../context/ChatProvider";
+import {ChatState} from "../../../context/ChatProvider";
 import {searchUsers} from "../../../../features/action/userAction";
 import {useDispatch, useSelector} from "react-redux";
 import UserListItem from "../../chat-loading/lists/UserList";

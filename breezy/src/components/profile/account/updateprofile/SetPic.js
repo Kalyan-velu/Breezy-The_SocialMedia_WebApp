@@ -7,14 +7,19 @@ import {Upload} from "@mui/icons-material";
 import {loadUser, updateProfile} from "../../../../features/action/userAction";
 import {Link} from "react-router-dom";
 import {StyledButtons} from "../../../styledComponents/UserAccountStyled";
+import ErrorSnackbar from "../../../styledComponents/error-message/ErrorMessage";
 
 const SetProfilePic=()=>{
     const filePicker = useRef(null)
+    const [error, setError] = useState(null);
+    const[openS,setOpenS]=useState(false)
+    const [success, setSuccess] = useState(null);
+    const [openE, setOpenE] = useState(false);
     const {user}=useSelector((state)=>state.user);
     const[avatar,setAvatar]=React.useState(user.avatar.url);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = useState(user.name);
-    const {error,loading, message} = useSelector((state) => state.updateProfile)
+    const {error:errorAlert,loading, message} = useSelector((state) => state.updateProfile)
     const dispatch = useDispatch();
     const selectedPhoto = (e) => {
         const reader = new FileReader();
@@ -29,16 +34,19 @@ const SetProfilePic=()=>{
     const onSubmit=async({e,name,email,avatar})=>{
         e.preventDefault();
         dispatch(updateProfile({name,email,avatar}))
-        dispatch(loadUser())
+
     }
     useEffect(()=>{
-        if(error){
-            console.log(error)
+        if(errorAlert){
+            setOpenE(true)
+            setError(errorAlert)
         }
         if(message){
-            console.log(message)
+            dispatch(loadUser())
+            setOpenS(true)
+            setSuccess("Profile Updated Successfully")
         }
-    },[])
+    },[errorAlert,message,dispatch])
 
     return(
         <div className={"upload-pic"}>
@@ -97,6 +105,14 @@ const SetProfilePic=()=>{
                 </Link>
                 <div style={{flexGrow:1}}/>
             </form >
+            <ErrorSnackbar
+                openS={openS}
+                openE={openE}
+                setOpenS={setOpenS}
+                setOpenE={setOpenE}
+                error={error}
+                success={success}
+            />
         </div>
     )
 }

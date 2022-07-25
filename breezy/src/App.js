@@ -8,6 +8,7 @@ import Loader from "./components/styledComponents/error-handlers/Loader";
 import NotFound from "./components/styledComponents/error-handlers/NotFound";
 import {ErrorBoundary} from "react-error-boundary";
 import Error from "./components/styledComponents/error-handlers/Error";
+import ErrorSnackbar from "./components/styledComponents/error-message/ErrorMessage";
 
 const SetProfilePic =React.lazy(()=>
     import ( "./components/profile/account/updateprofile/SetPic"));
@@ -31,29 +32,46 @@ const ChatPage =React.lazy(()=>
     import  ("./components/messaging/allchats/ChatPage"));
 function App() {
     const dispatch = useDispatch()
+    const {isAuthenticated,user} = useSelector((state) => state.user); //check if the user is authenticated
+    const{error:loadUserError} = useSelector((state)=>state.user);
+    const[openE,setOpenE]=React.useState(false);
+    const[openS,setOpenS]=React.useState(false);
+    const[error,setError]=React.useState(null);
+
     useEffect(() => {
         dispatch(loadUser());
-    }, [])
+    }, [dispatch])
+    useEffect(() => {
+        if(loadUserError){
+            setOpenE(true);
+            setError(loadUserError)
+        }
+    }, [loadUserError])
 
-    const {isAuthenticated,user} = useSelector((state) => state.user); //check if the user is authenticated
 
     return (
         <Router>
-            <div className="App">
+            <div className="App"
+                style={{
+                    scrollbarWidth:'none'
+                }}
+            >
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
                       <Route path={'/'}
                              exect
                              element=
                                  {isAuthenticated ?
-                                     <Suspense fallback={<Loader/>}>
+                                        <Suspense fallback={<Loader/>}>
                                              <Home />
-                                     </Suspense>    :
+                                        </Suspense>
+                     :
                                      <Suspense fallback={<Loader />}>
                                              <AuthPage/>
                                      </Suspense>}
                       />
 
+                    {user &&
                     <Route path={isAuthenticated?`/user/${user._id}`:'/user/account'}
                            element=
                                {isAuthenticated ?
@@ -63,7 +81,7 @@ function App() {
                                    <Suspense fallback={<Loader />}>
                                         <AuthPage/>}/>
                                    </Suspense>}
-                       />
+                       />}
                     <Route path={'/NewPost'}
                            element=
                                {isAuthenticated ?
@@ -98,22 +116,35 @@ function App() {
                                       <AuthPage/>
                                </Suspense>}
                     />
-                    <Route path={isAuthenticated?`/user/${user._id}/profile`:`/user/profile`}
+
+
+                    {user && <Route path={`/user/${user._id}/profile`}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error/>}>
                                    <Suspense fallback={<Loader />}>
-                               <SetProfilePic/>
+                                        <SetProfilePic/>
                                    </Suspense>
-                               </ErrorBoundary>: <AuthPage/>}/>
-                    <Route path={isAuthenticated?`/user/${user._id}/forgot-password`:`/user/forgot-password`}
+                               </ErrorBoundary> : <AuthPage/>}
+                    />}
+
+
+                    {user &&  <Route path={`/user/${user._id}/forgot-password`}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error/>}>
                                <Suspense fallback={<Loader />}>
                                  <UpdatePassword/>
                                </Suspense>
                                </ErrorBoundary>
-                                   : <ForgotPassword/> }/>
-                    <Route path={'/reset-password/:token'} element={isAuthenticated ? <UpdatePassword/> : <ResetPassword/> }/>
+                                   :
+                               <Suspense fallback={<Loader />}>
+                                     <ForgotPassword/>
+                               </Suspense>}
+                    />}
+
+                    <Route path={'/reset-password/:token'}
+                           element={isAuthenticated ?
+                               <UpdatePassword/> : <ResetPassword/> }
+                    />
                     <Route path={'/search'}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error />}>
@@ -121,9 +152,18 @@ function App() {
                                   <SearchUser/>
                                </Suspense>
                                </ErrorBoundary>:
-                               <AuthPage/> }/>
+                               <AuthPage/> }
+                        />
                     <Route path={"*"} element={<NotFound/>}/>
                 </Routes>
+                <ErrorSnackbar
+                    openE={openE}
+                    openS={openS}
+                    error={error}
+
+                    setOpenE={setOpenE}
+                    setOpenS={setOpenS}
+                />
             </div>
         </Router>
     );

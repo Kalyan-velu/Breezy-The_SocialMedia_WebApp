@@ -10,7 +10,6 @@ export const accessChat =(userId)=> async (dispatch) => {
             type: 'accessChatSuccess',
             payload: response.data
         })
-        console.log(`AccessChat:${response.data}`)
     } catch (e) {
         dispatch({
             type: 'accessChatFailure',
@@ -28,7 +27,7 @@ export const fetchChat =()=> async (dispatch) => {
             type: 'fetchChatSuccess',
             payload: response.data
         })
-        console.log(`Chats:${response.data}`)
+
     } catch (e) {
         dispatch({
             type: 'fetchChatFailure',

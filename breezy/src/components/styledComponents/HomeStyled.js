@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
 display:grid;
 grid-template-columns: repeat(1,minmax(0,1fr));
-  
+  overflow-y: hidden;
+  overflow-x: hidden;
   @media(min-width: 760px){
     grid-template-columns: repeat(3,minmax(0,1fr));
     max-width: 72rem;
@@ -23,6 +24,8 @@ export const Sections = styled.div`
 grid-column: span 2 /span 2;
   margin: 0 auto;
 	width: 80%;
+  overflow-x: hidden;
+  overflow-y:auto;
   @media(max-width: 480px){
     width:100%
   }

@@ -4,12 +4,10 @@ import Typography from "@mui/material/Typography";
 import {ArrowBackIos} from "@mui/icons-material";
 import { IconButton} from "@mui/material";
 import {io} from "socket.io-client";
-import {ChatState} from "../../context/ChatProvider";
+import {ChatState} from "../../../context/ChatProvider";
 import {messageInstance} from "../../../../config/axios";
-import {getSender, getSenderFull} from "../../../../config/ChatLog";
+import {getSender} from "../../../../config/ChatLog";
 import ChatScroll from "../ChatScroll";
-import GroupModal from "../group/GroupModal";
-import UserProfileModal from "../../../profile/account/UserProfileModal";
 import {ChatHeader, ChatContainer} from "../../../styledComponents/chat-styles/ChatSections";
 import {BootstrapInput} from "../../../styledComponents/PostModalStyled";
 import {useDispatch, useSelector} from "react-redux";
@@ -40,7 +38,8 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 					"chatId": selectedChat._id
 				}, )
 				socket.emit( "new message", response.data )
-				setMessages( [ ...messages, response.data ] )
+				setMessages( current=>
+					[ ...current, response.data ] )
 			} catch (e) {
 				console.log( e )
 			}
@@ -54,22 +53,16 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 		socket.on( "connected", () => setSocketConnected( true ) )
 		socket.on( 'typing', () => setIsTyping( true ) )
 		socket.on( 'stop typing', () => setIsTyping( false ) )
-	}, [] )
+	}, [user] )
 
 	React.useEffect( () => {
 		async function fetchMessages() {
 			if (!selectedChat) {
 				return console.log( "No Selected Chat" )
 			}
-
 			try {
 				setLoading( true )
-				const response = await messageInstance.get( `/${selectedChat._id}`,
-					{
-						headers: {
-							"Authorization": `Bearer ${user.token}`
-						}
-					} )
+				const response = await messageInstance.get( `/${selectedChat._id}`)
 				console.log( response.data )
 				setMessages( response.data )
 				setLoading( false )
@@ -97,6 +90,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 			}
 		} )
 	} );
+
 
 
 	function typingHandler(e) {
@@ -135,38 +129,18 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 							<ArrowBackIos/>
 						</IconButton>
 						<div style={{flexGrow:1}}/>
-						{!selectedChat.isGroupChat ? (
 							<>
 								<Typography
-									fontSize={"20px"}>
+									fontSize={"20px"}
+									fontWeight={"500"}
+								>
 									{getSender( user, selectedChat.users )}
 								</Typography>
+								{isTyping ? <div>Typing...</div> : null}
 							</>
-						) : (
-							<>
-								<Typography
-									fontSize={"20px"}>
-									{selectedChat.chatName}
-								</Typography>
-							</>
-						)}
+						
 						<div style={{flexGrow:1}}/>
-						{!selectedChat.isGroupChat ? (
-						<>
-							<UserProfileModal
-								user={getSenderFull( user, selectedChat.users )}
-							/>
-						</>
-					) : (
-						<>
-							<GroupModal
-								fetchAgain={fetchAgain}
-								setFetchAgain={setFetchAgain}/>
-						</>
-					)}
 					</ChatHeader>
-
-
 						<Box
 							display={"flex"}
 							flexDirection={"column"}
@@ -184,14 +158,17 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 								<div style={{
 									display: "flex",
 									flexDirection: "column",
-									overflowY: 'scroll',
+									overflowY: 'auto',
 									scrollbarWidth: 'none'
 								}}>
 									<ChatScroll
 										messages={messages}
 									/>
-									{isTyping ? <div>Loading...</div> : null}
+									<div style={{
+										padding: "10px",
+									}}/>
 									<BootstrapInput
+										padding={1}
 										margin={'dense'}
 										fullWidth
 										placeholder={"Type a message"}
@@ -200,7 +177,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 										onChange={typingHandler}
 										value={newMessage}
 									/>
-
 								</div>
 							)}
 						</Box>
@@ -214,7 +190,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 					>
 						Click on a conversation to start chatting
 					</Typography>
-
 			)
 		}
 		</div>

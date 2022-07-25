@@ -2,20 +2,17 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {Grid, IconButton} from "@mui/material";
 import {forgotPassword} from "../../../../features/action/userAction";
 import {Link} from "react-router-dom";
 import {ArrowBack} from "@mui/icons-material";
-import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
+import {BootstrapInput} from "../../../styledComponents/PostModalStyled";
+import ErrorSnackbar from "../../../styledComponents/error-message/ErrorMessage";
 
 
-const Alert = React.forwardRef( function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-} );
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -33,36 +30,30 @@ export default function ForgotPassword() {
     const [email,setEmail]=useState('')
     const [error, setError] = useState(null);
     const[success,setSuccess]=React.useState(null)
-    const [ open, setOpen ] = React.useState( false );
+    const [ openE, setOpenE ] = React.useState( false );
     const [ openS, setOpenS ] = React.useState( false );
     const dispatch = useDispatch();
-    const {error : errorForgot,message:messageForgot} = useSelector((state) => state.like);
+    const {error : errorForgot,message:messageForgot} = useSelector((state) => state.password);
 
 
     const submitHandler=(e)=>{
         e.preventDefault();
         dispatch(forgotPassword(email));
+        setEmail('')
     }
 
     useEffect(() => {
         if (errorForgot) {
-            console.log(error)
-             setOpen(true);
+            setOpenE(true);
             setError(errorForgot);
         }
         if (messageForgot) {
            setOpenS(true);
            setSuccess(messageForgot);
         }
-    },[ alert,errorForgot,messageForgot,dispatch])
-    console.log(success)
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenS( false )
-        setOpen( false );
-    };
+    },[ errorForgot,messageForgot,dispatch])
+
+
     return (
         <div >
                 <Box sx={style}>
@@ -83,7 +74,7 @@ export default function ForgotPassword() {
                         </Typography>
 
                     <form onSubmit={submitHandler}>
-                    <TextField
+                    <BootstrapInput
                            padding={"dense"}
                            margin={"dense"}
                            autoComplete="off"
@@ -99,19 +90,14 @@ export default function ForgotPassword() {
                     </form>
                 </Box>
             <div>
-            <Grid align='center'>
-                <Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-                        {success}
-                    </Alert>
-                </Snackbar>
-                {error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                            {error}
-                        </Alert>
-                    </Snackbar>
-                    : null}
-            </Grid>
+                <ErrorSnackbar
+                    openS={openS}
+                    setOpenS={setOpenS}
+                    openE={openE}
+                    setOpenE={setOpenE}
+                    error={error}
+                    success={success}
+                   />
             </div>
         </div>
     )}

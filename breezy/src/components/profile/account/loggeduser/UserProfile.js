@@ -1,6 +1,6 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
 import './user.css'
 import {getMyPosts} from "../../../../features/action/userAction";
 import { Sections} from "../../../styledComponents/HomeStyled";
@@ -15,45 +15,28 @@ import User from "../../User";
 import {useNavigate} from "react-router-dom";
 import {ErrorBoundary} from "react-error-boundary";
 import Error from "../../../styledComponents/error-handlers/Error";
+import {PostSection} from "../../../styledComponents/PostStyled";
+import Post from "../../../post/Post";
+
 const UpdateProfile =React.lazy(()=>
     import( "../updateprofile/UpdateProfile"));
 const Modal =React.lazy(()=>
     import( "../../../post/NewPost/NewPostModal"));
-const Post=React.lazy(()=>
-    import( "../../../post/Post"));
+
 
 const UserProfile = () => {
-    const [errorAlert, setErrorAlert] = React.useState('')
-    const [messageAlert, setMessageAlert] = React.useState('')
-    const [alertOpen, setAlertOpen] = useState(false);
     const [followersToggle,setFollowersToggle] =useState(false);
     const [followingToggle,setFollowingToggle] =useState(false);
     const {user} = useSelector(state => state.user)
-    const {loading, posts, error} = useSelector((state) => state.myPosts);
-    const {error:likeError, message} = useSelector((state) => state.like)
+    const {loading, posts} = useSelector((state) => state.myPosts);
     const {fetch}=useSelector((state)=>state.fetch)
     const navigate=useNavigate()
     const dispatch=useDispatch()
     const[fetchAgain,setFetchAgain] = useState(false)
 
-    const handleAlertClose = () => {
-        setAlertOpen(false);
-    };
     useEffect(() => {
         dispatch(getMyPosts())
-        console.log("Fetching Again....")
-    }, [dispatch,fetch])
-
-    useEffect(() => {
-        if (likeError) {
-            setAlertOpen(true)
-            setErrorAlert(likeError)
-        }
-        if (message) {
-            setAlertOpen(true)
-            setMessageAlert(message)
-        }
-    }, [error, message]);
+    }, [dispatch,fetchAgain,fetch])
 
     return (
         <ErrorBoundary fallback={<Error/>}>
@@ -139,10 +122,15 @@ const UserProfile = () => {
                             />
             </StyledBoxNewPost>
             <Sections>
-                {posts && posts.length > 0 ? (
+                <PostSection>
+                    {loading ? (
+                    <div align={'center'}>
+                        <CircularProgress/>
+                    </div>
+                    ) : (
+                    <>
+                    {posts && posts.length > 0 ? (
                     posts.map((post) => (
-                        <Suspense key={post._id} fallback={<Loader/>}>
-                            {loading ? <Loader/> :
                             <Post
                                 key={post._id}
                                 ownerId={post.owner._id}
@@ -158,13 +146,15 @@ const UserProfile = () => {
                                 isDelete={true}
                                 setFetchAgain={setFetchAgain}
                                 fetchAgain={fetchAgain}
-                            />}
-                        </Suspense>))
+                            />
+                        ))
                 ) : (
                     <Typography variant="h6" color="textSecondary" align="center" >
                         No posts to show
                     </Typography>
-                )}
+                     )}
+                    </>)}
+                </PostSection>
             </Sections>
 
             <Dialog fullWidth maxWidth={'xs'} open={followersToggle} onClose={() => setFollowersToggle(!followersToggle)}>

@@ -34,7 +34,7 @@ const CommentComponent = ({
                     <Typography fontWeight={200}>{comments.length} comments</Typography>
                 </Tooltip>
             </Button>
-            <Dialog maxWidth={'sm'} open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
+            <Dialog maxWidth={'xs'} fullWidth open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
                 <DialogTitle>Comments</DialogTitle>
                 <DialogContent>
                     {comments.length > 0 ? (comments.map((item) => (
