@@ -1,147 +1,191 @@
-import {createReducer} from "@reduxjs/toolkit";
+import {createAction, createReducer} from "@reduxjs/toolkit";
 
 const initialState = {
     posts: [],
     fetchAgain:false
 }
 
-export const likeReducer = createReducer(initialState, {
-    likeRequest: (state) => {
+const clearMessage=createAction('clearMessage')
+const clearError=createAction('clearError')
+
+const likeRequest=createAction('likeRequest')
+const likeSuccess=createAction('likeSuccess')
+const likeFailure=createAction('likeFailure')
+//add comment
+const addCommentRequest=createAction('addCommentRequest')
+const addCommentSuccess=createAction('addCommentSuccess')
+const addCommentFailure=createAction('addCommentFailure')
+//delete
+const deleteCommentRequest=createAction('deleteCommentRequest')
+const deleteCommentSuccess=createAction('deleteCommentSuccess')
+const deleteCommentFailure=createAction('deleteCommentFailure')
+
+const newPostRequest=createAction('newPostRequest')
+const newPostSuccess=createAction('newPostSuccess')
+const newPostFailure=createAction('newPostFailure')
+
+const updateCaptionRequest=createAction('updateCaptionRequest')
+const updateCaptionSuccess=createAction('updateCaptionSuccess')
+const updateCaptionFailure=createAction('updateCaptionFailure')
+
+const deletePostRequest=createAction('deletePostRequest')
+const deletePostSuccess=createAction('deletePostSuccess')
+const deletePostFailure=createAction('deletePostFailure')
+
+export const likeReducer = createReducer(initialState, (builder)=>{
+    builder
+    .addCase(likeRequest,(state) => {
         state.loading = true;
-    },
-    likeSuccess: (state, action) => {
+    })
+        .addCase(likeSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain = true;
-    },
-    likeFailure: (state, action) => {
+    })
+        .addCase(likeFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    addCommentRequest: (state) => {
+    })
+        .addCase(addCommentRequest, (state) => {
         state.loading = true;
-    },
-    addCommentSuccess: (state, action) => {
+    })
+        .addCase(addCommentSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain = true;
-    },
-    addCommentFailure: (state, action) => {
+    })
+        .addCase(addCommentFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    deleteCommentRequest: (state) => {
-        state.loading = true;
-    },
-    deleteCommentSuccess: (state, action) => {
+    })
+        .addCase(deleteCommentRequest, (state) => {
+            state.loading = true;
+        })
+        .addCase(deleteCommentSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain=true
-    },
-    deleteCommentFailure: (state, action) => {
+    })
+        .addCase(deleteCommentFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    newPostRequest: (state) => {
+    })
+        .addCase(newPostRequest, (state) => {
         state.loading = true;
-    },
-    newPostSuccess: (state, action) => {
+    })
+        .addCase(newPostSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain=true
-    },
-    newPostFailure: (state, action) => {
+    })
+        .addCase(newPostFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    updateCaptionRequest: (state) => {
+    })
+        .addCase(updateCaptionRequest, (state) => {
         state.loading = true;
-    },
-    updateCaptionSuccess: (state, action) => {
+    })
+        .addCase(updateCaptionSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain=true
-    },
-    updateCaptionFailure: (state, action) => {
+    })
+        .addCase(updateCaptionFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    deletePostRequest: (state) => {
+    })
+        .addCase(deletePostRequest, (state) => {
         state.loading = true;
-    },
-    deletePostSuccess: (state, action) => {
+    })
+        .addCase(deletePostSuccess, (state, action) => {
         state.loading=false;
         state.message=action.payload
-    },
-    deletePostFailure:(state,action)=>{
+    })
+        .addCase(deletePostFailure,(state,action)=>{
         state.loading=false;
         state.error=action.payload;
-    },
-    clearMessage: (state) => {
+    })
+        .addCase(clearMessage, (state) => {
         state.message = null;
-    },
-    clearError: (state) => {
+    })
+        .addCase(clearError, (state) => {
         state.error = null;
-    },
+    })
 });
 
-export const myPostsReducer = createReducer(initialState, {
-    myPostsRequest: (state) => {
+const myPostsRequest=createAction('myPostsRequest')
+const myPostsSuccess=createAction('myPostsSuccess')
+const myPostsFailure=createAction('myPostsFailure')
+
+const userPostsRequest=createAction('userPostsRequest')
+const userPostsSuccess=createAction('userPostsSuccess')
+const userPostsFailure=createAction('userPostsFailure')
+
+const followRequest=createAction('followRequest')
+const followSuccess=createAction('followSuccess')
+const followFailure=createAction('followFailure')
+
+
+export const myPostsReducer = createReducer(initialState, (builder)=>{
+    builder
+        .addCase(myPostsRequest, (state) => {
         state.loading = true;
-    },
-    myPostsSuccess: (state, action) => {
+    })
+    .addCase(myPostsSuccess, (state, action) => {
         state.loading = false;
         state.posts = action.payload;
-    },
-    myPostsFailure: (state, action) => {
+    })
+    .addCase(myPostsFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    clearMessage: (state) => {
+    })
+    .addCase(clearMessage, (state) => {
         state.message = null;
-    },
-    clearError: (state) => {
+    })
+    .addCase(clearError, (state) => {
         state.error = null;
-    }
+    })
 }  )
 
-export const userPostsReducer = createReducer(initialState, {
-    userPostsRequest: (state) => {
+export const userPostsReducer = createReducer(initialState, (builder )=> {
+    builder
+        .addCase(userPostsRequest, (state) => {
         state.loading = true;
-    },
-    userPostsSuccess: (state, action) => {
+    })
+    .addCase(userPostsSuccess, (state, action) => {
         state.loading = false;
         state.posts = action.payload;
-    },
-    userPostsFailure: (state, action) => {
+    })
+    .addCase(userPostsFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    clearMessage: (state) => {
+    })
+    .addCase(clearMessage, (state) => {
         state.message = null;
-    },
-    clearError: (state) => {
+    })
+    .addCase(clearError, (state) => {
         state.error = null;
-    }
+    })
 }  )
 
-export const followReducer = createReducer(initialState, {
-    followRequest: (state) => {
+export const followReducer = createReducer(initialState,(builder)=> {
+    builder
+    .addCase(followRequest, (state) => {
         state.loading = true;
-    },
-    followSuccess: (state, action) => {
+    })
+    .addCase(followSuccess, (state, action) => {
         state.loading = false;
         state.message = action.payload;
         state.fetchAgain=true
-    },
-    followFailure: (state, action) => {
+    })
+.addCase(followFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    clearMessage: (state) => {
+    })
+    .addCase(clearMessage, (state) => {
         state.message = null;
-    },
-    clearError: (state) => {
+    })
+.addCase(clearError, (state) => {
         state.error = null;
-    }
+    })
 }  )

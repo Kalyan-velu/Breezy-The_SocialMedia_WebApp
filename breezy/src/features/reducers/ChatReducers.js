@@ -1,4 +1,16 @@
-import {createReducer} from "@reduxjs/toolkit";
+import {createAction, createReducer} from "@reduxjs/toolkit";
+
+const accessChatRequest=createAction('accessChatRequest')
+const accessChatSuccess=createAction('accessChatSuccess')
+const accessChatFailure=createAction('accessChatFailure')
+const fetchChatRequest=createAction('fetchChatRequest')
+const fetchChatSuccess=createAction('fetchChatSuccess')
+const fetchChatFailure=createAction('fetchChatFailure')
+const setSelectedChatRequest=createAction('setSelectedChatRequest')
+const setSelectedChatSuccess=createAction('setSelectedChatSuccess')
+const setSelectedChatFailure=createAction('setSelectedChatFailure')
+const clearMessage=createAction('clearMessage')
+const clearError=createAction('clearError')
 
 const initialState = {
     chat:null,
@@ -6,48 +18,48 @@ const initialState = {
     selectedChat:null
 }
 
-
-export const accessChat = createReducer(initialState, {
-    accessChatRequest: (state) => {
-        state.loading = true;
-    },
-    accessChatSuccess: (state, action) => {
+export const accessChat = createReducer(initialState, (builder)=>{
+    builder
+        .addCase(accessChatRequest, (state) => {
+                state.loading = true;
+         })
+        .addCase(accessChatSuccess, (state, action) => {
         state.loading = false;
         state.chat = action.payload;
         state.fetchAgain=true
-    },
-    accessChatFailure: (state, action) => {
+        })
+        .addCase(accessChatFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    fetchChatRequest: (state) => {
+        })
+        .addCase(fetchChatRequest, (state) => {
         state.loading = true;
-    },
-    fetchChatSuccess: (state, action) => {
+        })
+        .addCase(fetchChatSuccess, (state, action) => {
         state.loading = false;
         state.chats = action.payload;
         state.fetchAgain=true
-    },
-    fetchChatFailure: (state, action) => {
+        })
+        .addCase(fetchChatFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    setSelectedChatRequest: (state) => {
+        })
+        .addCase(setSelectedChatRequest, (state) => {
         state.loading = true;
-    },
-    setSelectedChatSuccess: (state, action) => {
+        })
+        .addCase(setSelectedChatSuccess, (state, action) => {
         state.loading = false;
         state.selectedChat = action.payload;
         state.fetchAgain=true
-    },
-    setSelectedChatFailure: (state, action) => {
+        })
+        .addCase(setSelectedChatFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-    },
-    clearMessage: (state) => {
+        })
+        .addCase(clearMessage, (state) => {
         state.message = null;
-    },
-    clearError: (state) => {
+        })
+        .addCase(clearError, (state) => {
         state.error = null;
-    }
+        })
 }  )

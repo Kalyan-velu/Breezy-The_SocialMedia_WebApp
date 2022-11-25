@@ -79,7 +79,7 @@ function App() {
                                       <UserProfile/>
                                    </Suspense> :
                                    <Suspense fallback={<Loader />}>
-                                        <AuthPage/>}/>
+                                        <AuthPage/>
                                    </Suspense>}
                        />}
                     <Route path={'/NewPost'}

@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
 exports.connectDatabase = ()=>{
-    mongoose.connect(process.env.MONGO_URI) //Mongodb URI is fetched from environment variable
+    mongoose.connect("mongodb+srv://Kalyan:xx118P9azRFTY4Ij@msite.ckriv.mongodb.net/?retryWrites=true&w=majority")
         .then( (c) => console.log( `Database Connected ${c.connection.host}` ))
         .catch((e)=>console.log(e))
 }

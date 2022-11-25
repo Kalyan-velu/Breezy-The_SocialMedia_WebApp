@@ -1,5 +1,4 @@
 import React from 'react'
-import './loader.scss'
 const NotFound = () => {
     return (
         <main>
