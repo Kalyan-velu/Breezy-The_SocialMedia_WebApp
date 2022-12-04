@@ -38,97 +38,37 @@ function App() {
     const[openS,setOpenS]=React.useState(false);
     const[error,setError]=React.useState(null);
 
-    useEffect(() => {
-        dispatch(loadUser());
-    }, [dispatch])
-    useEffect(() => {
-        if(loadUserError){
-            setOpenE(true);
-            setError(loadUserError)
-        }
-    }, [loadUserError])
-
+    useEffect(() => {dispatch(loadUser());}, [dispatch])
+    useEffect(() => {if(loadUserError){setOpenE(true);setError(loadUserError)}}, [loadUserError])
 
     return (
         <Router>
-            <div className="App"
-                style={{
-                    scrollbarWidth:'none'
-                }}
-            >
+            <div className="App" style={{scrollbarWidth:'none'}}>
                 {isAuthenticated ? <Header/> : null}
                 <Routes>
-                      <Route path={'/'}
-                             exect
-                             element=
-                                 {isAuthenticated ?
-                                        <Suspense fallback={<Loader/>}>
-                                             <Home />
-                                        </Suspense>
-                     :
-                                     <Suspense fallback={<Loader />}>
-                                             <AuthPage/>
-                                     </Suspense>}
-                      />
-
+                      <Route path={'/'} exect element={isAuthenticated ? <Suspense fallback={<Loader/>}> <Home /></Suspense> :<Suspense fallback={<Loader />}><AuthPage/></Suspense>}/>
                     {user &&
-                    <Route path={isAuthenticated?`/user/${user._id}`:'/user/account'}
-                           element=
-                               {isAuthenticated ?
-                                   <Suspense fallback={<Loader />}>
-                                      <UserProfile/>
-                                   </Suspense> :
-                                   <Suspense fallback={<Loader />}>
-                                        <AuthPage/>
-                                   </Suspense>}
-                       />}
-                    <Route path={'/NewPost'}
-                           element=
-                               {isAuthenticated ?
-                                   <Suspense fallback={<Loader />}>
-                                        <NewPost/>
-                                   </Suspense>
-                                   :
-                                   <Suspense fallback={<Loader />}>
-                                         <AuthPage/>
-                                   </Suspense>}
-                    />
+                        <Route path={isAuthenticated?`/user/${user._id}`:'/user/account'}
+                               element={isAuthenticated ?<Suspense fallback={<Loader />}><UserProfile/></Suspense> :<Suspense fallback={<Loader />}><AuthPage/></Suspense>}/>}
+                        <Route path={'/NewPost'}
+                                element={isAuthenticated ? <Suspense fallback={<Loader />}><NewPost/></Suspense> : <Suspense fallback={<Loader />}><AuthPage/></Suspense>}/>
                     <Route path={'/chat/:id'}
-                           element=
-                               {isAuthenticated ?
-                                   <Suspense fallback={<Loader />}>
-                                       <ChatPage/>
-                                   </Suspense>
-                                   :
-                                   <Suspense fallback={<Loader />}>
-                                       <AuthPage/>
-                                   </Suspense>}
-                    />
+                           element={isAuthenticated ? <Suspense fallback={<Loader />}> <ChatPage/> </Suspense> : <Suspense fallback={<Loader />}><AuthPage/></Suspense>}/>
 
                     <Route path={`/user/:id`}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error/>}>
-                               <Suspense fallback={<Loader />}>
-                                    <OtherProfiles/>
-                               </Suspense>
-                               </ErrorBoundary>:
-                               <Suspense fallback={<Loader />}>
-                                      <AuthPage/>
-                               </Suspense>}
+                                    <Suspense fallback={<Loader />}> <OtherProfiles/> </Suspense>
+                               </ErrorBoundary>: <Suspense fallback={<Loader />}><AuthPage/></Suspense>}
                     />
-
-
-                    {user && <Route path={`/user/${user._id}/profile`}
+                    {user &&
+                        <Route path={`/user/${user._id}/profile`}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error/>}>
-                                   <Suspense fallback={<Loader />}>
-                                        <SetProfilePic/>
-                                   </Suspense>
+                                   <Suspense fallback={<Loader />}><SetProfilePic/></Suspense>
                                </ErrorBoundary> : <AuthPage/>}
                     />}
-
-
-                    {user &&  <Route path={`/user/${user._id}/forgot-password`}
+                     <Route path={`/user/forgot-password`}
                            element={isAuthenticated ?
                                <ErrorBoundary fallback={<Error/>}>
                                <Suspense fallback={<Loader />}>
@@ -139,7 +79,7 @@ function App() {
                                <Suspense fallback={<Loader />}>
                                      <ForgotPassword/>
                                </Suspense>}
-                    />}
+                    />
 
                     <Route path={'/reset-password/:token'}
                            element={isAuthenticated ?
@@ -160,7 +100,6 @@ function App() {
                     openE={openE}
                     openS={openS}
                     error={error}
-
                     setOpenE={setOpenE}
                     setOpenS={setOpenS}
                 />

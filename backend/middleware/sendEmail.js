@@ -1,20 +1,22 @@
-const nodeMailer = require('nodemailer');
-
-exports.sendEmail = async (options) => {
-    const transporter = nodeMailer.createTransport({
-        host: process.env.SMPT_HOST,
-        port: process.env.SMPT_PORT,
-        auth: {
-            user: process.env.SMPT_MAIL,
-            pass: process.env.SMPT_PASSWORD,
-        },
-
-    })
-    const mailOptions = {
-        from: process.env.SMPT_MAIL,
-        to: options.email,
+const sgMail = require('@sendgrid/mail')
+const apiKey=process.env.SENDGRID_API_KEY
+sgMail.setApiKey(apiKey)
+console.log(apiKey)
+exports.sendEmail=async (options)=> {
+    const msg = {
+        to: options.email, // Change to your recipient
+        from: 'kalyanborah456@gmail.com', // Change to your verified sender
         subject: options.subject,
         text: options.message,
+        html: `<strong>${options.message}If you doesn\'t forget your password, please ignore this email!</strong>`,
     }
-    await transporter.sendMail(mailOptions)
+    console.log(msg)
+    await sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
 }

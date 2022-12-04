@@ -23,82 +23,40 @@ export default function MyChats({fetchAgain}) {
     const [ error, setError ] = React.useState( '' );
    const {user:loggedUser}=useSelector(state=>state.user)
     const{chats,selectedChat}=useSelector(state=>state.chats)
-
     const handleClose = () => setOpenE( false );
-
-
     /*Request to View Previous Chats*/
     useEffect( () => {
         dispatch(fetchChat())
     }, [ fetchAgain,dispatch ] );
     console.log(chats)
-
-
-
     return (
-        <div
-            style={{
-                height: "91vh",
-            }}>
-            <Box
-                display={{base: selectedChat ? null : "flex", md: "flex"}}
-                flexDirection={"column"}
-                width="100%"
-                height={"100%"}
-                sx={{
-                    backgroundColor: "#e7ebf2",
-                    borderRadius: "0 0 0 10px",
-                }}>
-                <Box
-                    borderRadius={"30px"}
-                    margin={"20px"}
-                    bgcolor={"inherit"}>
-                    <SearchModal
-                        setError={setError}
-                        setOpenE={setOpenE}
-                    />
+        <div style={{height: "91vh"}}>
+            <Box display={{base: selectedChat ? null : "flex", md: "flex"}} flexDirection={"column"} width="100%" height={"100%"} sx={{backgroundColor: "#e7ebf2", borderRadius: "0 0 0 10px",}}
+            >
+                <Box borderRadius={"30px"} margin={"20px"} bgcolor={"inherit"}>
+                    <SearchModal setError={setError} setOpenE={setOpenE}/>
                 </Box>
                 <ChatsContainer>
                     {chats ? (
                         <Stack>{chats.map( (chat) => (
-
-                            <Link style={{textDecoration:'none'}} to={`/chat/${chat._id}`} key={chat._id}>
+                         <Link style={{textDecoration:'none'}} to={`/chat/${chat._id}`} key={chat._id}>
                            <Box key={chat._id} onClick={()=>dispatch(setSelectedChat(chat))}>
-                                {chat.isGroupChat?
-                                    (<>
-                                        <Typography
-                                            varient={'h3'}
-                                        >
-                                                 { chat.chatName}
-                                        </Typography>
+                                {chat.isGroupChat? (
+                                    <>
+                                        <Typography varient={'h3'}>{ chat.chatName}</Typography>
                                         <Divider/>
-                                        </>
-                                    )
-                                    :
-                                    (
+                                    </>) : (
                                         <>
-                                        <Chats
-                                        bgcolor= { selectedChat=== chat  ? '#aea7c3' : "#f5f5f5"}
-                                        avatar={getSenderProfilePic( loggedUser, chat.users )}
-                                        name={getSender(loggedUser,chat.users)}
-                                        userId={getSenderId(loggedUser,chat.users)}
-                                        latestMessage={chat.latestMessage}
-                                    />
-                                    <Divider/>
-                                    </>)
-                                }
+                                            <Chats bgcolor= { selectedChat=== chat  ? '#aea7c3' : "#f5f5f5"} avatar={getSenderProfilePic( loggedUser, chat.users )} name={getSender(loggedUser,chat.users)} userId={getSenderId(loggedUser,chat.users)} latestMessage={chat.latestMessage}/>
+                                            <Divider/>
+                                        </>)}
                            </Box>
-                            </Link>
-                        ) )}
-                        </Stack>
-                    ) : (
-                        <ChatLoading/>
-                    )}
-
+                         </Link>) )}
+                        </Stack>):
+                        (<ChatLoading/>)}
                 </ChatsContainer>
             </Box>
-            {error ?
-                <Snackbar open={openE} autoHideDuration={6000} onClose={handleClose}>
+            {error ? <Snackbar open={openE} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
                         {error}
                     </Alert>

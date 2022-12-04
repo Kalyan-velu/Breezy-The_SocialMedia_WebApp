@@ -26,8 +26,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	const{user}=useSelector(state=>state.user)
 	const{selectedChat}=useSelector(state=>state.chats)
 	const { notification, setNotification} = ChatState()
-
-
 	async function sendMessage(e) {
 		if (e.key === "Enter" && newMessage) {
 			socket.emit( "stop typing", selectedChat._id );
@@ -42,10 +40,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 					[ ...current, response.data ] )
 			} catch (e) {
 				console.log( e )
-			}
-		}
-
-	}
+			}}}
 
 	React.useEffect( () => {
 		socket = io( ENDPOINT );
@@ -85,14 +80,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 					setNotification( [ newMessageReceived, ...notification ] )
 					setFetchAgain( !fetchAgain )
 				}
-			} else {
-				setMessages( [ ...messages, newMessageReceived ] )
-			}
+			} else {setMessages( [ ...messages, newMessageReceived ] )}
 		} )
 	} );
-
-
-
 	function typingHandler(e) {
 		setNewMessage( e.target.value );
 
@@ -111,90 +101,32 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 				socket.emit( 'stop typing', selectedChat._id )
 				setTyping( false )
 			}
-		}, timeLength )
-	}
+		}, timeLength )}
 
 	return (
-		<div
-			style={{
-				width: "100%",
-				height: "100%",
-			}}
-		>{selectedChat ?
-			(<ChatContainer>
+		<div style={{width: "100%", height: "100%",}}>
+			{ selectedChat ?
+				(<ChatContainer>
 					<ChatHeader>
-						<IconButton
-							onClick={() => dispatch(setSelectedChat(null))}
-						>
-							<ArrowBackIos/>
-						</IconButton>
+						<IconButton onClick={() => dispatch(setSelectedChat(null))}><ArrowBackIos/></IconButton>
 						<div style={{flexGrow:1}}/>
 							<>
-								<Typography
-									fontSize={"20px"}
-									fontWeight={"500"}
-								>
+								<Typography fontSize={"20px"} fontWeight={"500"}>
 									{getSender( user, selectedChat.users )}
 								</Typography>
 								{isTyping ? <div>Typing...</div> : null}
 							</>
-						
 						<div style={{flexGrow:1}}/>
 					</ChatHeader>
-						<Box
-							display={"flex"}
-							flexDirection={"column"}
-							justifyContent={"flex-end"}
-							width={"100%"}
-							height={"100%"}
-							p={3}
-							bgcolor={"#E8E8E8"}
-							style={{overflowY: "hidden"}}>
-							{loading ? (
-								<div>
-									loading
-								</div>
-							) : (
-								<div style={{
-									display: "flex",
-									flexDirection: "column",
-									overflowY: 'auto',
-									scrollbarWidth: 'none'
-								}}>
-									<ChatScroll
-										messages={messages}
-									/>
-									<div style={{
-										padding: "10px",
-									}}/>
-									<BootstrapInput
-										padding={1}
-										margin={'dense'}
-										fullWidth
-										placeholder={"Type a message"}
-										size={"small"}
-										onKeyDown={sendMessage}
-										onChange={typingHandler}
-										value={newMessage}
-									/>
+						<Box display={"flex"} flexDirection={"column"} justifyContent={"flex-end"} width={"100%"} height={"100%"} p={3} bgcolor={"#E8E8E8"} style={{overflowY: "hidden"}}>
+							{loading ? (<div>loading</div>) :
+								(<div style={{display: "flex", flexDirection: "column", overflowY: 'auto', scrollbarWidth: 'none'}}>
+									<ChatScroll messages={messages}/>
+									<div style={{padding: "10px"}}/>
+									<BootstrapInput padding={1} margin={'dense'} fullWidth placeholder={"Type a message"} size={"small"} onKeyDown={sendMessage} onChange={typingHandler} value={newMessage}/>
 								</div>
 							)}
 						</Box>
-				</ChatContainer>
-			) : (
-
-					<Typography
-						variant={"h4"}
-						color={"#0f112d"}
-						pb={3}
-					>
-						Click on a conversation to start chatting
-					</Typography>
-			)
-		}
-		</div>
-
-	)
-
-}
+				</ChatContainer>) : (<Typography variant={"h4"} color={"#0f112d"} pb={3}>Click on a conversation to start chatting</Typography>)}
+		</div>)}
 export default SingleChat

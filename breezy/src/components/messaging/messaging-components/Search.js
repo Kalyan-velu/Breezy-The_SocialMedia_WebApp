@@ -100,65 +100,24 @@ export default function SearchModal(props) {
 		await dispatch(setSelectedChat(chat))
 	}
 
-
 	return (
 		<div>
 			<IconButton onClick={handleOpen}>
 					<SearchTwoTone />
 			</IconButton>
-			<Modal
-				keepMounted
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="keep-mounted-modal-title"
-				aria-describedby="keep-mounted-modal-description"
-			>
-				<Box sx={style}
-
-				>
-
+			<Modal keepMounted open={open} onClose={handleClose} aria-labelledby="keep-mounted-modal-title" aria-describedby="keep-mounted-modal-description">
+				<Box sx={style}>
 					<Search>
-						<SearchIconWrapper>
-							<AddBoxIcon/>
-						</SearchIconWrapper>
-						<StyledInputBase
-							value={search}
-							onChange={(e) => {
-								setSearch( e.target.value )
-							}}
-							placeholder="Search or start a new chat..."
-							inputProps={{'aria-label': 'search'}}
-						/>
+						<SearchIconWrapper><AddBoxIcon/></SearchIconWrapper>
+						<StyledInputBase value={search} onChange={(e) => {setSearch( e.target.value )}} placeholder="Search or start a new chat..." inputProps={{'aria-label': 'search'}}/>
 					</Search>
 					<div>
-						<StyledButton
-							disabled={loading}
-							onClick={handleSearch}
-							endIcon={<SearchIcon />}
-						>
+						<StyledButton disabled={loading} onClick={handleSearch} endIcon={<SearchIcon />}>
 							{loading?"Searching..":"Search"}
 						</StyledButton>
 					</div>
-					<Box
-						sx={
-							{
-								width: "300px"
-							}}
-					>
-						{loading ? (<ChatLoading/>) :
-							(users?.map
-								( (user) =>
-									(<UserListItem
-										onClose={handleClose}
-										key={user._id}
-										userId={user._id}
-										name={user.name}
-										avatar={user.avatar.url}
-										handleFunction={()=>handleAccessChat({user})}
-									/>)
-								)
-							)
-						}
+					<Box sx={{width: "300px"}}>
+						{loading ? (<ChatLoading/>) : (users?.map((user) => (<UserListItem onClose={handleClose} key={user._id} userId={user._id} name={user.name} avatar={user.avatar.url} handleFunction={()=>handleAccessChat({user})}/>)))}
 					</Box>
 				</Box>
 			</Modal>

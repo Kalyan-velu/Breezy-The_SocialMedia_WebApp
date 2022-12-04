@@ -4,6 +4,7 @@
 /node_modules
 /breezy/node_modules
 /backend/config/config.env
+/backend/sendgrid.env
 
 /breezy/.pnp
 /breezy/.pnp.js
