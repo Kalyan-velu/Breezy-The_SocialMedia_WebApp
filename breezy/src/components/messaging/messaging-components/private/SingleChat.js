@@ -13,7 +13,7 @@ import {BootstrapInput} from "../../../styledComponents/PostModalStyled";
 import {useDispatch, useSelector} from "react-redux";
 import {setSelectedChat} from "../../../../features/action/chatAction";
 
-const ENDPOINT = "http://localhost:8000"
+const ENDPOINT = "https://social-media-server.adaptable.app"
 let socket, selectedChatCompare;
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	const dispatch=useDispatch()
