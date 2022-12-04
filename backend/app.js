@@ -1,12 +1,11 @@
 const express = require('express')
+require("dotenv").config()
 const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const router = require('./routes/adminRouter')
 const path=require('path')
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config({path: 'backend/config/config.env'})
-}
+
 //using middleware to parse the body of the request
 app.use('/admin', router)
 app.use(express.json({limit: '50mb'}));
