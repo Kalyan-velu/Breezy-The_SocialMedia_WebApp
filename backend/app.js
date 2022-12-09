@@ -12,8 +12,6 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb',extended: true}))
 
 
-app.use(cookieParser()) //TO PARSE COOKIE
-
 
 //Enabling Cors
 app.use(cors())
@@ -25,6 +23,7 @@ const allowCrossDomain = function (req, res, next) {    //
     next();
 };
 app.use(allowCrossDomain);
+app.use(cookieParser()) //TO PARSE COOKIE
 
 //Import routes
 const userRoutes = require('./routes/user.routes')
@@ -44,17 +43,17 @@ app.use("/api/v1/message", messageRoutes)
 
 
 
-if (process.env.NODE_ENV === 'production') {
-	app.use( express.static( path.join( __dirname, '../breezy','build' ) ) )
+// if (process.env.NODE_ENV === 'production') {
+// 	app.use( express.static( path.join( __dirname, '../breezy','build' ) ) )
 
-	app.get( '*', (request, response) => {
-		response.sendFile( path.join( __dirname, "../breezy", "build", "index.html" ) )
-	} )
-} else {
-	app.get( "/", (request, response) => {
-		response.json( {message: "Server is Up"} );
-	} );
-}
+// 	app.get( '*', (request, response) => {
+// 		response.sendFile( path.join( __dirname, "../breezy", "build", "index.html" ) )
+// 	} )
+// } else {
+// 	app.get( "/", (request, response) => {
+// 		response.json( {message: "Server is Up"} );
+// 	} );
+// }
 const {notFound, errorHandler} = require("./middleware/errorMiddleware");
 
 app.use(notFound)

@@ -69,7 +69,7 @@ exports.login = async (req, res) => {           //login
     try {
         //get the user data from the request
         const {email, password} = req.body;
-        console.log(email, password);
+    
         //see if user exists
         let user = await User.findOne({email}).select("+password").populate("posts following followers");
         if (!user) {

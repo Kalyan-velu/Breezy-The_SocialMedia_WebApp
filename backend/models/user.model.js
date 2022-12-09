@@ -86,6 +86,7 @@ userSchema.methods.getJWT = function () {
         _id: this._id,
     }, process.env.SECRET_KEY)
 }
+console.log(process.env.SECRET_KEY)
 
 userSchema.methods.getResetPasswordToken = function () {    //this is to generate a token for the user to reset the password
     const resetToken = crypto.randomBytes(20).toString('hex');
