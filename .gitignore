@@ -5,9 +5,10 @@
 /breezy/node_modules
 .env
 /backend/sendgrid.env
-
+package-lock.json
 /breezy/.pnp
 /breezy/.pnp.js
+/breezy/package-lock.json
 /.idea
 /.dist
 # testing
