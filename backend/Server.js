@@ -2,26 +2,13 @@ require("dotenv/config")
 const app = require('./app')
 const {connectDatabase} = require("./config/database");
 const cloudinary = require("cloudinary").v2;
-const path = require( "path" );
-const express=require('express')
 cloudinary.config({                     //cloudinary configuration
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
 } );
 
-const __dirname1 = path.resolve()
-if (process.env.NODE_ENV === 'production') {
-	app.use( express.static( path.join( __dirname1, '../client/build' ) ) )
 
-	app.get( '*', (request, response) => {
-		response.sendFile( path.resolve( __dirname1, "../client", "build", "index.html" ) )
-	} )
-} else {
-	app.get( "/", (request, response) => {
-		response.json( {message: "Server is Up"} );
-	} );
-}
 
 connectDatabase()
 const PORT=process.env.PORT||8000

@@ -59,7 +59,7 @@ exports.register = async (req, res) => {                //register
     catch (error) {
         res.status(500).json({
             success: false,
-            message: error
+            message: error.message
         })
     }
 }

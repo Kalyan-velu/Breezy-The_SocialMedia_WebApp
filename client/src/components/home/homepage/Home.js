@@ -34,13 +34,13 @@ function Home() {
                     <ErrorBoundary fallback={<Error/>}>
                     <Suspense fallback={<Loader/>}>
                         <LoggedInUser
-                            userId={user._id}
-                            avatar={user.avatar.url}
-                            name={user.name}
-                            email={user.email}
-                            followers={user.followers}
-                            following={user.following}
-                            posts={user.posts}
+                            userId={user?._id}
+                            avatar={user?.avatar?.url}
+                            name={user?.name}
+                            email={user?.email}
+                            followers={user?.followers}
+                            following={user?.following}
+                            posts={user?.posts}
                         />
                     </Suspense>
                     </ErrorBoundary>
