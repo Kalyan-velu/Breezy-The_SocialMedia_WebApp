@@ -5,7 +5,8 @@
   "main": "backend/Server.js",
   "content-type": "application/javascript;charset=utf-8",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon",
+    "pre-build":"cd client && yarn install && yarn build"
     },
   "author": "",
   "license": "ISC",

@@ -1,7 +1,7 @@
 const sgMail = require('@sendgrid/mail')
 const apiKey=process.env.SENDGRID_API_KEY
 sgMail.setApiKey(apiKey)
-console.log(apiKey)
+
 exports.sendEmail=async (options)=> {
     const msg = {
         to: options.email, // Change to your recipient

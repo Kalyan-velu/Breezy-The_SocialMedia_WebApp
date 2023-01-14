@@ -43,17 +43,17 @@ app.use("/api/v1/message", messageRoutes)
 
 
 
-// if (process.env.NODE_ENV === 'production') {
-// 	app.use( express.static( path.join( __dirname, '../breezy','build' ) ) )
+if (process.env.NODE_ENV === 'production') {
+	app.use( express.static( path.join( __dirname, '../breezy','build' ) ) )
 
-// 	app.get( '*', (request, response) => {
-// 		response.sendFile( path.join( __dirname, "../breezy", "build", "index.html" ) )
-// 	} )
-// } else {
-// 	app.get( "/", (request, response) => {
-// 		response.json( {message: "Server is Up"} );
-// 	} );
-// }
+	app.get( '*', (request, response) => {
+		response.sendFile( path.join( __dirname, "../breezy", "build", "index.html" ) )
+	} )
+} else {
+	app.get( "/", (request, response) => {
+		response.json( {message: "Server is Up"} );
+	} );
+}
 const {notFound, errorHandler} = require("./middleware/errorMiddleware");
 
 app.use(notFound)

@@ -210,14 +210,14 @@ const OtherProfiles = () => {
                </DialogTitle>
                <DialogContent>
                    <div>
-                       {user && user.followers.length > 0? user.followers.map((follower) => ((
+                       {user && user.followers.length > 0? user.followers.map((follower) => (
                                <User
                                    key={follower._id}
                                    userId={follower._id}
                                    name={follower.name}
                                    avatar={follower.avatar.url}
                                />
-                           ))
+                           )
                        )  :  (
                            <Typography >You have no followers</Typography>
                        )}
@@ -231,14 +231,14 @@ const OtherProfiles = () => {
                </DialogTitle>
                <DialogContent>
                    <div>
-                       {user && user.following.length > 0? user.following.map((following) => ((
+                       {user && user.following.length > 0? user.following.map((following) => (
                                <User
                                    key={following._id}
                                    userId={following._id}
                                    name={following.name}
                                    avatar={following.avatar.url}
                                />
-                           ))
+                           )
                        )  : null}
                        {user && user.following.length === 0 && (
                             <Typography >{user.name} have no followings</Typography>

@@ -69,7 +69,7 @@ exports.login = async (req, res) => {           //login
     try {
         //get the user data from the request
         const {email, password} = req.body;
-    
+       
         //see if user exists
         let user = await User.findOne({email}).select("+password").populate("posts following followers");
         if (!user) {
@@ -107,6 +107,7 @@ exports.login = async (req, res) => {           //login
     }
 //catch error
     catch (error) {
+        console.log(error)
         res.status(500).json({
             success: false,
             message: error.message
@@ -363,6 +364,7 @@ exports.forgotPassword = async (req, res) => {
             })
         }
     } catch (e) {
+        console.log(e)
         return res.status(500).json({
             success: false,
             message: e.message

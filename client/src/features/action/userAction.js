@@ -27,7 +27,7 @@ export const loginUser = (values) =>
         } catch (error) {
             await dispatch({              //dispatching the error to the reducer
                 type: 'LoginFailed',
-                payload: error.response.data.message,
+                payload: "Something went wrong",
             })
             dispatch({
                 type:'clearError',
@@ -85,7 +85,7 @@ export const registerUser = ({name,email,password,avatar}) =>
             console.log(e)
            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
-                payload: e.response.data.message,
+                payload: "Something went wrong!",
             })
             dispatch({
                 type:'clearError',

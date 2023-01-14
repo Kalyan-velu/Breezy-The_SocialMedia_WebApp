@@ -2,9 +2,8 @@ const mongoose=require('mongoose')
 
 exports.connectDatabase = ()=>{
     const databaseUrl=process.env.MONGO_URI
-    console.log(databaseUrl)
-    mongoose.set('strictQuery', false);
+    mongoose.set('strictQuery', true);
     mongoose.connect(databaseUrl)
-        .then( (c) => console.log( `Database Connected ${c.connection.host}` ))
+        .then( (c) => console.log( `Database Connected ${c.db}` ))
         .catch((e)=>console.log(e))
 }
