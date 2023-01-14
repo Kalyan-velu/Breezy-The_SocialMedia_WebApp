@@ -5,7 +5,7 @@
   "main": "backend/Server.js",
   "content-type": "application/javascript;charset=utf-8",
   "scripts": {
-    "start": "nodemon",
+    "start": "yarn install && nodemon",
     "pre-build":"cd client && yarn install && yarn build"
     },
   "author": "",
