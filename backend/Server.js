@@ -1,5 +1,7 @@
 require("dotenv/config")
 const app = require('./app')
+const cors=require ('cors')
+app.use(cors())
 const {connectDatabase} = require("./config/database");
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({                     //cloudinary configuration

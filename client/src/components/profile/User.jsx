@@ -1,4 +1,4 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
 import './account/loggeduser/user.css'
 import {Avatar,  Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
@@ -8,7 +8,7 @@ import {UserContainer} from "../styledComponents/UserAccountStyled";
 const User = ({userId, name, avatar}) => {
     const navigate=useNavigate()
     const goTo=()=>{
-        navigate(`/user/${userId}`)
+        navigate(`/u/${userId}`)
     }
     return (
         <UserContainer onClick={goTo} key={userId}>

@@ -246,14 +246,7 @@ const OtherProfiles = () => {
                    </div>
                </DialogContent>
            </Dialog>
-           <ErrorSnackbar
-            openS={openS}
-            openE={openE}
-            setOpenS={setOpenS}
-            setOpenE={setOpenE}
-            success={success}
-            error={errors}
-           />
+          
        </StyledContainer>
     )
 }

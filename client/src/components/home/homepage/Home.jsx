@@ -1,9 +1,9 @@
-import React, {useEffect, Suspense} from 'react'
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, Suspense } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import {getFollowingPosts} from "../../../features/action/userAction";
 import Loader from "../../styledComponents/error-handlers/Loader";
 import {Typography} from "@mui/material";
-import {Container, Section, Sections} from "../../styledComponents/HomeStyled";
+import { Container, Section, Sections } from "../../styledComponents/HomeStyled";
 import Post from "../../post/Post";
 import {ErrorBoundary} from "react-error-boundary";
 import Error from "../../styledComponents/error-handlers/Error";
@@ -16,20 +16,21 @@ const LoggedInUser=React.lazy(()=>
 function Home() {
     const dispatch = useDispatch();
     const [fetchAgain, setFetchAgain] = React.useState(false);
-    const {loading, posts} = useSelector((state) => state.postOfFollowing);
-    const {user} = useSelector(state => state.user)
+    const { loading, posts } = useSelector((state) => state.postOfFollowing);
+    const { user } = useSelector(state => state.user)
 
+    console.log(posts)
 
     useEffect(() => {
         dispatch(getFollowingPosts())
-    }, [fetchAgain,dispatch]);
+    }, [fetchAgain, dispatch]);
 
 
     return loading === true ? (
         <Loader/>
     ) : (
         <Container>
-            <Section>
+        <Section>
                 <div>
                     <ErrorBoundary fallback={<Error/>}>
                     <Suspense fallback={<Loader/>}>
@@ -73,7 +74,7 @@ function Home() {
                     </Typography>
                 )}
             </Sections>
-        </Container>
+    </Container>
 
     )
 }

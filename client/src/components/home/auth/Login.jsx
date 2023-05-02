@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from 'react'
-import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import React, { useEffect, useState } from 'react'
+import { Checkbox, FormControlLabel, Grid, Paper, Typography } from "@mui/material";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
-import {loginUser} from "../../../features/action/userAction";
-import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import { loginUser } from "../../../features/action/userAction";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import ErrorSnackbar from "../../styledComponents/error-message/ErrorMessage";
-
-const Login = () => {
+import { InfoOutlined } from "@mui/icons-material";
+const Login = ({setSetr}) => {
     const dispatch = useDispatch()
-    const [ open, setOpen ] = React.useState( false );
-    const [ openS, setOpenS ] = React.useState( false );
-    const [ error, setError ] = useState( null );
-    const [ success, setSuccess ] = useState( null );
+    const [open, setOpen] = React.useState(false);
+    const [openS, setOpenS] = React.useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const [showPassword, setShowPassword] = React.useState(false);
-    const {error: errorLogin, success: successLogin} = useSelector(state => state.user);
+    const { error: errorLogin, success: successLogin } = useSelector(state => state.user);
+    
     const gridStyle = {
         display: "grid",
         justifyContent: "center",
@@ -60,15 +61,15 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if(errorLogin){
+        if (errorLogin) {
             setOpen(true)
             setError(errorLogin)
         }
-        if(successLogin){
+        if (successLogin) {
             setOpenS(true)
             setSuccess(successLogin)
         }
-    },[errorLogin, successLogin])
+    }, [errorLogin, successLogin])
     function handleChange() {
         setShowPassword(!showPassword)
     }
@@ -88,61 +89,74 @@ const Login = () => {
                             style={paperStyle}>
                             <div style={styleField}>
                                 <Field as={TextField}
-                                       padding={"dense"}
-                                       margin={"dense"}
-                                       autoComplete="off"
-                                       name='email'
-                                       label='Enter Email'
-                                       fullWidth
-                                       error={props.errors.email && props.touched.email}
-                                       helperText={<ErrorMessage name='email'/>}
-                                       required/>
+                                    padding={"dense"}
+                                    margin={"dense"}
+                                    autoComplete="off"
+                                    name='email'
+                                    label='Enter Email'
+                                    fullWidth
+                                    error={props.errors.email && props.touched.email}
+                                    helperText={<ErrorMessage name='email' />}
+                                    required />
                                 <Field as={TextField}
-                                       padding={"dense"}
-                                       margin={"dense"}
-                                       autoComplete="off"
-                                       type={showPassword ? 'text' : 'password'}
-                                       name='password'
-                                       label='Enter Password'
-                                       fullWidth
-                                       error={props.errors.password && props.touched.password}
-                                       helperText={<ErrorMessage name='password'/>}
-                                       required/>
+                                    padding={"dense"}
+                                    margin={"dense"}
+                                    autoComplete="off"
+                                    type={showPassword ? 'text' : 'password'}
+                                    name='password'
+                                    label='Enter Password'
+                                    fullWidth
+                                    error={props.errors.password && props.touched.password}
+                                    helperText={<ErrorMessage name='password' />}
+                                    required />
                                 <FormControlLabel
                                     control={
-                                        <Checkbox onChange={handleChange} name="jason"/>
+                                        <Checkbox onChange={handleChange} name="jason" />
                                     }
                                     label="Show Password"
                                 />
                             </div>
                             <Grid align='center'>
-                                <Link to="/user/forgot-password">Forgot Password?</Link>
+                                <Link to="/u/forgot-password">Forgot Password?</Link>
                             </Grid>
 
-                            </Paper>
-                            <Grid align='center'>
-                                <Typography
-                                    variant='caption'
-                                    color={"secondary"}
-                                >Fill the form to login into your account
+                        </Paper>
+                        <Grid align='center'>
+                            <Typography
+                                variant='caption'
+                                color={"secondary"}
+                            >Fill the form to login into your account
                             </Typography>
-                            </Grid>
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                padding: "20px"
-                            }}>
-                                <LoadingButton
-                                    type='submit'
-                                    style={btnStyle}
-                                    variant='outlined'
-                                    disabled={props.isSubmitting}
-                                >
-                                    login
-                                </LoadingButton>
-                            </div>
-                        </Form>)}
-                </Formik>
+                            <Typography
+                                level="body2"
+                                startDecorator={<InfoOutlined />}
+                                sx={{ alignItems: 'flex-start', maxWidth: 340, wordBreak: 'break-all' }}
+                            >
+                                Don't Have An Account?
+                                <span role='button' style={{ color: "#0072E5" }} 
+                                    onClick={() => 
+                                    setSetr(prevState=>{
+                                        return !prevState
+                                    })}
+                                >Sign Up</span>
+                            </Typography>
+                        </Grid>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            padding: "20px"
+                        }}>
+                            <LoadingButton
+                                type='submit'
+                                style={btnStyle}
+                                variant='outlined'
+                                disabled={props.isSubmitting}
+                            >
+                                login
+                            </LoadingButton>
+                        </div>
+                    </Form>)}
+            </Formik>
             <ErrorSnackbar
                 openS={openS}
                 openE={open}
@@ -151,7 +165,7 @@ const Login = () => {
                 error={error}
                 success={success}
             />
-            </Grid>
+        </Grid>
 
     )
 }

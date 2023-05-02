@@ -33,7 +33,7 @@ function LoggedInUser({
                     }}
                 />
                 <div className={'details'}>
-                        <Link to={`/${userId}`}>
+                        <Link to={`/u/${userId}`}>
                         <Typography
                             fontWeight={600}
                             sx={{
@@ -43,7 +43,7 @@ function LoggedInUser({
                             {name}
                         </Typography>
                          </Link>
-                        <Link to={`/user/account`}>
+                        <Link to={`/u/account`}>
                             <Typography>Edit Profile</Typography>
                         </Link>
                         <Typography

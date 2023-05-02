@@ -21,7 +21,7 @@ const UpdateProfile = () => {
             <div style={{
                 flexGrow:1
             }}/>
-            <Link to={`/user/${user._id}/profile`}>
+            <Link to={`/u/${user._id}/profile`}>
             <StyledButtons>
                 Settings
             </StyledButtons>

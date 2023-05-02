@@ -98,7 +98,7 @@ const SetProfilePic=()=>{
                 endIcon={<Upload/>}>
                 {loading?'Uploading':'Upload'}
             </StyledPicButton>
-                <Link to={`/user/${user._id}/forgot-password`}>
+                <Link to={`/u/forgot-password`}>
                     <StyledButtons>
                         Update Password
                     </StyledButtons>

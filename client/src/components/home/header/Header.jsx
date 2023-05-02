@@ -59,9 +59,9 @@ const Header = () => {
                             }
                         </Link>
 
-                        <Link to={`/user/${user?._id}`} onClick={() => setTab('/account')}>
+                        <Link to={`/u/${user?._id}`} onClick={() => setTab('/account')}>
                             {
-                                tab === `/user/${user?._id}` ? <AccountCircle/> : <AccountCircleOutlined/>
+                                tab === `/u/${user?._id}` ? <AccountCircle/> : <AccountCircleOutlined/>
                             }
                         </Link>
 

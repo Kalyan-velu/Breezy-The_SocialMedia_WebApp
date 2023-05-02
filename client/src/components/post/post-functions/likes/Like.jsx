@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const Like=({postId,like})=>{
     return(
-        <Link to={`/user/${like._id}`}>
+        <Link to={`/u/${like._id}`}>
             <ListItem key={postId}>
                 <ListItemAvatar>
                     <Avatar alt={like.name}
