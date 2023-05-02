@@ -1,0 +1,1 @@
+import{at as e,au as a,av as t}from"./index-9d46c87f.js";import{c as o}from"./createBox-77cbd316.js";const s=e(),r=o({themeId:a,defaultTheme:s,defaultClassName:"MuiBox-root",generateClassName:t.generate}),n=r;export{n as B};

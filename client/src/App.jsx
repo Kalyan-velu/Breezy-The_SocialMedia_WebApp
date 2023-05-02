@@ -46,28 +46,39 @@ function App() {
             <div className="App" style={{ scrollbarWidth: 'none' }}>
                 {isAuthenticated ? <Header /> : null}
                 <Routes>
-                    <Route path={'/'} exect element={isAuthenticated ? <Suspense fallback={<Loader />}> <Home /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
+                    <Route path={'/'} exect element={isAuthenticated && user ? <Suspense fallback={<Loader />}> <Home /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
                     {user &&
-                        <Route path={isAuthenticated ? `/u/${user._id}` : '/u/account'}
-                            element={isAuthenticated ? <Suspense fallback={<Loader />}><UserProfile /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />}
-                    <Route path={'/NewPost'}
-                        element={isAuthenticated ? <Suspense fallback={<Loader />}><NewPost /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
-                    <Route path={'/chat/:id'}
-                        element={isAuthenticated ? <Suspense fallback={<Loader />}> <ChatPage /> </Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
+                        <>
+                            <Route path={isAuthenticated ? `/u/${user._id}` : '/u/account'}
+                                element={isAuthenticated ? <Suspense fallback={<Loader />}><UserProfile /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
+                            <Route path={'/NewPost'}
+                                element={isAuthenticated ? <Suspense fallback={<Loader />}><NewPost /></Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
+                            <Route path={'/chat/:id'}
+                                element={isAuthenticated ? <Suspense fallback={<Loader />}> <ChatPage /> </Suspense> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>} />
 
-                    <Route path={`/u/:id`}
-                        element={isAuthenticated ?
-                            <ErrorBoundary fallback={<Error />}>
-                                <Suspense fallback={<Loader />}> <OtherProfiles /> </Suspense>
-                            </ErrorBoundary> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>}
-                    />
-                    {user &&
-                        <Route path={`/u/${user._id}/profile`}
-                            element={isAuthenticated ?
-                                <ErrorBoundary fallback={<Error />}>
-                                    <Suspense fallback={<Loader />}><SetProfilePic /></Suspense>
-                                </ErrorBoundary> : <AuthPage />}
-                        />}
+                            <Route path={`/u/:id`}
+                                element={isAuthenticated ?
+                                    <ErrorBoundary fallback={<Error />}>
+                                        <Suspense fallback={<Loader />}> <OtherProfiles /> </Suspense>
+                                    </ErrorBoundary> : <Suspense fallback={<Loader />}><AuthPage /></Suspense>}
+                            />
+                            <Route path={`/u/${user._id}/profile`}
+                                element={isAuthenticated ?
+                                    <ErrorBoundary fallback={<Error />}>
+                                        <Suspense fallback={<Loader />}><SetProfilePic /></Suspense>
+                                    </ErrorBoundary> : <AuthPage />}
+                            />
+                            <Route path={'/search'}
+                                element={isAuthenticated ?
+                                    <ErrorBoundary fallback={<Error />}>
+                                        <Suspense fallback={<Loader />}>
+                                            <SearchUser />
+                                        </Suspense>
+                                    </ErrorBoundary> :
+                                    <AuthPage />}
+                            />
+                        </>
+                    }
                     <Route path={`/u/forgot-password`}
                         element={isAuthenticated ?
                             <ErrorBoundary fallback={<Error />}>
@@ -85,15 +96,7 @@ function App() {
                         element={isAuthenticated ?
                             <UpdatePassword /> : <ResetPassword />}
                     />
-                    <Route path={'/search'}
-                        element={isAuthenticated ?
-                            <ErrorBoundary fallback={<Error />}>
-                                <Suspense fallback={<Loader />}>
-                                    <SearchUser />
-                                </Suspense>
-                            </ErrorBoundary> :
-                            <AuthPage />}
-                    />
+
                     <Route path={"*"} element={<NotFound />} />
                 </Routes>
                 <ErrorSnackbar

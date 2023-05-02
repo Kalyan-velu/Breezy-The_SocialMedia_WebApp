@@ -27,10 +27,10 @@ app.use(cookieParser()) //TO PARSE COOKIE
 
 const __dirname1 = path.resolve()
 if (process.env.NODE_ENV === 'production') {
-	app.use( express.static( path.join( __dirname1, './client/build' ) ) )
+	app.use( express.static( path.join( __dirname1, './client/dist' ) ) )
 
 	app.get( '*', (request, response) => {
-		response.sendFile( path.resolve( __dirname1, "./client", "build", "index.html" ) )
+		response.sendFile( path.resolve( __dirname1, "./client", "dist", "index.html" ) )
 	} )
 } else {
 	app.get( "/", (request, response) => {

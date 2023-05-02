@@ -179,7 +179,7 @@ export const getUserPosts=(id)=>async(dispatch)=>{
             type:'userPostsSuccess',
             payload:data.sortedPosts
         })
-        console.log(data.sortedPosts)
+        console.log(data)
     }   catch(e){
         await dispatch({
             type:'userPostsFailure',

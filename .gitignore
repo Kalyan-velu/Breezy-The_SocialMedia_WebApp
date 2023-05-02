@@ -2,13 +2,13 @@
 
 # dependencies
 /node_modules
-/breezy/node_modules
+/client/node_modules
 .env
 /backend/sendgrid.env
 package-lock.json
-/breezy/.pnp
-/breezy/.pnp.js
-/breezy/package-lock.json
+/client/.pnp
+/client/.pnp.js
+/client/package-lock.json
 /.idea
 /.dist
 # testing
@@ -18,11 +18,11 @@ package-lock.json
 /breezy/build
 
 # misc
-/breezy/.DS_Store
-/breezy/.env.local
-/breezy/.env.development.local
-/breezy/.env.test.local
-/breezy/.env.production.local
+/client/.DS_Store
+/client/.env.local
+/client/.env.development.local
+/client/.env.test.local
+/client/.env.production.local
 
 npm-debug.log*
 yarn-debug.log*
