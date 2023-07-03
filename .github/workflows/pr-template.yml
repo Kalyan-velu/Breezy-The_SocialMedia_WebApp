@@ -1,0 +1,23 @@
+name: Pull Request Template
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  pr_template:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Pull Request Template
+        run: |
+          echo "## Description\n\nPlease provide a brief description of your changes here.\n\n## Checklist\n\n- [ ] I have tested these changes locally\n- [ ] I have followed the project's coding style guidelines\n- [ ] I have documented any necessary changes\n- [ ] I have added tests that verify my changes\n- [ ] I have updated the documentation\n- [ ] I have added or modified necessary comments\n- [ ] I have assigned reviewers for this pull request" > PULL_REQUEST_TEMPLATE.md
+          
+      - name: Create or Update Pull Request Template
+        run: |
+          mv PULL_REQUEST_TEMPLATE.md .github/PULL_REQUEST_TEMPLATE.md
