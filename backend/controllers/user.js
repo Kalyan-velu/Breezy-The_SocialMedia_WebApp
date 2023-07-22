@@ -290,6 +290,7 @@ exports.deleteProfile = async (req, res) => {           //delete profile
 
 exports.myProfile = async (req, res) => {           //my profile
   try {
+    console.log("Sending user info")
     //get the user from the request
     const user = await User.findById(req.user).populate("posts following followers"); //populate the posts
     //send the user back to the client
