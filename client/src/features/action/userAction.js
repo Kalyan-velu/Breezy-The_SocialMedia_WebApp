@@ -1,11 +1,9 @@
-import {axiosInstance} from "../../config/axios";
 import axios from "axios";
+import {axiosInstance} from "../../config/axios";
 
 export const loginUser = (values) =>
-
     async (dispatch) => {
         try {
-
             dispatch({
                 type: 'LoginRequest',                                           // request auth
             })
@@ -23,14 +21,21 @@ export const loginUser = (values) =>
                 type: 'LoginSuccess',
                 payload: data.user,
             })
-
-        } catch (error) {
-            await dispatch({              //dispatching the error to the reducer
-                type: 'LoginFailed',
-                payload: "Something went wrong",
+            await dispatch({
+                type: "STATUS",
+                payload: {
+                    variant: "success",
+                    message: "WELCOME TO BREEZY🫡"
+                }
             })
-            dispatch({
-                type:'clearError',
+        } catch (error) {
+            console.error(error)
+            await dispatch({
+                type: "STATUS",
+                payload: {
+                    variant: "error",
+                    message: (error?.response.data.message == null) ? error.message : error.response.data.message
+                }
             })
         }
     }
@@ -38,31 +43,33 @@ export const loginUser = (values) =>
 export const loadUser = () =>
     async (dispatch) => {
         try {
-            dispatch({
-                type: 'LoadUserRequest'
-            })
             //fetching data from server
             const {data} = await axiosInstance.get(                                    // post request to server
                 "/me"
             );
-            dispatch({                                                         //dispatching the token to the reducer
+            console.info(data)
+            await dispatch({                                                         //dispatching the token to the reducer
                 type: 'LoadUserSuccess',
                 payload: data.user,
             })
-
+            console.log(data.user)
         } catch (e) {
             console.log(e)
             await dispatch({
                 type: 'LoadUserFailure',
                 payload: e.message,
             })
-            dispatch({
-                type:'clearError',
+            await dispatch({
+                type: "STATUS",
+                payload: {
+                    variant: "error",
+                    message: (e?.response.data.message == null) ? e.message : e.response.data.message
+                }
             })
         }
     }
 
-export const registerUser = ({name,email,password,avatar}) =>
+export const registerUser = ({name, email, password, avatar}) =>
     async (dispatch) => {
         try {
             dispatch({
@@ -70,7 +77,7 @@ export const registerUser = ({name,email,password,avatar}) =>
             })
             const {data} = await axiosInstance.post(                                    // post request to server
                 "/register",
-                {name,email,password,avatar}, {
+                {name, email, password, avatar}, {
                     headers:
                         {
                             'Content-Type': 'application/json',
@@ -81,14 +88,25 @@ export const registerUser = ({name,email,password,avatar}) =>
                 type: 'RegisterSuccess',
                 payload: data.user
             })
+            await dispatch({
+                type: "STATUS",
+                payload: {
+                    variant: "success",
+                    message: "User registered successfully 👍✅"
+                }
+            })
         } catch (e) {
             console.log(e)
-           await dispatch({              //dispatching the error to the reducer
+            await dispatch({              //dispatching the error to the reducer
                 type: 'RegisterFailure',
                 payload: "Something went wrong!",
             })
-            dispatch({
-                type:'clearError',
+            await dispatch({
+                type: "STATUS",
+                payload: {
+                    variant: "error",
+                    message: (e?.response.data.message == null) ? e.message : e.response.data.message
+                }
             })
         }
 
@@ -116,7 +134,7 @@ export const getFollowingPosts = () => async (dispatch) => {
         })
     }
 }
-export  const getMyPosts = () => async (dispatch) => {
+export const getMyPosts = () => async (dispatch) => {
     try {
         dispatch({
             type: 'myPostsRequest'
@@ -131,12 +149,12 @@ export  const getMyPosts = () => async (dispatch) => {
         })
 
     } catch (e) {
-       await dispatch({
+        await dispatch({
             type: 'myPostsFailed',
             payload: e.response.data.message,
         })
         dispatch({
-            type:'clearError',
+            type: 'clearError',
         })
     }
 
@@ -175,18 +193,18 @@ export const logoutUser = () =>
             await axiosInstance.get(                                    //  request to server
                 "/logout",
             );
-            dispatch({                                                         //dispatching the token to the reducer
+            await dispatch({                                                         //dispatching the token to the reducer
                 type: 'LogoutUserSuccess',
             })
-
+            dispatch({
+                type: "AUTHENTICATED",
+                payload: false
+            })
         } catch (error) {
             console.log(error)
             await dispatch({              //dispatching the error to the reducer
                 type: 'LogoutUserFailed',
                 payload: error.response.data.message,
-            })
-            dispatch({
-                type:'clearError',
             })
         }
     }
@@ -201,9 +219,9 @@ export const forgotPassword = (email) => async (dispatch) => {
         const {data} = await axiosInstance.post(                                    // post request to server
             '/user/forgot-password', {
                 email
-            },{
+            }, {
                 headers: {
-                    "Content-Type" : "application/json",
+                    "Content-Type": "application/json",
                 },
             }
         );
@@ -219,11 +237,11 @@ export const forgotPassword = (email) => async (dispatch) => {
             payload: e.response.data.message
         })
         dispatch({
-                type:'clearError',
-            })
+            type: 'clearError',
+        })
     }
 }
-export const resetPassword = (token,password) => async (dispatch) => {
+export const resetPassword = (token, password) => async (dispatch) => {
     try {
         dispatch({
             type: 'resetPasswordRequest'
@@ -233,9 +251,9 @@ export const resetPassword = (token,password) => async (dispatch) => {
         const {data} = await axios.put(                                    // post request to server
             `/api/v1/reset-password/${token}`, {
                 password
-            },{
+            }, {
                 headers: {
-                    "Content-Type" : "application/json",
+                    "Content-Type": "application/json",
                 },
             }
         );
@@ -252,8 +270,8 @@ export const resetPassword = (token,password) => async (dispatch) => {
         })
     }
 }
-export const updateProfile = ({name,email,avatar}) => async (dispatch) => {
-    try{
+export const updateProfile = ({name, email, avatar}) => async (dispatch) => {
+    try {
         dispatch({
             type: 'updateProfileRequest'
         })
@@ -261,7 +279,7 @@ export const updateProfile = ({name,email,avatar}) => async (dispatch) => {
         const {data} = await axiosInstance.put(                                    // post request to server
             "/update/profile",
             {
-                name,email,avatar
+                name, email, avatar
             }, {
                 headers:
                     {
@@ -274,20 +292,20 @@ export const updateProfile = ({name,email,avatar}) => async (dispatch) => {
             payload: data.message,
         })
         dispatch({
-            type:'clearMessage',
+            type: 'clearMessage',
         })
-    }catch(e){
+    } catch (e) {
         await dispatch({
             type: 'updateProfileFailure',
             payload: e.response.data.message,
         })
         dispatch({
-            type:'clearError',
+            type: 'clearError',
         });
     }
 };
-export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
-    try{
+export const updatePassword = (oldPassword, newPassword) => async (dispatch) => {
+    try {
         dispatch({
             type: 'updatePasswordRequest'
         })
@@ -295,7 +313,7 @@ export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
         const {data} = await axiosInstance.put(                                    // post request to server
             "/update/password",
             {
-                oldPassword,newPassword
+                oldPassword, newPassword
             }, {
                 headers:
                     {
@@ -308,64 +326,64 @@ export const updatePassword = (oldPassword,newPassword) => async (dispatch) => {
             payload: data.message,
         })
         console.log(data)
-    }catch(e){
+    } catch (e) {
         console.log(e)
         await dispatch({
             type: 'updatePasswordFailure',
             payload: e.response.data.message,
         })
         dispatch({
-            type:'clearError',
+            type: 'clearError',
         })
     }
 }
 
-export const getUserProfile=(id)=>async(dispatch)=>{
-    try{
+export const getUserProfile = (id) => async (dispatch) => {
+    try {
         dispatch({
-            type:'getUserProfileRequest'
+            type: 'getUserProfileRequest'
         })
-        const {data}=await axiosInstance.get(
+        const {data} = await axiosInstance.get(
             `/user/${id}`
         )
         dispatch({
-            type:'getUserProfileSuccess',
-            payload:data.user
+            type: 'getUserProfileSuccess',
+            payload: data.user
         })
-    }   catch(e){
+    } catch (e) {
         console.log(e)
         await dispatch({
-            type:'getUserProfileFailure',
-            payload:e.response.data.message
+            type: 'getUserProfileFailure',
+            payload: e.response.data.message
         })
         dispatch({
-            type:'clearError'
+            type: 'clearError'
         })
     }
 }
 
-export const followUser=(id)=>async(dispatch)=>{
-    try{
+export const followUser = (id) => async (dispatch) => {
+    try {
         dispatch({
-            type:'followRequest'
+            type: 'followRequest'
         })
-        const {data}=await axiosInstance.get(
+        const {data} = await axiosInstance.get(
             `/follow/${id}`
         )
         await dispatch({
-            type:'followSuccess',
-            payload:data.message
+            type: 'followSuccess',
+            payload: data.message
         })
         dispatch({
-            type:'clearMessage'
+            type: 'clearMessage'
         })
-    }catch (e) {
+    } catch (e) {
         await dispatch({
-            type:'followFailure',
-            payload:e.response.data.message
+            type: 'followFailure',
+            payload: e.response.data.message
         })
         dispatch({
-            type:'clearError'
+            type: 'clearError'
         })
     }
 }
@@ -390,37 +408,37 @@ export const searchUsers = (search) => async (dispatch) => {
             payload: e.response.data.message,
         })
         dispatch({
-            type:'clearError',
+            type: 'clearError',
         })
 
     }
 }
-export const DeleteMyAccount=(userId)=> async (dispatch) => {
-        try {
-            dispatch({
-                type: 'DeleteAccountRequest',                                           // request auth
-            })
+export const DeleteMyAccount = (userId) => async (dispatch) => {
+    try {
+        dispatch({
+            type: 'DeleteAccountRequest',                                           // request auth
+        })
 
-            await axiosInstance.get(                                    //  request to server
-                `/me/delete/${userId}`,
-            );
-            dispatch({                                                     //dispatching the token to the reducer
-                type: 'DeleteAccountSuccess',
-                payload: 'Account Deleted Successfully',
-            })
-        } catch (error) {
-            console.log(error)
-            await dispatch({                                            //dispatching the error to the reducer
-                type: 'DeleteUserFailed',
-                payload: error.message,
-            })
-            dispatch({
-                type:'clearError',
-            })
-        }
+        await axiosInstance.get(                                    //  request to server
+            `/me/delete/${userId}`,
+        );
+        dispatch({                                                     //dispatching the token to the reducer
+            type: 'DeleteAccountSuccess',
+            payload: 'Account Deleted Successfully',
+        })
+    } catch (error) {
+        console.log(error)
+        await dispatch({                                            //dispatching the error to the reducer
+            type: 'DeleteUserFailed',
+            payload: error.message,
+        })
+        dispatch({
+            type: 'clearError',
+        })
+    }
 }
-export const fetchAgain=() =>  (dispatch) => {
+export const fetchAgain = () => (dispatch) => {
     dispatch({
-        type:'FETCH_AGAIN'
+        type: 'FETCH_AGAIN'
     })
 }

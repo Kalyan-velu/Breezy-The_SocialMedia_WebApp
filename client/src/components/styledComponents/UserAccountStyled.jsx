@@ -104,7 +104,7 @@ export const StyledBoxNewPost=styled(Box)`
     svg{
     height: 50px;
     width: 50px;
-    '&:hover': {
+    &:hover {
         color: #00bcd4;
         transform-style: preserve-3d;
   }

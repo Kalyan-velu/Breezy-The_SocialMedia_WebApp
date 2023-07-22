@@ -1,0 +1,9 @@
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.active {
+    color: var(--bg-secondary-light);
+    font-size: larger;
+}
