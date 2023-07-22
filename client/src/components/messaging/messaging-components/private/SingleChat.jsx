@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import {ArrowBackIos} from "@mui/icons-material";
 import { IconButton} from "@mui/material";
 import {io} from "socket.io-client";
-import {ChatState} from "../../../context/ChatProvider";
+import {ChatState} from "../../../../context/ChatProvider";
 import {messageInstance} from "../../../../config/axios";
 import {getSender} from "../../../../config/ChatLog";
 import ChatScroll from "../ChatScroll";

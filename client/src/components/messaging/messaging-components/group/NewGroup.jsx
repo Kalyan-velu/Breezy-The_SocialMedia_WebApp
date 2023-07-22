@@ -15,7 +15,7 @@ import UserBadgeItem from "../../chat-loading/lists/UserBadgeItem";
 import UserListItem from "../../chat-loading/lists/UserList";
 import {chatInstance} from "../../../../config/axios";
 import {searchUsers} from "../../../../features/action/userAction";
-import {ChatState} from "../../../context/ChatProvider";
+import {ChatState} from "../../../../context/ChatProvider";
 import {useDispatch, useSelector} from "react-redux";
 
 

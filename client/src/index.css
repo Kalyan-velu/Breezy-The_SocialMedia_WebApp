@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Imprima&family=Rubik:wght@300&display=swap');
+
+:root {
+    --bg-primary-light: #D6D6FF;
+    --bg-secondary-light: #6c6c8f;
+
+
+    /*------Grey-------*/
+    --grey-50: #fafafa;
+    --grey-800: #424242;
+    --grey-900: #212121;
+
+    --blue-gery-200: #b0bec5;
+
+
+    --bg-primary-dark: #3f51b5;
+    --bg-dark: #111125;
+
+}
+
+body {
+    font-family: 'Rubik', sans-serif;;
+}

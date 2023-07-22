@@ -1,6 +1,6 @@
 import {Avatar, Tooltip} from "@mui/material";
 import {isLastMessage, isSameSender, isSameSenderMargin, isSameUser} from "../../../config/ChatLog";
-import {ChatState} from "../../context/ChatProvider";
+import {ChatState} from "../../../context/ChatProvider";
 import {ChatBoxScroll} from "../../styledComponents/chat-styles/ChatSections";
 import * as React from "react";
 	const ScrollableChat = ({messages}) => {
