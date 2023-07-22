@@ -2,6 +2,7 @@ import {useSnackbar} from 'notistack';
 import React, {Suspense} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {loadUser} from "../src/features/action/userAction.js";
+import Loader from "./common/components/loader"
 import Layout from "./common/layouts";
 import AppRouter from './pages'
 
@@ -30,7 +31,7 @@ function App() {
   return (
     <>
       {isAuthenticated &&
-        <Suspense fallback={<>Loading</>}>
+        <Suspense fallback={<Loader/>}>
           <Navbar/>
         </Suspense>}
       <Layout isAuthenticated>

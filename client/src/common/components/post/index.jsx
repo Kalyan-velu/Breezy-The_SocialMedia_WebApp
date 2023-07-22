@@ -1,9 +1,11 @@
 import {Avatar, Typography} from "@mui/material";
 import React, {Suspense, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
 import {addCommentOnPost, likePost} from "../../../features/action/postAction.js";
 import {fetchAgain as fetch} from "../../../features/action/userAction.js";
+import useTime from "../../../hooks/useTime.jsx";
+import {Link} from "../link";
+import Loader from "../loader"
 import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "./styles";
 
 const DeleteAndEdit = React.lazy(() =>
@@ -25,8 +27,6 @@ const Post = ({
                 comments = {},
                 createdAt,
                 postId,
-                setFetchAgain,
-                fetchAgain,
                 isDelete = false,
                 isAccount = false,
               }) => {
@@ -43,7 +43,7 @@ const Post = ({
   const {user} = useSelector(({app}) => app)
   const open = Boolean(anchorEl);
 
-  const date = new Date(createdAt);
+  const time = useTime(createdAt);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,14 +56,12 @@ const Post = ({
     setLiked(!liked);
     await dispatch(likePost(postId));
     dispatch(fetch())
-    setFetchAgain(!fetchAgain);
   }
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
     await dispatch(addCommentOnPost(postId, commentValue));
     dispatch(fetch())
-    setFetchAgain(!fetchAgain);
   };
 
   useEffect(() => {
@@ -76,7 +74,7 @@ const Post = ({
 
 
   return (
-    <Suspense fallback={<>Loading</>}>
+    <Suspense fallback={<Loader/>}>
       <Container key={postId}>
         <div key={ownerId}>
           <PostHeader>
@@ -104,10 +102,9 @@ const Post = ({
                     fontSize: '12px',
                   }}
                 >
-                  {date.toLocaleTimeString()} {date.toLocaleString('en-us', {weekday: 'long'})}, {date.getDate()} {date.toLocaleString('default', {month: 'long'})}
+                  {time}
                 </Typography>
               </Link>
-
             </List>
             {isAccount ?
               <DeleteAndEdit
@@ -120,8 +117,6 @@ const Post = ({
                 setCaptionValue={setCaptionValue}
                 postId={postId}
                 loading={loading}
-                setFetchAgain={setFetchAgain}
-                fetchAgain={fetchAgain}
               />
               : null
             }
@@ -140,7 +135,7 @@ const Post = ({
 
           {postImage ? (
             <PostImg>
-              <img src={postImage} className={"img"} alt={"post"}/>
+              <img src={postImage} loading={"lazy"} className={"img"} alt={"post"}/>
             </PostImg>
           ) : (
             <PostText>
@@ -166,8 +161,6 @@ const Post = ({
                 liked={liked}
                 handleLike={handleLike}
                 postId={postId}
-                setFetchAgain={setFetchAgain}
-                fetchAgain={fetchAgain}
               />
             </div>
             <div>
@@ -181,8 +174,6 @@ const Post = ({
                 setCommentValue={setCommentValue}
                 addCommentHandler={addCommentHandler}
                 isAccount={isAccount}
-                fetchAgain={fetchAgain}
-                setFetchAgain={setFetchAgain}
               />
             </div>
           </PostFooterFirst>

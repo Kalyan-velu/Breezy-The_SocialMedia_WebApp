@@ -7,7 +7,7 @@ import {styled as muiStyled} from "@mui/material/styles";
 import React from 'react'
 import {useDispatch} from "react-redux";
 import {deletePost, updateCaption} from "../../../../../features/action/postAction.js";
-
+import {fetchAgain as fetch} from "../../../../../features/action/userAction.js"
 
 const ITEM_HEIGHT = 48;
 
@@ -53,8 +53,6 @@ const StyledMenu = muiStyled((props) => (
 }));
 
 const DeleteAndEdit = ({
-                         fetchAgain,
-                         setFetchAgain,
                          loading,
                          postId,
                          open,
@@ -69,12 +67,12 @@ const DeleteAndEdit = ({
   const updateCaptionHandler = (e) => {
     e.preventDefault()
     dispatch(updateCaption(captionValue, postId));
-    setFetchAgain(!fetchAgain);
+    dispatch(fetch())
     handleClose();
   }
   const deleteHandler = () => {
     dispatch(deletePost(postId));
-    setFetchAgain(!fetchAgain);
+    dispatch(fetch())
   }
 
   return (

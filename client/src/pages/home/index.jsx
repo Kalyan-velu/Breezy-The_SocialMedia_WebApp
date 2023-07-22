@@ -1,5 +1,5 @@
 import {Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Post from "../../common/components/post";
 import {getFollowingPosts} from "../../features/action/userAction.js";
@@ -8,10 +8,10 @@ import {HomeContainer} from "./styles";
 const Home = () => {
   const dispatch = useDispatch()
   const {loading, posts} = useSelector(({postOfFollowing}) => postOfFollowing);
-  const [fetchAgain, setFetchAgain] = useState(false)
+  const {fetch} = useSelector(({fetch}) => fetch)
   useEffect(() => {
     dispatch(getFollowingPosts())
-  }, [])
+  }, [fetch])
 
   return (
     <>
@@ -29,8 +29,6 @@ const Home = () => {
               comments={post.comments}
               createdAt={post.createdAt}
               postId={post._id}
-              setFetchAgain={setFetchAgain}
-              fetchAgain={fetchAgain}
             />
           ))
         ) : (
