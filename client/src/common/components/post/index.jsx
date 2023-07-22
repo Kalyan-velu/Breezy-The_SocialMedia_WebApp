@@ -182,6 +182,7 @@ const Post = ({
             <List>
               {comments.length > 0 ? (
                 <CommentShort
+
                   key={comments[0]._id}
                   postId={postId}
                   comments={comments}

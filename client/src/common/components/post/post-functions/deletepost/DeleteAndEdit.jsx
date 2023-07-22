@@ -7,7 +7,7 @@ import {styled as muiStyled} from "@mui/material/styles";
 import React from 'react'
 import {useDispatch} from "react-redux";
 import {deletePost, updateCaption} from "../../../../../features/action/postAction.js";
-import {fetchAgain as fetch} from "../../../../../features/action/userAction.js"
+import {fetchAgain} from "../../../../../features/action/userAction.js";
 
 const ITEM_HEIGHT = 48;
 
@@ -67,12 +67,12 @@ const DeleteAndEdit = ({
   const updateCaptionHandler = (e) => {
     e.preventDefault()
     dispatch(updateCaption(captionValue, postId));
-    dispatch(fetch())
+    dispatch(fetchAgain())
     handleClose();
   }
   const deleteHandler = () => {
     dispatch(deletePost(postId));
-    dispatch(fetch())
+    dispatch(fetchAgain())
   }
 
   return (

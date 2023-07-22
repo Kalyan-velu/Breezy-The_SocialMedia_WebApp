@@ -305,9 +305,10 @@ exports.myProfile = async (req, res) => {           //my profile
     })
   }
 }
+
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("posts following followers")
+    const user = await User.findById(req.params.id).populate("following followers")
 
     if (!user) {
       return res.status(404).json({
@@ -316,9 +317,22 @@ exports.getUserProfile = async (req, res) => {
       })
     }
 
+    const posts = []
+    for (let i = 0; i < user.posts.length; i++) {                       //getting all the posts of the user
+      const post = await Post.findById(user.posts[i]).populate(     //populate the comments, likes
+        "comments.user likes owner")
+      posts.push(post)
+    }
+    //sorting the posts by date
+    const sortedPosts = posts.sort((a, b) => {
+      return b.createdAt - a.createdAt
+    })
+
+
     return res.status(200).json({
       success: true,
-      user
+      user,
+      sortedPosts
     })
 
   } catch (e) {
@@ -417,6 +431,7 @@ exports.getAllUsers = async (req, res) => {
     })
   }
 }
+
 exports.searchUser = async (req, res) => {
   try {
     const keyword = req.query.search ? {
@@ -442,53 +457,4 @@ exports.searchUser = async (req, res) => {
       message: e.message
     })
   }
-}
-exports.getMyPosts = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id)
-    const posts = []
-    for (let i = 0; i < user.posts.length; i++) {                       //getting all the posts of the user
-      const post = await Post.findById(user.posts[i]).populate(     //populate the comments,likes
-        "comments.user likes owner")
-      posts.push(post)
-    }
-    //sorting the posts by date
-    const sortedPosts = posts.sort((a, b) => {
-      return b.createdAt - a.createdAt
-    })
-    return res.status(200).json({
-      success: true,
-      sortedPosts
-    })
-  } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: e.message
-    })
-  }
-}
-exports.getUserPosts = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id)
-    const posts = []
-    for (let i = 0; i < user.posts.length; i++) {
-      const post = await Post.findById(user.posts[i]).populate(
-        "comments.user likes owner")
-      posts.push(post)
-    }
-    //sorting the posts by date
-    const sortedPosts = posts.sort((a, b) => {
-      return b.createdAt - a.createdAt
-    })
-    return res.status(200).json({
-      success: true,
-      sortedPosts
-    })
-  } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: e.message
-    })
-  }
-
 }

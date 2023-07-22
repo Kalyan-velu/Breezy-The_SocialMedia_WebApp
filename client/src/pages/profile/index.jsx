@@ -5,10 +5,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import Loader from "../../common/components/loader";
 import Post from "../../common/components/post";
 import {accessChat, setSelectedChat} from "../../features/action/chatAction.js";
-import {getUserPosts} from "../../features/action/postAction.js";
-import {followUser, getUserProfile} from "../../features/action/userAction";
+import {fetchAgain, followUser, getUserProfile} from "../../features/action/userAction";
 import User from "./components/User.jsx";
-import {AccountDetails, List, StyledAvatar, StyledBox, StyledContainer} from "./styles";
+import {AccountDetails, List, StyledAvatar, StyledBox} from "./styles";
 
 const OtherProfiles = () => {
   const params = useParams()
@@ -21,52 +20,36 @@ const OtherProfiles = () => {
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
   const [following, setFollowing] = useState(false);
-  const {user} = useSelector(state => state.getUserProfile)
+  const {user, posts} = useSelector(state => state.getUserProfile)
   const {user: me} = useSelector(({app}) => app)
-  const {loading, posts} = useSelector((state) => state.userPosts);
-  const {error: likeError, message} = useSelector((state) => state.like)
-  const {error: followError, message: followMessage} = useSelector((state) => state.follow)
+  const {loading} = useSelector((state) => state.userPosts);
+  const {error: likeError, message} = useSelector(({like}) => like)
+  const {error: followError, message: followMessage} = useSelector(({follow}) => follow)
   const {chat} = useSelector(state => state.chats)
-
-  const [fetchAgain, setFetchAgain] = useState(false)
+  const {fetch} = useSelector(({fetch}) => fetch)
 
   useEffect(() => {
-    dispatch(getUserPosts(params.id))
     dispatch(getUserProfile(params.id))
-    console.log("Fetching Again....")
-  }, [fetchAgain, setFetchAgain, params.id, dispatch])
+  }, [fetch, params.id])
 
 
   function followHandle() {
     setFollowing(!following)
     dispatch(followUser(params.id))
-    setFetchAgain(!fetchAgain)
+    dispatch(fetchAgain())
   }
 
   useEffect(() => {
     if (followError) {
       setFollowing(false)
-      setOpenE(true)
-      setErrors(followError)
     }
-    if (followMessage) {
-      setOpenS(true)
-      setSuccess(followMessage)
-    }
-    if (likeError) {
-      setOpenE(true)
-      setErrors(likeError)
-    }
-    if (message) {
-      setOpenS(true)
-      setSuccess(message)
-    }
-  }, [followError, followMessage, message, likeError])
+
+  }, [followError])
 
   useEffect(() => {
     if (user) {
       user.followers.map(follower => {
-        if (follower._id === me._id) {
+        if (follower?._id === me?._id) {
           return setFollowing(true)
         }
       })
@@ -83,52 +66,29 @@ const OtherProfiles = () => {
   }
 
   return (
-    <StyledContainer>
+    <>
       {user &&
         (<>
           <StyledBox>
-            <StyledAvatar
-              src={user.avatar.url}
-              alt={user.name}
-              title={user.name}
-            />
+            <StyledAvatar src={user.avatar.url} alt={user.name} title={user.name}/>
+            {(params.id === me._id) ? null :
+              <>
+                <List>
+                  <Button onClick={followHandle} style={{color: following ? '#ff0000' : '#000000',}}>
+                    {following ? 'Unfollow' : 'Follow'}
+                  </Button>
+                </List>
+              </>}
+            {(params.id === me._id) ? null : <> <List>
+              <Button onClick={directMessage}>message</Button>
+            </List>
+            </>
+            }
             <List>
-              <Button
-                onClick={followHandle}
-                style={{
-                  color: following ? '#ff0000' : '#000000',
-                }}
-              >
-                {following ? 'Unfollow' : 'Follow'}
-              </Button>
+              <Typography fontWeight={700} sx={{fontSize: '1.4rem'}}> {user.name} </Typography>
             </List>
             <List>
-              <Button
-                onClick={directMessage}
-              >
-                message
-              </Button>
-            </List>
-            <List>
-              <Typography
-                fontWeight={700}
-                sx={{
-                  fontSize: '1.4rem'
-                }}
-              >
-                {user.name}
-              </Typography>
-            </List>
-            <List>
-              <Typography
-                fontWeight={300}
-                sx={{
-                  color: '#111',
-                  fontSize: '1.1rem',
-                }}
-              >
-                {user.email}
-              </Typography>
+              <Typography fontWeight={300} sx={{color: '#111', fontSize: '1.1rem'}}> {user.email} </Typography>
             </List>
             <AccountDetails>
               <Typography
@@ -166,27 +126,25 @@ const OtherProfiles = () => {
               </Button>
             </AccountDetails>
           </StyledBox>
-          <Sections>
-            {posts && posts.length > 0 ? (
-              posts.map((post) => (
-                <Suspense key={post._id} fallback={<Loader/>}>
-                  {loading ? <Loader/> :
-                    <Post
-                      key={post._id}
-                      ownerId={post.owner._id}
-                      ownerName={user.name}
-                      ownerAvatar={user.avatar.url}
-                      caption={post.caption}
-                      postImage={post.image.url}
-                      likes={post.likes}
-                      comments={post.comments}
-                      createdAt={post.createdAt}
-                      postId={post._id}
-                      isAccount={false}
-                      isDelete={true}
-                      setFetchAgain={setFetchAgain}
-                      fetchAgain={fetchAgain}
-                    />}
+          <section>
+            {posts && posts?.length > 0 ? (
+              posts?.map((post) => (
+                <Suspense key={post?._id} fallback={<Loader/>}>
+
+                  <Post
+                    key={post?._id}
+                    ownerId={post?.owner._id}
+                    ownerName={user?.name}
+                    ownerAvatar={user?.avatar?.url}
+                    caption={post?.caption}
+                    postImage={post?.image.url}
+                    likes={post?.likes}
+                    comments={post?.comments}
+                    createdAt={post?.createdAt}
+                    postId={post?._id}
+                    isAccount={params.id === me._id}
+                    isDelete={params.id === me._id}
+                  />
                 </Suspense>))
             ) : (
               <Typography variant="h6" color="textSecondary" align="center">
@@ -194,7 +152,7 @@ const OtherProfiles = () => {
               </Typography>
             )}
 
-          </Sections>
+          </section>
         </>)}
 
       <Dialog fullWidth maxWidth={'xs'} open={followersToggle} onClose={() => setFollowersToggle(!followersToggle)}>
@@ -240,7 +198,7 @@ const OtherProfiles = () => {
         </DialogContent>
       </Dialog>
 
-    </StyledContainer>
+    </>
   )
 }
 export default OtherProfiles

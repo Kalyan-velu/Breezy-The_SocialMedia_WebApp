@@ -11,20 +11,20 @@ import Loader from "../../../styledComponents/error-handlers/Loader";
 import {Sections} from "../../../styledComponents/HomeStyled";
 import {PostSection} from "../../../styledComponents/PostStyled";
 import {
-    AccountDetails,
-    List,
-    StyledAvatar,
-    StyledBox,
-    StyledBoxNewPost,
-    StyledBoxUpdate,
-    StyledContainer
+  AccountDetails,
+  List,
+  StyledAvatar,
+  StyledBox,
+  StyledBoxNewPost,
+  StyledBoxUpdate,
+  StyledContainer
 } from "../../../styledComponents/UserAccountStyled";
 import './user.css'
 
 const UpdateProfile = React.lazy(() =>
   import("../updateprofile/UpdateProfile"));
 const Modal = React.lazy(() =>
-  import("../../../post/NewPost/NewPostModal"));
+  import("../../../../common/components/NewPost/NewPostModal"));
 
 
 const UserProfile = () => {
