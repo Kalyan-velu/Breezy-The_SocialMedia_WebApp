@@ -2,7 +2,7 @@ import {InfoOutlined} from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
 import Typography from '@mui/material/Typography';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from 'react-router-dom';
 import {registerUser} from "../../../../features/action/userAction";
@@ -21,7 +21,7 @@ const RegisterNew = ({setSetr}) => {
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const filePicker = React.useRef(null);
-  const {loading: loadingRegister, error: errorRegister, success: messageRegister} = useSelector(state => state.user)
+  const {loading} = useSelector(({app}) => app)
   const dispatch = useDispatch()
 
   const gridStyle = {
@@ -51,16 +51,7 @@ const RegisterNew = ({setSetr}) => {
     e.preventDefault()
     dispatch(registerUser({name, email, password, avatar}))
   }
-  useEffect(() => {
-    if (messageRegister) {
-      setOpenS(true)
-      setSuccess('User registered successfully')
-    }
-    if (errorRegister) {
-      setOpen(true)
-      setError(errorRegister)
-    }
-  }, [loadingRegister, messageRegister, errorRegister]);
+
 
   const selectedPhoto = (e) => {
     const reader = new FileReader();
@@ -176,7 +167,7 @@ const RegisterNew = ({setSetr}) => {
             variant='contained'
             onClick={(e) => onSubmit({e, name, email, password, avatar})}
           >
-            {loadingRegister ? 'Registering...' : 'Register'}
+            {loading ? 'Registering...' : 'Register'}
           </LoadingButton>
         </Grid>
         <Grid align='center'>

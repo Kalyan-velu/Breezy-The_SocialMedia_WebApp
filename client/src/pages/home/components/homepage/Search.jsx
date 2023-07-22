@@ -1,25 +1,25 @@
+import {Container, StyledButton,} from "/components/styledComponents/PostModalStyled.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from '@mui/icons-material/Search';
 import {CircularProgress, IconButton, Typography} from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
-import User from "client/src/components/profile/User.jsx";
-import {Container, StyledButton,} from "client/src/components/styledComponents/PostModalStyled.jsx";
 import {
-    Search,
-    SearchButton,
-    SearchContent,
-    SearchHeader,
-    SearchIconWrapper,
-    SearchResults,
-    SearchResultsContents,
-    SearchWrapper,
-    StyledInputBase
+  Search,
+  SearchButton,
+  SearchContent,
+  SearchHeader,
+  SearchIconWrapper,
+  SearchResults,
+  SearchResultsContents,
+  SearchWrapper,
+  StyledInputBase
 } from "client/src/components/styledComponents/Search.jsx";
-import {searchUsers} from "client/src/features/action/userAction.js";
+import User from "client/src/pages/profile/components/User.jsx";
 import PropTypes from "prop-types";
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {searchUsers} from "../../../../features/action/userAction.js";
 
 const BootstrapDialogTitle = (props) => {
   const {children, onClose, ...other} = props;
