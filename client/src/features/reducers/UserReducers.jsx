@@ -93,7 +93,8 @@ export const getUserProfileReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getUserProfileSuccess, (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.posts = action.payload.posts;
     })
     .addCase(getUserProfileFailure, (state, action) => {
       state.loading = false;

@@ -4,7 +4,7 @@ import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@mui/material
 import TextField from "@mui/material/TextField";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import React from 'react'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import * as Yup from "yup";
 import {loginUser} from "../../../../features/action/userAction.js";
@@ -17,7 +17,7 @@ import {loginUser} from "../../../../features/action/userAction.js";
 const LoginComponent = ({setSetr}) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = React.useState(false);
-
+  const {loading} = useSelector(({app}) => app)
   const paperStyle = {
     backgroundColor: "inherit",
     borderRadius: "10px",
@@ -109,7 +109,7 @@ const LoginComponent = ({setSetr}) => {
                   variant='contained'
                   disabled={props.isSubmitting}
                 >
-                  login
+                  {loading ? "loging in.." : "login"}
                 </LoadingButton>
               </div>
               <Grid align='center'>
