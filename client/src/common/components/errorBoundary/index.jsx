@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import React, {useState} from "react";
 import {ErrorBoundary as Error} from "react-error-boundary";
-import Loader from "../Loader";
+import Loader from "../loader";
 import "./index.css";
 
 const ErrorFallBack = ({error, info, resetErrorBoundary, inApp}) => {
