@@ -6,6 +6,7 @@ import Home from "./home"
 import UserAuthentication from "./Login";
 
 const Profile = React.lazy(() => import("./profile"))
+const Chat = React.lazy(() => import("./chat"))
 
 const Router = () => {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ const Router = () => {
 
   React.useEffect(() => {
     function isLoggedIn() {
-      isAuthenticated ? navigate("/") : null
+      isAuthenticated === false ? navigate("/") : null
     }
 
     isLoggedIn()
@@ -26,7 +27,15 @@ const Router = () => {
         element={
           <ErrorBoundary>
             <Profile/>
-          </ErrorBoundary>}/>
+          </ErrorBoundary>}
+      />
+      <Route
+        path="/chat/:id"
+        element={
+          <ErrorBoundary>
+            <Chat/>
+          </ErrorBoundary>}
+      />
     </Routes>
   )
 }

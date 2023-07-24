@@ -41,7 +41,7 @@ export const loginUser = (values) =>
     }
   }
 // ---------------------------------------------User Loading---------------------------
-export const loadUser = () =>
+export const loadUser = (navigate) =>
   async (dispatch) => {
     try {
       //fetching data from server
@@ -53,6 +53,7 @@ export const loadUser = () =>
         type: 'LoadUserSuccess',
         payload: data.user,
       })
+      navigate(-1)
       console.log(data.user)
     } catch (e) {
       console.log(e)
@@ -186,10 +187,16 @@ export const forgotPassword = (email) => async (dispatch) => {
         },
       }
     );
-    console.log(data)
-    dispatch({                                                         //dispatching the token to the reducer
+    await dispatch({                                                         //dispatching the token to the reducer
       type: 'forgotPasswordSuccess',
       payload: data.message,
+    })
+    dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "success",
+        message: `Email sent to ${email}`
+      }
     })
 
   } catch (e) {
@@ -201,7 +208,7 @@ export const forgotPassword = (email) => async (dispatch) => {
       type: "STATUS",
       payload: {
         variant: "error",
-        message: (error?.response.data.message == null) ? error.message : error.response.data.message
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
       }
     })
   }
@@ -223,7 +230,6 @@ export const resetPassword = (token, password) => async (dispatch) => {
         },
       }
     );
-    console.log(data)
     dispatch({                                                         //dispatching the token to the reducer
       type: 'resetPasswordSuccess',
       payload: data.users,
@@ -258,17 +264,25 @@ export const updateProfile = ({name, email, avatar}) => async (dispatch) => {
       type: 'updateProfileSuccess',
       payload: data.message,
     })
-    dispatch({
-      type: 'clearMessage',
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "success",
+        message: (data?.message !== null && data.message)
+      }
     })
   } catch (e) {
     await dispatch({
       type: 'updateProfileFailure',
       payload: e.response.data.message,
     })
-    dispatch({
-      type: 'clearError',
-    });
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "error",
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
+      }
+    })
   }
 };
 
@@ -294,7 +308,13 @@ export const updatePassword = (oldPassword, newPassword) => async (dispatch) => 
       type: 'updatePasswordSuccess',
       payload: data.message,
     })
-    console.log(data)
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "success",
+        message: "Password Updated"
+      }
+    })
   } catch (e) {
     console.log(e)
     await dispatch({
@@ -324,7 +344,7 @@ export const getUserProfile = (id) => async (dispatch) => {
       }
     })
   } catch (e) {
-    console.log(e)
+    console.error(e)
     await dispatch({
       type: 'getUserProfileFailure',
       payload: e.response.data.message
@@ -351,8 +371,12 @@ export const followUser = (id) => async (dispatch) => {
       type: 'followSuccess',
       payload: data.message
     })
-    dispatch({
-      type: 'clearMessage'
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "success",
+        message: data.message
+      }
     })
   } catch (e) {
     await dispatch({

@@ -21,6 +21,9 @@ export const AuthGrid = styled("div")(({theme}) => ({
   borderRadius: "0.4rem",
   boXShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
   border: "1px solid rgba(155, 133, 209, 0.3);",
+  [theme.breakpoints.down("sm")]: {
+    margin: "auto"
+  }
 
 }))
 export const AuthHeader = styled(Typography)(({theme}) => ({

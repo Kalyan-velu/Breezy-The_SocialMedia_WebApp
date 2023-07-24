@@ -6,11 +6,11 @@ export const Container = styled("div")(({theme}) => ({
   flexDirection: "column",
   justifyContent: "center",
   backgroundColor: theme.palette.secondary.main,
-  margin: "1rem auto",
+  margin: "3rem auto",
   zIndex: "59",
   borderRadius: "0.4rem",
   boxShadow: "2px -2px 8px 8px rgba(190,179,179,0.75)",
-
+  color: theme.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     width: "100%"
   }
@@ -38,7 +38,7 @@ export const PostDetails = styled("div")(({theme}) => ({
 export const List = styled("div")(({theme}) => ({
   display: "flex",
   alignItems: "center",
-
+  gap: "0.8rem",
   '&a': {
     textDecoration: "none",
     marginLeft: '20px',

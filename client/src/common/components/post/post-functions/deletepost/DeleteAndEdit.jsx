@@ -1,9 +1,16 @@
-import {Delete, Edit, Update} from "@mui/icons-material";
+import Delete from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {alpha, Button, CircularProgress, Dialog, DialogTitle, IconButton, TextField} from "@mui/material";
+import Update from '@mui/icons-material/Update';
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from '@mui/material/MenuItem';
-import {styled as muiStyled} from "@mui/material/styles";
+import {alpha, styled as muiStyled} from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 import React from 'react'
 import {useDispatch} from "react-redux";
 import {deletePost, updateCaption} from "../../../../../features/action/postAction.js";

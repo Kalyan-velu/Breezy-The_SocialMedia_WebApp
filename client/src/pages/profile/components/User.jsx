@@ -2,12 +2,12 @@
 import {Avatar, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {UserContainer} from "../styles";
-
+import "../styles/user.css"
 
 const User = ({userId, name, avatar}) => {
   const navigate = useNavigate()
   const goTo = () => {
-    navigate(`/u/${userId}`)
+    navigate(`/user/${userId}`)
   }
   return (
     <UserContainer onClick={goTo} key={userId}>
@@ -21,13 +21,11 @@ const User = ({userId, name, avatar}) => {
           <Typography
             fontWeight={600}
             sx={{
-              color: '#111',
               fontSize: '1.2rem',
             }}>
             {name}
           </Typography>
         </div>
-
       </div>
     </UserContainer>
   )

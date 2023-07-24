@@ -159,9 +159,7 @@ export const createNewPost = (caption, image) => async (dispatch) => {
 }
 export const updateCaption = (caption, id) => async (dispatch) => {
   try {
-    dispatch({
-      type: 'updateCaptionSuccess'
-    })
+
     const {data} = await axiosInstance.put(
       `/post/${id}`,
       {
@@ -173,8 +171,7 @@ export const updateCaption = (caption, id) => async (dispatch) => {
       }
     )
     dispatch({
-      type: 'updateCaptionFailure',
-      payload: data.message
+      type: 'updateCaptionSuccess'
     })
     await dispatch({
       type: "STATUS",

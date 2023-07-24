@@ -1,6 +1,7 @@
 import {useSnackbar} from 'notistack';
 import React, {Suspense} from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {loadUser} from "../src/features/action/userAction.js";
 import Loader from "./common/components/loader"
 import Layout from "./common/layouts";
@@ -10,6 +11,7 @@ const Navbar = React.lazy(() =>
   import("./common/components/Navbar"));
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const {enqueueSnackbar} = useSnackbar();
   const {user, variant, isAuthenticated, message} = useSelector(({app}) => app)
@@ -26,7 +28,7 @@ function App() {
     }
   }, [user])
   React.useEffect(() => {
-    dispatch(loadUser())
+    dispatch(loadUser(navigate))
   }, [dispatch])
   return (
     <>

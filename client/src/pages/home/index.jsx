@@ -9,13 +9,22 @@ const Home = () => {
   const dispatch = useDispatch()
   const {loading, posts} = useSelector(({postOfFollowing}) => postOfFollowing);
   const {fetch} = useSelector(({fetch}) => fetch)
+  const {isAuthenticated} = useSelector(({app}) => app)
+
+  React.useEffect(() => {
+    function isLoggedIn() {
+      isAuthenticated === false ? navigate("/") : null
+    }
+
+    isLoggedIn()
+  }, [])
   useEffect(() => {
     dispatch(getFollowingPosts())
   }, [fetch])
 
   return (
     <>
-      <HomeContainer maxWidth={"md"}>
+      <HomeContainer maxWidth={"md"} posts={posts && posts?.length > 0}>
         {posts && posts.length > 0 ? (
           posts.map((post) => (
             <Post

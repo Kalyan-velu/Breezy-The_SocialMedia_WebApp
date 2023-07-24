@@ -1,22 +1,29 @@
-import {InfoOutlined} from "@mui/icons-material";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {Checkbox, FormControlLabel, Grid, Paper, Typography} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
 import * as Yup from "yup";
+import ErrorBoundary from "../../../../common/components/errorBoundary"
 import {loginUser} from "../../../../features/action/userAction.js";
+
+const ForgotPassword = React.lazy(() => import("../password/ForgetPassword.jsx"))
 
 /**
  *
  * @returns {JSX.Element}
  * @constructor
  */
-const LoginComponent = ({setSetr}) => {
+const LoginComponent = ({setSetr, setForgetPassword, forgetPassword}) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = React.useState(false);
+
   const {loading} = useSelector(({app}) => app)
   const paperStyle = {
     backgroundColor: "inherit",
@@ -58,84 +65,90 @@ const LoginComponent = ({setSetr}) => {
 
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}>
-        {(props) => (
-          <Form noValidate>
-            <Paper
-              elevation={0}
-              style={paperStyle}
-            >
-              <Field as={TextField}
-                     margin={"dense"}
-                     size="medium"
-                     padding={"dense"}
-                     autoComplete="off"
-                     name='email'
-                     label='Enter Email'
-                     fullWidth
-                     error={props.errors.email && props.touched.email}
-                     helperText={<ErrorMessage name='email'/>}
-                     required
-              />
-              <Field as={TextField}
-                     margin={"dense"}
-                     size="medium"
-                     padding={"dense"}
-                     autoComplete="off"
-                     type={showPassword ? 'text' : 'password'}
-                     name='password'
-                     label='Enter Password'
-                     fullWidth
-                     error={props.errors.password && props.touched.password}
-                     helperText={<ErrorMessage name='password'/>}
-                     required/>
-              <FormControlLabel
-                control={
-                  <Checkbox onChange={handleChange} name="jason"/>
-                }
-                label="Show Password"
-              />
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px"
-              }}>
-                <LoadingButton
-                  type='submit'
-                  style={btnStyle}
-                  variant='contained'
-                  disabled={props.isSubmitting}
-                >
-                  {loading ? "loging in.." : "login"}
-                </LoadingButton>
-              </div>
-              <Grid align='center'>
-                <Link to="/u/forgot-password">Forgot Password?</Link>
-              </Grid>
-              <Grid align='center'>
-                <Typography
-                  variant='caption'
-                  color={"secondary"}
-                >Fill the form to login into your account
-                </Typography>
-                <Typography
-                  level="body2"
-                  startDecorator={<InfoOutlined/>}
-                  sx={{alignItems: 'flex-start', maxWidth: 340, wordBreak: 'break-all'}}
-                >
-                  Don't Have An Account?
-                  <span role='button' style={{color: "#0072E5"}}
-                        onClick={() => setSetr(prevState => prevState === 'login' ? 'register' : 'login')}> Sign Up </span>
-                </Typography>
-              </Grid>
+      {(forgetPassword === false) ? <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}>
+          {(props) => (
+            <Form noValidate>
+              <Paper
+                elevation={0}
+                style={paperStyle}
+              >
+                <Field as={TextField}
+                       margin={"dense"}
+                       size="medium"
+                       padding={"dense"}
+                       autoComplete="off"
+                       name='email'
+                       label='Enter Email'
+                       fullWidth
+                       error={props.errors.email && props.touched.email}
+                       helperText={<ErrorMessage name='email'/>}
+                       required
+                />
+                <Field as={TextField}
+                       margin={"dense"}
+                       size="medium"
+                       padding={"dense"}
+                       autoComplete="off"
+                       type={showPassword ? 'text' : 'password'}
+                       name='password'
+                       label='Enter Password'
+                       fullWidth
+                       error={props.errors.password && props.touched.password}
+                       helperText={<ErrorMessage name='password'/>}
+                       required/>
+                <FormControlLabel
+                  control={
+                    <Checkbox onChange={handleChange} name="jason"/>
+                  }
+                  label="Show Password"
+                />
+                <div style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "20px"
+                }}>
+                  <LoadingButton
+                    type='submit'
+                    style={btnStyle}
+                    variant='contained'
+                    disabled={props.isSubmitting}
+                  >
+                    {loading ? "logging in.." : "login"}
+                  </LoadingButton>
+                </div>
+                <Grid align='center'>
+                  <div style={{color: "blue", cursor: "pointer"}}
+                       onClick={() => setForgetPassword(!forgetPassword)}>Forgot Password?
+                  </div>
+                </Grid>
+                <Grid align='center'>
+                  <Typography
+                    variant='caption'
+                  >Fill the form to login into your account
+                  </Typography>
+                  <Typography
+                    level="body2"
+                    startDecorator={<InfoOutlined/>}
+                    sx={{alignItems: 'flex-start', maxWidth: 340, wordBreak: 'break-all'}}
+                  >
+                    Don't Have An Account?
+                    <span role='button' style={{color: "#0072E5"}}
+                          onClick={() => setSetr(prevState => prevState === 'login' ? 'register' : 'login')}> Sign Up </span>
+                  </Typography>
+                </Grid>
 
-            </Paper>
+              </Paper>
 
-          </Form>)}
-      </Formik>
+            </Form>)}
+        </Formik> :
+        <ErrorBoundary>
+          <ForgotPassword setForgetPassword={setForgetPassword} emailRegExp={emailRegExp}
+                          forgetPassword={forgetPassword}/>
+        </ErrorBoundary>
+      }
     </>
   )
 }

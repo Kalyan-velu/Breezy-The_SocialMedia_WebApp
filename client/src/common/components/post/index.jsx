@@ -1,11 +1,12 @@
-import {Avatar, Typography} from "@mui/material";
-import React, {Suspense, useEffect, useState} from 'react'
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {addCommentOnPost, likePost} from "../../../features/action/postAction.js";
 import {fetchAgain as fetch} from "../../../features/action/userAction.js";
 import useTime from "../../../hooks/useTime.jsx";
+import ErrorBoundary from "../errorBoundary"
 import {Link} from "../link";
-import Loader from "../loader"
 import {Container, List, PostDetails, PostFooterFirst, PostHeader, PostImg, PostText} from "./styles";
 
 const DeleteAndEdit = React.lazy(() =>
@@ -74,11 +75,11 @@ const Post = ({
 
 
   return (
-    <Suspense fallback={<Loader/>}>
+    <ErrorBoundary>
       <Container key={postId}>
         <div key={ownerId}>
           <PostHeader>
-            <List>
+            <List sx={{}}>
               <Avatar
                 title={ownerName}
                 src={ownerAvatar}
@@ -98,7 +99,6 @@ const Post = ({
                 <Typography
                   fontWeight={100}
                   sx={{
-                    color: '#111',
                     fontSize: '12px',
                   }}
                 >
@@ -199,7 +199,7 @@ const Post = ({
           </PostDetails>
         </div>
       </Container>
-    </Suspense>
+    </ErrorBoundary>
   )
 }
 export default Post

@@ -1,6 +1,11 @@
-import {InfoOutlined} from "@mui/icons-material";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {Avatar, Checkbox, FormControlLabel, Grid, Paper, TextField} from "@mui/material";
+import Avatar from '@mui/material/Avatar';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
@@ -8,12 +13,8 @@ import {useNavigate} from 'react-router-dom';
 import {registerUser} from "../../../../features/action/userAction";
 
 
-const RegisterNew = ({setSetr}) => {
+const RegisterNew = ({setSetr, setForgetPassword, forgetPassword}) => {
   const navigate = useNavigate()
-  const [open, setOpen] = React.useState(false);
-  const [openS, setOpenS] = React.useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [showPassword, setShowPassword] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [avatar, setAvatar] = useState(null);
@@ -51,6 +52,8 @@ const RegisterNew = ({setSetr}) => {
     e.preventDefault()
     dispatch(registerUser({name, email, password, avatar}))
   }
+  const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/
 
 
   const selectedPhoto = (e) => {
@@ -121,6 +124,7 @@ const RegisterNew = ({setSetr}) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               fullWidth
+              helperText={(email !== "" && !emailRegExp.test(email)) ? "Enter an email address" : null}
               required
             />
             <TextField
@@ -135,6 +139,7 @@ const RegisterNew = ({setSetr}) => {
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               required
+              helperText={(password !== "" && password?.length < 6 && !passwordRegExp.test(password)) ? "Password must have  one upper,lower case,number,special character & Minimum characters should be 6" : null}
             />
             <TextField
               margin={"dense"}
@@ -148,7 +153,7 @@ const RegisterNew = ({setSetr}) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               fullWidth
               required
-              helperText={confirmPassword !== password ? "Password not match" : ""}
+              helperText={confirmPassword !== password ? "Password does not match" : ""}
             />
 
             <FormControlLabel
@@ -165,6 +170,7 @@ const RegisterNew = ({setSetr}) => {
             type='submit'
             style={btnStyle}
             variant='contained'
+            disabled={selectedPhoto === null || name === "" || email === "" || password === "" || (password !== "" && password?.length < 6 && !passwordRegExp.test(password)) || (email !== "" && !emailRegExp.test(email))}
             onClick={(e) => onSubmit({e, name, email, password, avatar})}
           >
             {loading ? 'Registering...' : 'Register'}

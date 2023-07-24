@@ -1,0 +1,8 @@
+.comment-short {
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    display: flex;
+}

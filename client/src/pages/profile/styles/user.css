@@ -1,0 +1,104 @@
+.container {
+    width: 95%;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #dddee6;
+    display: flex;
+    align-items: center;
+}
+
+.container:hover {
+    transition: transform 150ms ease-out;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    margin: inherit;
+}
+
+
+.list a {
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 10px;
+}
+
+a:link {
+    color: #405195;
+}
+
+a:visited {
+    color: #397084;
+}
+
+a:hover {
+    color: #416cba;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    margin: inherit;
+}
+
+.list .icon {
+    margin-left: 80%;
+}
+
+.details {
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 10px;
+}
+
+.upload-pic {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vmax;
+    box-sizing: border-box;
+}
+
+.upload-pic-form {
+    background-color: white;
+    height: 100%;
+    width: 50%;
+    border-radius: 30px;
+    box-sizing: border-box;
+    padding: 1.5vmax;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-pic-form > input[type="text"] {
+    width: 100%;
+    padding: 1vmax;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    font: 100 1.2rem "Roboto", sans-serif;
+}
+
+.upload-pic-form > input[type="file"] {
+    border-radius: 30px;
+    margin: 2vmax;
+}
+
+.upload-pic-form > h3 {
+    margin: 2vmax;
+}
+
+
+.upload-pic-form > input[type="file"]::-webkit-file-upload-button {
+    background-color: rgb(38, 63, 173);
+    color: white;
+    width: 100%;
+    padding: 1vmax;
+    border-radius: 30px;
+    border: none;
+    font: 100 1.2rem "Roboto", sans-serif;
+}

@@ -1,4 +1,5 @@
 import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {useTheme} from "@mui/material/styles";
 import React, {Suspense, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
@@ -10,13 +11,10 @@ import User from "./components/User.jsx";
 import {AccountDetails, List, StyledAvatar, StyledBox} from "./styles";
 
 const OtherProfiles = () => {
+  const theme = useTheme()
   const params = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [errors, setErrors] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [openE, setOpenE] = useState(false);
-  const [openS, setOpenS] = useState(false);
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
   const [following, setFollowing] = useState(false);
@@ -27,7 +25,15 @@ const OtherProfiles = () => {
   const {error: followError, message: followMessage} = useSelector(({follow}) => follow)
   const {chat} = useSelector(state => state.chats)
   const {fetch} = useSelector(({fetch}) => fetch)
+  const {isAuthenticated} = useSelector(({app}) => app)
 
+  React.useEffect(() => {
+    function isLoggedIn() {
+      isAuthenticated === false ? navigate("/") : null
+    }
+
+    isLoggedIn()
+  }, [])
   useEffect(() => {
     dispatch(getUserProfile(params.id))
   }, [fetch, params.id])
@@ -74,13 +80,13 @@ const OtherProfiles = () => {
             {(params.id === me._id) ? null :
               <>
                 <List>
-                  <Button onClick={followHandle} style={{color: following ? '#ff0000' : '#000000',}}>
+                  <Button onClick={followHandle} style={{color: following ? '#ff0000' : theme.palette.text.primary,}}>
                     {following ? 'Unfollow' : 'Follow'}
                   </Button>
                 </List>
               </>}
             {(params.id === me._id) ? null : <> <List>
-              <Button onClick={directMessage}>message</Button>
+              <Button onClick={directMessage} sx={{color: theme.palette.text.primary}}>message</Button>
             </List>
             </>
             }
@@ -88,13 +94,13 @@ const OtherProfiles = () => {
               <Typography fontWeight={700} sx={{fontSize: '1.4rem'}}> {user.name} </Typography>
             </List>
             <List>
-              <Typography fontWeight={300} sx={{color: '#111', fontSize: '1.1rem'}}> {user.email} </Typography>
+              <Typography fontWeight={300}
+                          sx={{fontSize: '1.1rem'}}> {user.email} </Typography>
             </List>
             <AccountDetails>
               <Typography
                 sx={{
                   fontWeight: '500',
-                  color: '#111',
                   fontSize: '0.5 rem',
                   paddingRight: '10px',
                 }}
@@ -105,7 +111,7 @@ const OtherProfiles = () => {
                 <Typography
                   fontWeight={500}
                   sx={{
-                    color: '#111',
+                    color: theme.palette.text.primary,
                     fontSize: '0.5 rem',
                   }}
                 >
@@ -116,7 +122,7 @@ const OtherProfiles = () => {
                 <Typography
                   fontWeight={500}
                   sx={{
-                    color: '#111',
+                    color: theme.palette.text.primary,
                     fontSize: '0.5 rem',
                     paddingRight: '10px',
                   }}

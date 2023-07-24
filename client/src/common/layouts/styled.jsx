@@ -7,6 +7,6 @@ export const MainContainer = styled(Container)(({theme, isAuthenticated}) => ({
   height: "100vh",
   ...(isAuthenticated && {
     height: "calc(100vh - 64px)",
-    marginTop: "6rem"
+    marginTop: "64px"
   })
 }))

@@ -1,6 +1,9 @@
-import {Delete, DeleteForever} from "@mui/icons-material";
-import {Avatar, IconButton, Typography} from "@mui/material";
+import Delete from "@mui/icons-material/Delete";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Avatar from "@mui/material/Avatar";
 import {pink} from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography"
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
@@ -13,7 +16,6 @@ const CommentCard = ({
                        name,
                        avatar,
                        comment,
-                       commentId,
                        postId,
                        isAccount
                      }) => {

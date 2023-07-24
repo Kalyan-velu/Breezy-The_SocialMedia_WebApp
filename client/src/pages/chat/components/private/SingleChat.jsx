@@ -1,21 +1,24 @@
 import {ArrowBackIos} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
+import Box from "@mui/material/Box";
+
+import {useTheme} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/system/Box";
-import {BootstrapInput} from "client/src/common/components/NewPost/PostModalStyled.jsx";
 import * as React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {io} from "socket.io-client";
-import {messageInstance} from "../../../../config/axios";
-import {getSender} from "../../../../config/ChatLog";
-import {ChatState} from "../../../../context/ChatProvider";
-import {setSelectedChat} from "../../../../features/action/chatAction";
-import {ChatContainer, ChatHeader} from "../../../styledComponents/chat-styles/ChatSections";
-import ChatScroll from "../ChatScroll";
+import {BootstrapInput} from "../../../../common/components/NewPost/PostModalStyled.jsx";
+import {messageInstance} from "../../../../config/axios.js";
+import {getSender} from "../../../../config/ChatLog.jsx";
+import {ChatState} from "../../../../context/ChatProvider.jsx";
+import {setSelectedChat} from "../../../../features/action/chatAction.js";
+import {ChatContainer, ChatHeader} from "../../styles/ChatSections.jsx";
+import ChatScroll from "../ChatScroll.jsx";
 
 const ENDPOINT = "https://social-media-server.adaptable.app"
 let socket, selectedChatCompare;
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
+  const theme = useTheme()
   const dispatch = useDispatch()
   const [messages, setMessages] = React.useState([]);
   const [newMessage, setNewMessage] = React.useState("");
@@ -23,7 +26,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
   const [typing, setTyping] = React.useState(false);
   const [isTyping, setIsTyping] = React.useState(false);
   const [socketConnected, setSocketConnected] = React.useState(false);
-  const {user} = useSelector(state => state.user)
+  const {user} = useSelector(({app}) => app)
   const {selectedChat} = useSelector(state => state.chats)
   const {notification, setNotification} = ChatState()
 
@@ -40,7 +43,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         setMessages(current =>
           [...current, response.data])
       } catch (e) {
-        console.log(e)
+        dispatch({
+          type: "STATUS",
+          payload: {
+            variant: "error",
+            message: (e?.response.data.message == null) ? e.message : e.response.data.message
+          }
+        })
       }
     }
   }
@@ -56,7 +65,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
   React.useEffect(() => {
     async function fetchMessages() {
       if (!selectedChat) {
-        return console.log("No Selected Chat")
+        return
       }
       try {
         setLoading(true)
@@ -67,7 +76,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
         socket.emit("join chat", selectedChat._id)
       } catch (e) {
-        console.log(e)
+        dispatch({
+          type: "STATUS",
+          payload: {
+            variant: "error",
+            message: (e?.response.data.message == null) ? e.message : e.response.data.message
+          }
+        })
         setLoading(false)
       }
     }
@@ -112,7 +127,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
   }
 
   return (
-    <div style={{width: "100%", height: "100%",}}>
+    <>
       {selectedChat ?
         (<ChatContainer>
           <ChatHeader>
@@ -127,7 +142,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             <div style={{flexGrow: 1}}/>
           </ChatHeader>
           <Box display={"flex"} flexDirection={"column"} justifyContent={"flex-end"} width={"100%"} height={"100%"}
-               p={3} bgcolor={"#E8E8E8"} style={{overflowY: "hidden"}}>
+               p={3} style={{overflowY: "hidden"}}>
             {loading ? (<div>loading</div>) :
               (<div style={{display: "flex", flexDirection: "column", overflowY: 'auto', scrollbarWidth: 'none'}}>
                   <ChatScroll messages={messages}/>
@@ -138,7 +153,8 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
               )}
           </Box>
         </ChatContainer>) : (
-          <Typography variant={"h4"} color={"#0f112d"} pb={3}>Click on a conversation to start chatting</Typography>)}
-    </div>)
+          <Typography variant={"h4"} color={theme.palette.text.primary} pb={3}>Click on a conversation to start
+            chatting</Typography>)}
+    </>)
 }
 export default SingleChat

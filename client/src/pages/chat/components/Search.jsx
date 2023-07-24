@@ -1,18 +1,17 @@
 import {SearchTwoTone} from "@mui/icons-material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SearchIcon from "@mui/icons-material/Search";
-import {IconButton} from "@mui/material";
 import Box from '@mui/material/Box';
+import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
-import Modal from '@mui/material/Modal';
 import {alpha, styled} from "@mui/material/styles";
-import {StyledButton} from "client/src/common/components/NewPost/PostModalStyled.jsx";
 import * as React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {accessChat, setSelectedChat} from "../../../features/action/chatAction";
-import {searchUsers} from "../../../features/action/userAction";
-import ChatLoading from "../chat-loading/ChatLoading";
-import UserListItem from "../chat-loading/lists/UserList";
+import {BootstrapDialog, StyledButton} from "../../../common/components/NewPost/PostModalStyled.jsx";
+import {accessChat, setSelectedChat} from "../../../features/action/chatAction.js";
+import {searchUsers} from "../../../features/action/userAction.js";
+import ChatLoading from "./chat-loading/ChatLoading.jsx";
+import UserListItem from "./chat-loading/lists/UserList.jsx";
 
 
 const Search = styled('div')(({theme}) => ({
@@ -55,21 +54,6 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
   },
 }));
 
-const style = {
-  backgroundColor: "#ECF1F2",
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  height: 250,
-  border: '1px solid #5325g',
-  borderRadius: "8px",
-  boxShadow: 24,
-  p: 4,
-  overflow: "auto"
-};
-
 
 export default function SearchModal(props) {
   const [open, setOpen] = React.useState(false);
@@ -89,8 +73,6 @@ export default function SearchModal(props) {
 
   const handleSearch = async () => {
     if (!search) {
-      props.setOpenE(true)
-      props.setError("Please Enter Something")
       setOpen(false)
     }
     dispatch(searchUsers(search))
@@ -106,9 +88,9 @@ export default function SearchModal(props) {
       <IconButton onClick={handleOpen}>
         <SearchTwoTone/>
       </IconButton>
-      <Modal keepMounted open={open} onClose={handleClose} aria-labelledby="keep-mounted-modal-title"
-             aria-describedby="keep-mounted-modal-description">
-        <Box sx={style}>
+      <BootstrapDialog keepMounted open={open} onClose={handleClose} aria-labelledby="keep-mounted-modal-title"
+                       aria-describedby="keep-mounted-modal-description">
+        <Box>
           <Search>
             <SearchIconWrapper><AddBoxIcon/></SearchIconWrapper>
             <StyledInputBase value={search} onChange={(e) => {
@@ -126,7 +108,7 @@ export default function SearchModal(props) {
                             avatar={user.avatar.url} handleFunction={() => handleAccessChat({user})}/>)))}
           </Box>
         </Box>
-      </Modal>
+      </BootstrapDialog>
     </div>
   );
 }
