@@ -1,12 +1,14 @@
-import {AddOutlined} from "@mui/icons-material";
+import AddOutlined from '@mui/icons-material/AddOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import {IconButton, Tooltip} from "@mui/material";
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from "@mui/material/IconButton";
 import Slide from '@mui/material/Slide';
+import Tooltip from "@mui/material/Tooltip";
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {createNewPost} from "../../../features/action/postAction.js";
+import "./NewPost.css";
 import {
   BootstrapDialog,
   BootstrapInput,
@@ -92,15 +94,13 @@ const Modal = ({
 
 
   return (
-    <div>
+    <>
 
-      <div style={{display: "flex", justifyContent: "center"}}>
-        <Tooltip title="Add a photo">
-          <IconButton onClick={handleClickOpen}>
-            <AddOutlined/>
-          </IconButton>
-        </Tooltip>
-      </div>
+      <Tooltip title="Add a photo">
+        <IconButton onClick={handleClickOpen}>
+          <AddOutlined/>
+        </IconButton>
+      </Tooltip>
 
       <BootstrapDialog
         open={open}
@@ -124,7 +124,6 @@ const Modal = ({
                   />
                 </div>
               ) : (
-
                 <IconButton onClick={() => filePicker.current.click()}>
                   <Camera/>
                 </IconButton>
@@ -156,7 +155,7 @@ const Modal = ({
           </Wrapper>
         </Container>
       </BootstrapDialog>
-    </div>
+    </>
   )
 }
 export default Modal;

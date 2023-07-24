@@ -6,13 +6,13 @@ import {styled} from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
 
 export const Container = styled(AppBar)(({theme}) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: "transparent",
   // color:theme.palette.primary.main,
-  minHeight: "60px"
+  maxHeight: "64px"
 }))
 
 export const Wrapper = styled(AppBarContainer)(({theme}) => ({
-  backgroundColor: theme.palette.background.default
+  // backgroundColor: theme.palette.background.default
 }))
 export const Toolbar = styled(AppToolbar)(() => ({}))
 
