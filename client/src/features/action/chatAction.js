@@ -15,6 +15,13 @@ export const accessChat = (userId) => async (dispatch) => {
       type: 'accessChatFailure',
       payload: e
     })
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "error",
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
+      }
+    })
   }
 }
 export const fetchChat = () => async (dispatch) => {
@@ -33,11 +40,11 @@ export const fetchChat = () => async (dispatch) => {
       type: 'fetchChatFailure',
       payload: e.data.message
     })
-    dispatch({
-      type: 'ERROR',
+    await dispatch({
+      type: "STATUS",
       payload: {
-        type: "error",
-        message: e.data.message
+        variant: "error",
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
       }
     })
   }
@@ -56,6 +63,13 @@ export const setSelectedChat = (chat) => async (dispatch) => {
       type: 'setSelectedChatFailure',
       payload: e.data.message
     })
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "error",
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
+      }
+    })
   }
 }
 export const setChats = ([]) => async (dispatch) => {
@@ -71,6 +85,13 @@ export const setChats = ([]) => async (dispatch) => {
     dispatch({
       type: 'setSelectedChatFailure',
       payload: e.data.message
+    })
+    await dispatch({
+      type: "STATUS",
+      payload: {
+        variant: "error",
+        message: (e?.response.data.message == null) ? e.message : e.response.data.message
+      }
     })
   }
 }
