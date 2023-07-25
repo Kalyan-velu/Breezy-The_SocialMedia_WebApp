@@ -15,7 +15,7 @@ import {setSelectedChat} from "../../../../features/action/chatAction.js";
 import {ChatContainer, ChatHeader} from "../../styles/ChatSections.jsx";
 import ChatScroll from "../ChatScroll.jsx";
 
-const ENDPOINT = "https://social-media-server.adaptable.app"
+const ENDPOINT = "https://breezy-c13l.onrender.com"
 let socket, selectedChatCompare;
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
   const theme = useTheme()
